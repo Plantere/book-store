@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_01_12_124407) do
+ActiveRecord::Schema[7.1].define(version: 2024_01_12_124757) do
   create_schema "auth"
   create_schema "extensions"
   create_schema "graphql"
@@ -40,6 +40,20 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_12_124407) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["full_name", "birth_date"], name: "index_authors_on_full_name_and_birth_date", unique: true
+  end
+
+  create_table "books", id: false, force: :cascade do |t|
+    t.string "id"
+    t.string "authors_id"
+    t.string "publishers_id"
+    t.string "name"
+    t.text "description"
+    t.integer "stock_quantity"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["authors_id"], name: "index_books_on_authors_id"
+    t.index ["name"], name: "index_books_on_name"
+    t.index ["publishers_id"], name: "index_books_on_publishers_id"
   end
 
   create_table "profiles", id: false, force: :cascade do |t|
