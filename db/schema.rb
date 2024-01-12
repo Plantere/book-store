@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_01_12_152108) do
+ActiveRecord::Schema[7.1].define(version: 2024_01_12_173226) do
   create_schema "auth"
   create_schema "extensions"
   create_schema "graphql"
@@ -77,7 +77,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_12_152108) do
     t.integer "stock_quantity"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "genres_id"
     t.index ["authors_id"], name: "index_books_on_authors_id"
+    t.index ["genres_id"], name: "index_books_on_genres_id"
     t.index ["name"], name: "index_books_on_name"
     t.index ["publishers_id"], name: "index_books_on_publishers_id"
   end
