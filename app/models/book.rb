@@ -1,4 +1,6 @@
 class Book < ApplicationRecord
-  belongs_to :author
-  belongs_to :publisher
+  belongs_to :authors
+  belongs_to :publishers
+  belongs_to :order_details
+  belongs_to :book_images
 end
