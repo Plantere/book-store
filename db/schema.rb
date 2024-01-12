@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_01_12_022241) do
+ActiveRecord::Schema[7.1].define(version: 2024_01_12_031058) do
   create_schema "auth"
   create_schema "extensions"
   create_schema "graphql"
@@ -31,6 +31,19 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_12_022241) do
   enable_extension "plpgsql"
   enable_extension "supabase_vault"
   enable_extension "uuid-ossp"
+
+  create_table "profiles", id: false, force: :cascade do |t|
+    t.string "id"
+    t.string "user_id"
+    t.string "first_name"
+    t.string "last_name"
+    t.date "birth_date"
+    t.string "avatar"
+    t.text "descritpion"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_profiles_on_user_id", unique: true
+  end
 
   create_table "users", id: false, force: :cascade do |t|
     t.string "id"
