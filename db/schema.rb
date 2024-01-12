@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_01_12_151306) do
+ActiveRecord::Schema[7.1].define(version: 2024_01_12_152108) do
   create_schema "auth"
   create_schema "extensions"
   create_schema "graphql"
@@ -89,6 +89,30 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_12_151306) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_genres_on_name", unique: true
+  end
+
+  create_table "order_details", id: false, force: :cascade do |t|
+    t.string "id"
+    t.string "orders_id"
+    t.string "books_id"
+    t.integer "quantity"
+    t.decimal "price", precision: 16, scale: 2
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["books_id"], name: "index_order_details_on_books_id"
+    t.index ["orders_id"], name: "index_order_details_on_orders_id"
+  end
+
+  create_table "orders", id: false, force: :cascade do |t|
+    t.string "id"
+    t.string "users_id"
+    t.string "addresses_id"
+    t.decimal "price", precision: 16, scale: 2
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["addresses_id"], name: "index_orders_on_addresses_id"
+    t.index ["users_id"], name: "index_orders_on_users_id"
   end
 
   create_table "profiles", id: false, force: :cascade do |t|
