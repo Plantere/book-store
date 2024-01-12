@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_01_12_150547) do
+ActiveRecord::Schema[7.1].define(version: 2024_01_12_151306) do
   create_schema "auth"
   create_schema "extensions"
   create_schema "graphql"
@@ -57,6 +57,17 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_12_150547) do
     t.index ["full_name", "birth_date"], name: "index_authors_on_full_name_and_birth_date", unique: true
   end
 
+  create_table "book_images", id: false, force: :cascade do |t|
+    t.string "id"
+    t.string "books_id"
+    t.string "image_type"
+    t.string "image_path"
+    t.string "alt_text"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["books_id"], name: "index_book_images_on_books_id"
+  end
+
   create_table "books", id: false, force: :cascade do |t|
     t.string "id"
     t.string "authors_id"
@@ -100,6 +111,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_12_150547) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_publishers_on_name", unique: true
+  end
+
+  create_table "telephones", id: false, force: :cascade do |t|
+    t.string "id"
+    t.string "user_id"
+    t.string "phone_number"
+    t.string "area_code"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", id: false, force: :cascade do |t|

@@ -1,0 +1,2 @@
+class BookImage < ApplicationRecord
+end
