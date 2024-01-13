@@ -1,8 +1,8 @@
 class CreateBooks < ActiveRecord::Migration[7.1]
   def change
     create_table :books do |t|
-      t.references :authors, index: true
-      t.references :publishers, index: true
+      t.references :author, index: true, foreign_key: true
+      t.references :publisher, index: true, foreign_key: true
       t.string :name
       t.text :description
       t.integer :stock_quantity

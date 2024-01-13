@@ -1,7 +1,7 @@
 class CreateBookImages < ActiveRecord::Migration[7.1]
   def change
     create_table :book_images do |t|
-      t.references :books, index: true
+      t.references :book, index: true, foreign_key: true
       t.string :image_type
       t.string :image_path
       t.string :alt_text

@@ -33,7 +33,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_12_173226) do
   enable_extension "uuid-ossp"
 
   create_table "addresses", force: :cascade do |t|
-    t.bigint "users_id"
+    t.bigint "user_id"
     t.string "name"
     t.string "country"
     t.string "state"
@@ -43,7 +43,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_12_173226) do
     t.string "postal_code"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["users_id"], name: "index_addresses_on_users_id"
+    t.index ["user_id"], name: "index_addresses_on_user_id"
   end
 
   create_table "authors", force: :cascade do |t|
@@ -56,28 +56,28 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_12_173226) do
   end
 
   create_table "book_images", force: :cascade do |t|
-    t.bigint "books_id"
+    t.bigint "book_id"
     t.string "image_type"
     t.string "image_path"
     t.string "alt_text"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["books_id"], name: "index_book_images_on_books_id"
+    t.index ["book_id"], name: "index_book_images_on_book_id"
   end
 
   create_table "books", force: :cascade do |t|
-    t.bigint "authors_id"
-    t.bigint "publishers_id"
+    t.bigint "author_id"
+    t.bigint "publisher_id"
     t.string "name"
     t.text "description"
     t.integer "stock_quantity"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "genres_id"
-    t.index ["authors_id"], name: "index_books_on_authors_id"
-    t.index ["genres_id"], name: "index_books_on_genres_id"
+    t.bigint "genre_id"
+    t.index ["author_id"], name: "index_books_on_author_id"
+    t.index ["genre_id"], name: "index_books_on_genre_id"
     t.index ["name"], name: "index_books_on_name"
-    t.index ["publishers_id"], name: "index_books_on_publishers_id"
+    t.index ["publisher_id"], name: "index_books_on_publisher_id"
   end
 
   create_table "genres", force: :cascade do |t|
@@ -89,29 +89,29 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_12_173226) do
   end
 
   create_table "order_details", force: :cascade do |t|
-    t.bigint "orders_id"
-    t.bigint "books_id"
+    t.bigint "order_id"
+    t.bigint "book_id"
     t.integer "quantity"
     t.decimal "price", precision: 16, scale: 2
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["books_id"], name: "index_order_details_on_books_id"
-    t.index ["orders_id"], name: "index_order_details_on_orders_id"
+    t.index ["book_id"], name: "index_order_details_on_book_id"
+    t.index ["order_id"], name: "index_order_details_on_order_id"
   end
 
   create_table "orders", force: :cascade do |t|
-    t.bigint "users_id"
-    t.bigint "addresses_id"
+    t.bigint "user_id"
+    t.bigint "address_id"
     t.decimal "price", precision: 16, scale: 2
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["addresses_id"], name: "index_orders_on_addresses_id"
-    t.index ["users_id"], name: "index_orders_on_users_id"
+    t.index ["address_id"], name: "index_orders_on_address_id"
+    t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
   create_table "profiles", force: :cascade do |t|
-    t.bigint "users_id"
+    t.bigint "user_id"
     t.string "first_name"
     t.string "last_name"
     t.date "birth_date"
@@ -119,7 +119,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_12_173226) do
     t.text "descritpion"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["users_id"], name: "index_profiles_on_users_id"
+    t.index ["user_id"], name: "index_profiles_on_user_id"
   end
 
   create_table "publishers", force: :cascade do |t|
@@ -131,13 +131,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_12_173226) do
   end
 
   create_table "telephones", force: :cascade do |t|
-    t.bigint "users_id"
+    t.bigint "user_id"
     t.string "phone_number"
     t.string "area_code"
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["users_id"], name: "index_telephones_on_users_id"
+    t.index ["user_id"], name: "index_telephones_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -151,4 +151,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_12_173226) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  add_foreign_key "addresses", "users"
+  add_foreign_key "book_images", "books"
+  add_foreign_key "books", "authors"
+  add_foreign_key "books", "genres"
+  add_foreign_key "books", "publishers"
+  add_foreign_key "order_details", "books"
+  add_foreign_key "order_details", "orders"
+  add_foreign_key "orders", "addresses"
+  add_foreign_key "orders", "users"
+  add_foreign_key "profiles", "users"
+  add_foreign_key "telephones", "users"
 end
