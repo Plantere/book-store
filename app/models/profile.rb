@@ -1,3 +1,3 @@
 class Profile < ApplicationRecord
-  has_one :users dependent: :destroy
+  has_one :user, dependent: :destroy
 end

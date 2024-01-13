@@ -1,3 +1,3 @@
 class BookImage < ApplicationRecord
-  has_many :books dependent: :destroy
+  has_many :book, dependent: :destroy
 end

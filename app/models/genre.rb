@@ -1,3 +1,3 @@
 class Genre < ApplicationRecord
-  belong_to :books
+  belong_to :book
 end
