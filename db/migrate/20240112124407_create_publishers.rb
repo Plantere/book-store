@@ -1,7 +1,6 @@
 class CreatePublishers < ActiveRecord::Migration[7.1]
   def change
-    create_table :publishers, id: false, primary_key: :id do |t|
-      t.string :id
+    create_table :publishers do |t|
       t.string :name
       t.text :description
       t.timestamps

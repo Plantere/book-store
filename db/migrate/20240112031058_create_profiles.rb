@@ -1,8 +1,7 @@
 class CreateProfiles < ActiveRecord::Migration[7.1]
   def change
-    create_table :profiles, id: false, primary_key: :id  do |t|
-      t.string :id
-      t.string :user_id
+    create_table :profiles  do |t|
+      t.references :users, index: true
       t.string :first_name
       t.string :last_name
       t.date :birth_date
@@ -10,8 +9,6 @@ class CreateProfiles < ActiveRecord::Migration[7.1]
       t.text :descritpion
       t.timestamps
     end
-
-    add_index :profiles, :user_id, unique: true
   end
 
   def down

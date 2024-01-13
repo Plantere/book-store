@@ -1,8 +1,7 @@
 class CreateAddresses < ActiveRecord::Migration[7.1]
   def change
-    create_table :addresses, id: false, primary_key: :id do |t|
-      t.string :id
-      t.references :users, type: :string, index: true
+    create_table :addresses do |t|
+      t.references :users, index: true
       t.string :name
       t.string :country
       t.string :state

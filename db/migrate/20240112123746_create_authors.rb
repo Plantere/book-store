@@ -1,7 +1,6 @@
 class CreateAuthors < ActiveRecord::Migration[7.1]
   def change
-    create_table :authors, id: false, primary_key: :id do |t|
-      t.string :id
+    create_table :authors do |t|
       t.string :full_name
       t.date :birth_date
       t.text :biography

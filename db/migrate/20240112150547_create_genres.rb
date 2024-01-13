@@ -1,7 +1,6 @@
 class CreateGenres < ActiveRecord::Migration[7.1]
   def change
-    create_table :genres, id: false, primary_key: :id do |t|
-      t.string :id
+    create_table :genres do |t|
       t.string :name
       t.text :description
       t.timestamps
