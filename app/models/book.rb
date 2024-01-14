@@ -1,7 +1,7 @@
 class Book < ApplicationRecord
-  has_many :genre, dependent: :destroy
-  belongs_to :author
   belongs_to :publisher
-  belongs_to :order_detail
-  belongs_to :book_image
+  belongs_to :author
+  belongs_to :genre
+  has_many :order_detail, dependent: :destroy
+  has_many :book_image, dependent: :destroy
 end

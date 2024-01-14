@@ -1,3 +1,3 @@
 class Genre < ApplicationRecord
-  belong_to :book
+  has_many :book, dependent: :destroy
 end

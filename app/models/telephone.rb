@@ -1,3 +1,3 @@
 class Telephone < ApplicationRecord
-  has_many :user, dependent: :destroy
+  belongs_to :user
 end

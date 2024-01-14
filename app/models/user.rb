@@ -1,5 +1,6 @@
 class User < ApplicationRecord
-  belongs_to :profile
-  belongs_to :address
-  belongs_to :telephone
+  has_many :address, dependent: :destroy
+  has_many :telephone, dependent: :destroy
+  has_many :order, dependent: :destroy
+  has_one :profile, dependent: :destroy
 end
