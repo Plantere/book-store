@@ -116,7 +116,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_12_173226) do
     t.string "last_name"
     t.date "birth_date"
     t.string "avatar"
-    t.text "descritpion"
+    t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_profiles_on_user_id"

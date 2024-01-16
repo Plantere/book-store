@@ -6,7 +6,7 @@ class CreateProfiles < ActiveRecord::Migration[7.1]
       t.string :last_name
       t.date :birth_date
       t.string :avatar
-      t.text :descritpion
+      t.text :description
       t.timestamps
     end
   end
