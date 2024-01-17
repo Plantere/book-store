@@ -7,8 +7,8 @@ Rails.application.routes.draw do
   
   namespace :api do
     namespace :v1 do
-      post "/user" => "users#register"
-      post "/login" => "users#login"
+      post "/register" => "users#register"
+      post "/login" => "auth#login"
     end
   end
   # Defines the root path route ("/")
