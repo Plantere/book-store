@@ -7,7 +7,7 @@ class Api::V1::AuthController < ApplicationController
       return
     end
 
-    render json: { error: @user }, status: :unauthorized
+    render json: { error: "Incorrect email or password. Please check your credentials and try again." }, status: :unauthorized
   end
 
   private
