@@ -1,6 +1,6 @@
 module BooksService
   def self.any_books_below_ordered_quantity?(books)
-    conditions = books.map { |condition| "(id = :book_id AND stock_quantity < :quantity)" }
+    conditions = books.map { |condition| "(id = ? AND stock_quantity < ?)" }
     conditions_string = conditions.join(" OR ")
     
     conditions_hash = books.map { |condition| { book_id: condition[:book_id], quantity: condition[:quantity] } }
