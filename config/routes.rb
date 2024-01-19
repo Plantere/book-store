@@ -16,6 +16,12 @@ Rails.application.routes.draw do
         delete "/:id" => "authors#delete"
       end
 
+      scope '/address' do
+        get "/" => "addresses#get"
+        post "/" => "addresses#create"
+        delete "/:id" => "addresses#delete"
+      end
+
       scope '/genre' do
         get "/" => "genres#index"
         post "/" => "genres#create"
