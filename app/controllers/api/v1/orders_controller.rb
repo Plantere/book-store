@@ -27,7 +27,7 @@ class Api::V1::OrdersController < ApplicationController
       return
     end
 
-    render json: { error: @order.errors.full_messages }, status: :ok
+    render json: { error: order.errors.full_messages }, status: :ok
     return
   end
 
