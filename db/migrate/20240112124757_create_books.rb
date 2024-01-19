@@ -6,6 +6,7 @@ class CreateBooks < ActiveRecord::Migration[7.1]
       t.string :name
       t.text :description
       t.integer :stock_quantity
+      t.decimal :price, precision: 16, scale: 2
       t.timestamps
     end
     add_index :books, :name
