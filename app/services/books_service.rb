@@ -3,8 +3,8 @@ module BooksService
     conditions = books.map { |condition| "(id = ? AND stock_quantity < ?)" }
     conditions_string = conditions.join(" OR ")
     
-    conditions_hash = books.map { |condition| { book_id: condition[:book_id], quantity: condition[:quantity] } }
-    
+    conditions_hash = books.flat_map { |condition| [condition[:book_id], condition[:quantity]] }
+
     Book.where(conditions_string, *conditions_hash).exists?
   end
   
