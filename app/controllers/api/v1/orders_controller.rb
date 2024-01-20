@@ -8,21 +8,19 @@ class Api::V1::OrdersController < ApplicationController
     end
 
     order = Order.new(price: 0, user_id: @current_user[:id], **params_order)
-    price_order = 0
-    
     if order.save
       params_order_details.each do |order_detail|
         price_book = BooksService.get_price_book(order_detail[:book_id])
-        price_order += price_book * order_detail[:quantity]
+        order.price += price_book * order_detail[:quantity]
 
         order_detail = OrderDetail.new(price: price_book, order_id: order[:id], **order_detail)
         order_detail.save
 
         BooksService.decrease_stock_quantity(order_detail[:book_id], order_detail[:quantity])
       end
-      
-      order.update(price: price_order)
 
+      order.save
+      
       render json: { message: "Order created successfully" }, status: :ok
       return
     end
