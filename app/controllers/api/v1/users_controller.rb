@@ -1,13 +1,13 @@
 class Api::V1::UsersController < ApplicationController
   def register
-    if User.registered?(user_params)
+    if User.registered?(params_user)
       render json: { error: "User already registered. Duplicates are not allowed." }, status: :unprocessable_entity
       return
     end
 
-    @user = User.new(user_params)
+    @user = User.new(params_user)
     if @user.save
-      @user.create_profile(profile_params)
+      @user.create_profile(params_profile)
       render json: { "message": "User created successufly" }, status: :ok
       return
     end
@@ -16,11 +16,11 @@ class Api::V1::UsersController < ApplicationController
   end
 
   private
-  def user_params
+  def params_user
     params.require(:user).permit(:username, :email, :password)
   end
 
-  def profile_params
+  def params_profile
     params.require(:profile).permit(:first_name, :last_name, :birth_date, :description)
   end
 end
