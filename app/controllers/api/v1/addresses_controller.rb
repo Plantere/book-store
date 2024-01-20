@@ -28,7 +28,10 @@ class Api::V1::AddressesController < ApplicationController
   end
 
   def get
-    render json: { addresses: Address.where(user_id: @current_user[:id]).all }, status: :ok #TODO: Implement Paginate Logic
+    page, data = pagy(Address.where(user_id: @current_user[:id]).all, page: params[:page])
+    pagination = pagy_metadata(page)
+
+    render json: PaginationHelper.humanize_pagination(data, pagination), status: :ok
   end
 
   private

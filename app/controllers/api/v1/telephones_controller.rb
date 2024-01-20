@@ -28,7 +28,10 @@ class Api::V1::TelephonesController < ApplicationController
   end
 
   def get
-    render json: { telephonees: Telephone.where(user_id: @current_user[:id]).all }, status: :ok #TODO: Implement Paginate Logic
+    page, data = pagy(Telephone.where(user_id: @current_user[:id]).all, page: params[:page])
+    pagination = pagy_metadata(page)
+
+    render json: PaginationHelper.humanize_pagination(data, pagination), status: :ok
   end
 
   private
