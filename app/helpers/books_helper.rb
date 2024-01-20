@@ -1,4 +1,4 @@
-module BooksService
+module BooksHelper
   def self.any_books_below_ordered_quantity?(books)
     conditions = books.map { |condition| "(id = ? AND stock_quantity < ?)" }
     conditions_string = conditions.join(" OR ")

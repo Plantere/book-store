@@ -2,7 +2,7 @@ class Api::V1::OrdersController < ApplicationController
   before_action :authorize_request
   
   def create
-    if BooksService.any_books_below_ordered_quantity?(params_order_details)
+    if BooksHelper.any_books_below_ordered_quantity?(params_order_details)
       render json: { error: "Invalid book quantities in the order." }, status: :unprocessable_entity
       return
     end
@@ -10,13 +10,13 @@ class Api::V1::OrdersController < ApplicationController
     order = Order.new(price: 0, user_id: @current_user[:id], **params_order)
     if order.save
       params_order_details.each do |order_detail|
-        price_book = BooksService.get_price_book(order_detail[:book_id])
+        price_book = BooksHelper.get_price_book(order_detail[:book_id])
         order.price += price_book * order_detail[:quantity]
 
         order_detail = OrderDetail.new(price: price_book, order_id: order[:id], **order_detail)
         order_detail.save
 
-        BooksService.decrease_stock_quantity(order_detail[:book_id], order_detail[:quantity])
+        BooksHelper.decrease_stock_quantity(order_detail[:book_id], order_detail[:quantity])
       end
 
       order.save
