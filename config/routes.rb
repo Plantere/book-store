@@ -27,6 +27,11 @@ Rails.application.routes.draw do
         delete "/:id" => "addresses#delete"
       end
 
+      scope '/telephone' do
+        get "/" => "telephones#get"
+        post "/" => "telephones#create"
+        delete "/:id" => "telephones#delete"
+      end
 
       scope '/genre' do
         get "/" => "genres#index"
