@@ -17,7 +17,7 @@ class AuthorsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should delete an author and return success" do
-    @author = Author.new(
+    author = Author.new(
       full_name: "Martin Luther King",
       birth_date: "1965-07-31",
       biography: "He was someone in the world"
