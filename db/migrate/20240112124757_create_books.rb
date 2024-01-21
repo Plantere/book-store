@@ -4,10 +4,10 @@ class CreateBooks < ActiveRecord::Migration[7.1]
       t.references :author, index: true, foreign_key: true
       t.references :publisher, index: true, foreign_key: true
       t.references :genre, index: true, foreign_key: true
-      t.string :name
+      t.string :name, null: false
       t.text :description
-      t.integer :stock_quantity
-      t.decimal :price, precision: 16, scale: 2
+      t.integer :stock_quantity, null: false
+      t.decimal :price, precision: 16, scale: 2, null: false
       t.timestamps
     end
     add_index :books, :name

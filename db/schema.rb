@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_01_12_173226) do
+ActiveRecord::Schema[7.1].define(version: 2024_01_12_152108) do
   create_schema "auth"
   create_schema "extensions"
   create_schema "graphql"
@@ -34,21 +34,21 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_12_173226) do
 
   create_table "addresses", force: :cascade do |t|
     t.bigint "user_id"
-    t.string "name"
-    t.string "country"
-    t.string "state"
-    t.string "district"
-    t.string "number"
+    t.string "name", null: false
+    t.string "country", null: false
+    t.string "state", null: false
+    t.string "district", null: false
+    t.string "number", null: false
     t.string "complement"
-    t.string "postal_code"
+    t.string "postal_code", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_addresses_on_user_id"
   end
 
   create_table "authors", force: :cascade do |t|
-    t.string "full_name"
-    t.date "birth_date"
+    t.string "full_name", null: false
+    t.date "birth_date", null: false
     t.text "biography"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -57,9 +57,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_12_173226) do
 
   create_table "book_images", force: :cascade do |t|
     t.bigint "book_id"
-    t.string "image_type"
-    t.string "image_path"
-    t.string "alt_text"
+    t.string "image_type", null: false
+    t.string "image_path", null: false
+    t.string "alt_text", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["book_id"], name: "index_book_images_on_book_id"
@@ -68,12 +68,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_12_173226) do
   create_table "books", force: :cascade do |t|
     t.bigint "author_id"
     t.bigint "publisher_id"
-    t.string "name"
+    t.bigint "genre_id"
+    t.string "name", null: false
     t.text "description"
-    t.integer "stock_quantity"
+    t.integer "stock_quantity", null: false
+    t.decimal "price", precision: 16, scale: 2, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "genre_id"
     t.index ["author_id"], name: "index_books_on_author_id"
     t.index ["genre_id"], name: "index_books_on_genre_id"
     t.index ["name"], name: "index_books_on_name"
@@ -81,8 +82,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_12_173226) do
   end
 
   create_table "genres", force: :cascade do |t|
-    t.string "name"
-    t.text "description"
+    t.string "name", null: false
+    t.text "description", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_genres_on_name", unique: true
@@ -91,8 +92,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_12_173226) do
   create_table "order_details", force: :cascade do |t|
     t.bigint "order_id"
     t.bigint "book_id"
-    t.integer "quantity"
-    t.decimal "price", precision: 16, scale: 2
+    t.integer "quantity", null: false
+    t.decimal "price", precision: 16, scale: 2, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["book_id"], name: "index_order_details_on_book_id"
@@ -102,7 +103,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_12_173226) do
   create_table "orders", force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "address_id"
-    t.decimal "price", precision: 16, scale: 2
+    t.decimal "price", precision: 16, scale: 2, null: false
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -112,9 +113,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_12_173226) do
 
   create_table "profiles", force: :cascade do |t|
     t.bigint "user_id"
-    t.string "first_name"
-    t.string "last_name"
-    t.date "birth_date"
+    t.string "first_name", null: false
+    t.string "last_name", null: false
+    t.date "birth_date", null: false
     t.string "avatar"
     t.text "description"
     t.datetime "created_at", null: false
@@ -123,7 +124,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_12_173226) do
   end
 
   create_table "publishers", force: :cascade do |t|
-    t.string "name"
+    t.string "name", null: false
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -132,18 +133,18 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_12_173226) do
 
   create_table "telephones", force: :cascade do |t|
     t.bigint "user_id"
-    t.string "phone_number"
-    t.string "area_code"
-    t.string "name"
+    t.string "phone_number", null: false
+    t.string "area_code", null: false
+    t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_telephones_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "username"
-    t.string "password_digest"
-    t.string "email"
+    t.string "username", null: false
+    t.string "password_digest", null: false
+    t.string "email", null: false
     t.integer "status", default: 1
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
