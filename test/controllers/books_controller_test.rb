@@ -15,6 +15,8 @@ class BooksControllerTest < ActionDispatch::IntegrationTest
     post "/api/v1/book", params: {
       name: "Harry Potter and the Philosopher's Stone",
       description: "...",
+      price: 10.99,
+      stock_quantity: 10,
       publisher_id: @publisher.id,
       genre_id: @genre.id,
       author_id: @author.id
