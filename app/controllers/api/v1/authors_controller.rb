@@ -9,8 +9,8 @@ class Api::V1::AuthorsController < ApplicationController
       return
     end
 
-    @author = Author.new(params_author)
-    if @author.save
+    author = Author.new(params_author)
+    if author.save
       render json: { message: "Author created successfully" }, status: :ok
       return
     end

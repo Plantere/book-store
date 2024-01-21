@@ -7,8 +7,8 @@ class Api::V1::TelephonesController < ApplicationController
       return
     end
 
-    @telephone = Telephone.new(user_id: @current_user[:id], **params_telephone)
-    if @telephone.save
+    telephone = Telephone.new(user_id: @current_user[:id], **params_telephone)
+    if telephone.save
       render json: { message: "Telephone created successfully" }, status: :ok
       return
     end
@@ -22,7 +22,7 @@ class Api::V1::TelephonesController < ApplicationController
       return
     end
 
-    @telephone = Telephone.destroy(params[:id])
+    telephone = Telephone.destroy(params[:id])
 
     render json: { error: "Telephone deleted successfully" }, status: :ok
   end

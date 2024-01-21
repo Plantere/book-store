@@ -9,8 +9,8 @@ class Api::V1::BooksController < ApplicationController
       return
     end
 
-    @book = Book.new(params_book)
-    if @book.save
+    book = Book.new(params_book)
+    if book.save
       render json: { message: "Book created successfully" }, status: :ok
       return
     end

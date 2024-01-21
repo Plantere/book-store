@@ -9,8 +9,8 @@ class Api::V1::PublishersController < ApplicationController
       return
     end
 
-    @publisher = Publisher.new(params_publisher)
-    if @publisher.save
+    publisher = Publisher.new(params_publisher)
+    if publisher.save
       render json: { message: "Publisher created successfully" }, status: :ok
       return
     end

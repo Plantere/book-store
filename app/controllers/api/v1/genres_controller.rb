@@ -9,8 +9,8 @@ class Api::V1::GenresController < ApplicationController
       return
     end
 
-    @genre = Genre.new(params_genre)
-    if @genre.save
+    genre = Genre.new(params_genre)
+    if genre.save
       render json: { message: "Genre created successfully" }, status: :ok
       return
     end

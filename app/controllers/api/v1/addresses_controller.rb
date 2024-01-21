@@ -7,8 +7,8 @@ class Api::V1::AddressesController < ApplicationController
       return
     end
 
-    @address = Address.new(user_id: @current_user[:id], **params_address)
-    if @address.save
+    address = Address.new(user_id: @current_user[:id], **params_address)
+    if address.save
       render json: { message: "Address created successfully" }, status: :ok
       return
     end
@@ -22,7 +22,7 @@ class Api::V1::AddressesController < ApplicationController
       return
     end
 
-    @address = Address.destroy(params[:id])
+    address = Address.destroy(params[:id])
 
     render json: { error: "Address deleted successfully" }, status: :ok
   end
