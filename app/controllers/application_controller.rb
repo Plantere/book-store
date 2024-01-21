@@ -1,3 +1,4 @@
+include Pagy::Backend
 
 class ApplicationController < ActionController::API
   def authorize_request
