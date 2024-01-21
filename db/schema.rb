@@ -135,6 +135,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_12_152108) do
     t.bigint "user_id"
     t.string "phone_number", null: false
     t.string "area_code", null: false
+    t.integer "ddi", null: false
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -145,7 +146,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_12_152108) do
     t.string "username", null: false
     t.string "password_digest", null: false
     t.string "email", null: false
-    t.integer "status", default: 1
+    t.integer "status", default: 1, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
