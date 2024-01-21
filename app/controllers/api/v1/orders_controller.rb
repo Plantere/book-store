@@ -29,6 +29,13 @@ class Api::V1::OrdersController < ApplicationController
     return
   end
 
+  def get
+    page, data = pagy(Order.where(user_id: @current_user[:id]).includes(:order_detail).all, page: params[:page])
+    pagination = pagy_metadata(page)
+
+    render json: PaginationHelper.humanize_pagination(data, pagination, [:order_detail]), status: :ok
+  end
+
   def params_order_details
     params.require(:order_details).map do |order_detail|
       order_detail.permit(:book_id, :quantity)

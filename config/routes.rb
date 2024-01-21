@@ -18,6 +18,7 @@ Rails.application.routes.draw do
 
       scope '/order' do
         post "/" => "orders#create"
+        get "/" => "orders#get"
       end
 
 
