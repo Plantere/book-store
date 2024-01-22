@@ -1,10 +1,10 @@
-# Book Store Project
+# Book Store Project 📚🛒
 
-## Overview
+## Overview 🌐
 
 This is a Ruby on Rails and ReactJS-based web application for a Book Store. The project allows administrators to manage books, while users can browse and purchase books. The technology stack includes Ruby on Rails for the backend, ReactJS for the frontend, Supabase for the database, and Vercel for server management.
 
-## Getting Started
+## Getting Started 🚀
 
 To set up the project, follow these steps:
 
@@ -27,7 +27,7 @@ To set up the project, follow these steps:
 5. Start the Rails server with `rails server`.
 6. Run the ReactJS app with `yarn start`.
 
-## Models
+## Models 📊
 
 The project includes the following models:
 
@@ -45,22 +45,22 @@ The project includes the following models:
 
 Each model has specific relationships. Refer to the model files for detailed information.
 
-## Testing
+## Testing 🧪
 
 [RSpec](https://rspec.info/) is used for testing the project. Run tests using the `rspec` command.
 
-## Authentication
+## Authentication 🔐
 
 Authentication is handled using JSON Web Tokens (JWT).
 
-## User Types
+## User Types 👥
 
 There are two types of users:
 
 - **ADMIN**: Administrators who have access to book management functionalities.
 - **CUSTOMER**: Regular customers who can browse and purchase books.
 
-## Deployment
+## Deployment 🚢
 
 The project is deployed on both Vercel and Render.com. Follow these steps for deployment:
 
@@ -69,6 +69,10 @@ The project is deployed on both Vercel and Render.com. Follow these steps for de
 
 Ensure proper configuration for both frontend and backend for seamless integration.
 
-## Contributors
+## Contributors 🤝
 
 - [Fábio Torres (Plantere)](https://github.com/Plantere/)
+
+## License 📜
+
+This project is licensed under the [MIT License]().
