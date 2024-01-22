@@ -21,13 +21,28 @@ class Api::V1::GenresController < ApplicationController
     render json: { error: "Failed to create genre. Please check the provided data." }, status: :unprocessable_entity
   end
 
+  def update 
+    if !Genre.exists(id: params[:genre_id])
+      render json: { error: "Genre not found" }, status: :unprocessable_entity
+      return
+    end
+
+    genre = Genre.find(params[:genre_id])
+    if genre.update(params_genre)
+      render json: { message: "Genre updated successfully" }, status: :ok
+      return
+    end
+    
+    render json: { error: "Failed to updated genre. Please check the provided data." }, status: :unprocessable_entity
+  end
+
   def delete
-    if !Genre.exists?(params[:id])
+    if !Genre.exists?(params[:genre_id])
       render json: { error: "Genre not found" }, status: :unprocessable_entity
       return;
     end
 
-    Genre.destroy(params[:id])
+    Genre.destroy(params[:genre_id])
 
     render json: { message: "Genre deleted successfully" }, status: :ok
   end

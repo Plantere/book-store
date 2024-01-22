@@ -16,13 +16,28 @@ class Api::V1::TelephonesController < ApplicationController
     render json: { error: "Failed to create telephone. Please check the provided data." }, status: :unprocessable_entity
   end
 
-  def delete
-    if !Telephone.exists?(params[:id])
+  def update 
+    if !Telephone.exists(id: params[:telephone_id])
       render json: { error: "Telephone not found" }, status: :unprocessable_entity
       return
     end
 
-    telephone = Telephone.destroy(params[:id])
+    telephone = Telephone.where(id: params[:telephone_id], user_id: @current_user[:id]).first
+    if telephone.update(params_telephone)
+      render json: { message: "Telephone updated successfully" }, status: :ok
+      return
+    end
+    
+    render json: { error: "Failed to updated telephone. Please check the provided data." }, status: :unprocessable_entity
+  end
+
+  def delete
+    if !Telephone.exists?(params[:telephone_id])
+      render json: { error: "Telephone not found" }, status: :unprocessable_entity
+      return
+    end
+
+    telephone = Telephone.destroy(params[:telephone_id])
 
     render json: { error: "Telephone deleted successfully" }, status: :ok
   end

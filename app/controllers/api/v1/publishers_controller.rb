@@ -21,13 +21,28 @@ class Api::V1::PublishersController < ApplicationController
     render json: { error: "Failed to create publisher. Please check the provided data." }, status: :unprocessable_entity
   end
 
+  def update 
+    if !Publisher.exists(id: params[:publisher_id])
+      render json: { error: "Publisher not found" }, status: :unprocessable_entity
+      return
+    end
+
+    publisher = Publisher.find(params[:publisher_id])
+    if publisher.update(params_publisher)
+      render json: { message: "Publisher updated successfully" }, status: :ok
+      return
+    end
+    
+    render json: { error: "Failed to updated publisher. Please check the provided data." }, status: :unprocessable_entity
+  end
+
   def delete
-    if !Publisher.exists?(params[:id])
+    if !Publisher.exists?(params[:publisher_id])
       render json: { error: "Publisher not found" }, status: :unprocessable_entity
       return;
     end
 
-    Publisher.destroy(params[:id])
+    Publisher.destroy(params[:publisher_id])
 
     render json: { message: "Publisher deleted successfully" }, status: :ok
   end

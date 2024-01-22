@@ -1,6 +1,6 @@
 class Api::V1::BooksController < ApplicationController
-  before_action :authorize_request, only: [ :create ]
-  before_action :is_admin, only: [ :create ]
+  before_action :authorize_request, only: [ :create, :update ]
+  before_action :is_admin, only: [ :create, :update ]
   
   def index
     render json: Book.all
@@ -19,6 +19,22 @@ class Api::V1::BooksController < ApplicationController
     end
 
     render json: { error: "Failed to create book. Please check the provided data." }, status: :unprocessable_entity
+  end
+
+
+  def update 
+    if !Book.exists(id: params[:book_id])
+      render json: { error: "Book not found" }, status: :unprocessable_entity
+      return
+    end
+
+    book = Book.find(params[:book_id])
+    if book.update(params_book)
+      render json: { message: "Book updated successfully" }, status: :ok
+      return
+    end
+    
+    render json: { error: "Failed to updated book. Please check the provided data." }, status: :unprocessable_entity
   end
 
   private

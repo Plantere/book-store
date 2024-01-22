@@ -17,14 +17,29 @@ class Api::V1::AddressesController < ApplicationController
   end
 
   def delete
-    if !Address.exists?(params[:id])
+    if !Address.exists?(params[:address_id])
       render json: { error: "Address not found" }, status: :unprocessable_entity
       return
     end
 
-    address = Address.destroy(params[:id])
+    address = Address.destroy(params[:address_id])
 
     render json: { error: "Address deleted successfully" }, status: :ok
+  end
+
+  def update 
+    if !Address.exists(id: params[:address_id])
+      render json: { error: "Address not found" }, status: :unprocessable_entity
+      return
+    end
+
+    address = Address.where(id: params[:address_id], user_id: @current_user[:id]).first
+    if address.update(params_address)
+      render json: { message: "Address updated successfully" }, status: :ok
+      return
+    end
+    
+    render json: { error: "Failed to updated address. Please check the provided data." }, status: :unprocessable_entity
   end
 
   def get

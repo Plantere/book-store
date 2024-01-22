@@ -21,13 +21,28 @@ class Api::V1::AuthorsController < ApplicationController
     render json: { error: "Failed to create author. Please check the provided data." }, status: :unprocessable_entity
   end
 
+  def update 
+    if !Author.exists(id: params[:author_id])
+      render json: { error: "Author not found" }, status: :unprocessable_entity
+      return
+    end
+
+    author = Author.find(params[:author_id])
+    if author.update(params_author)
+      render json: { message: "Author updated successfully" }, status: :ok
+      return
+    end
+    
+    render json: { error: "Failed to updated author. Please check the provided data." }, status: :unprocessable_entity
+  end
+
   def delete
-    if !Author.exists?(params[:id])
+    if !Author.exists?(params[:author_id])
       render json: { error: "Author not found" }, status: :unprocessable_entity
       return;
     end
 
-    Author.destroy(params[:id])
+    Author.destroy(params[:author_id])
 
     render json: { message: "Author deleted successfully" }, status: :ok
   end
