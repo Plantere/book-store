@@ -11,4 +11,10 @@ class ApplicationController < ActionController::API
       render json: { error: "You are not logged in. Please sign in to access the features" }, status: :unauthorized
     end
   end
+
+  def is_admin
+    if @current_user[:user_type] != UserTypeEnums::ADMIN
+      render json: { error: "Access to this resource is restricted to administrators only." }, status: :unauthorized
+    end
+  end
 end

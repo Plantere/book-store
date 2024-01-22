@@ -1,4 +1,7 @@
 class Api::V1::PublishersController < ApplicationController
+  before_action :authorize_request, only: [ :create ]
+  before_action :is_admin, only: [ :create ]
+  
   def index
     render json: Publisher.all
   end
