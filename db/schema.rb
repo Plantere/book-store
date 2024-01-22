@@ -147,6 +147,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_12_152108) do
     t.string "password_digest", null: false
     t.string "email", null: false
     t.integer "status", default: 1, null: false
+    t.integer "user_type", default: 1, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
