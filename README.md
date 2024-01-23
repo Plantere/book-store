@@ -2,7 +2,11 @@
 
 ## Overview 🌐
 
-This is a Ruby on Rails and ReactJS-based web application for a Book Store. The project allows administrators to manage books, while users can browse and purchase books. The technology stack includes Ruby on Rails for the backend, ReactJS for the frontend, Supabase for the database, and Vercel for server management.
+This is a Ruby on Rails and VueJS-based web application for a Book Store. The project allows administrators to manage books, while users can browse and purchase books.
+
+## Technology 🖥️
+- Ruby On Rails
+- VueJS
 
 ## Getting Started 🚀
 
@@ -25,7 +29,7 @@ To set up the project, follow these steps:
 3. Set up [Supabase Storage](https://supabase.com/docs/guides/storage) for storing images.
 4. Run `rails db:migrate` to apply database migrations.
 5. Start the Rails server with `rails server`.
-6. Run the ReactJS app with `yarn start`.
+6. Run the VueJS app with `yarn start`.
 
 ## Models 📊
 
