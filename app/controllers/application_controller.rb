@@ -1,6 +1,10 @@
 include Pagy::Backend
 
-class ApplicationController < ActionController::API
+class ApplicationController < ActionController::Base
+  def index
+    render template: 'layouts/application'
+  end
+  
   def authorize_request
     header = request.headers['Authorization']
     header = header.split(' ').last if header
