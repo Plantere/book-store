@@ -34,6 +34,8 @@ gem 'sqlite3'
 
 gem 'pagy'
 
+gem 'vite_rails'
+
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"
 
