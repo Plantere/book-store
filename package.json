@@ -1,8 +1,13 @@
 {
-  "name": "my-vue-app",
+  "name": "BookStore 😊",
   "private": true,
   "version": "1.0.0",
   "type": "module",
+  "scripts": {
+    "dev": "bin/vite dev",
+    "preview": "bin/vite preview",
+    "build": "bin/vite build"
+  },
   "devDependencies": {
     "vite": "^5.0.12",
     "vite-plugin-ruby": "^5.0.0"
