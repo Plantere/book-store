@@ -9,60 +9,56 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      post "/register" => "users#register"
-      post "/login" => "auth#login"
+      post "/register" => "users#register", as: :users_register
+      post "/login" => "auth#login", as: :auth_login
 
       scope '/order' do
-        post "/" => "orders#create"
-        get "/" => "orders#get"
+        post "/" => "orders#create", as: :orders_create
+        get "/" => "orders#get", as: :orders_get
       end
 
-
       scope '/address' do
-        get "/" => "addresses#get"
-        post "/" => "addresses#create"
-        delete "/:address_id" => "addresses#delete"
-        put "/:address_id" => "addresses#update"
+        get "/" => "addresses#get", as: :addresses_get
+        post "/" => "addresses#create", as: :addresses_create
+        delete "/:address_id" => "addresses#delete", as: :addresses_delete
+        put "/:address_id" => "addresses#update", as: :addresses_update
       end
 
       scope '/telephone' do
-        get "/" => "telephones#get"
-        post "/" => "telephones#create"
-        delete "/:telephone_id" => "telephones#delete"
-        put "/:telephone_id" => "telephones#update"
+        get "/" => "telephones#get", as: :telephones_get
+        post "/" => "telephones#create", as: :telephones_create
+        delete "/:telephone_id" => "telephones#delete", as: :telephones_delete
+        put "/:telephone_id" => "telephones#update", as: :telephones_update
       end
 
       scope '/genre' do
-        get "/" => "genres#index"
-        post "/" => "genres#create"
-        delete "/:genre_id" => "genres#delete"
-        put "/:genre_id" => "genres#update"
+        get "/" => "genres#index", as: :genres_index
+        post "/" => "genres#create", as: :genres_create
+        delete "/:genre_id" => "genres#delete", as: :genres_delete
+        put "/:genre_id" => "genres#update", as: :genres_update
       end
 
       scope '/book' do
-        get "/" => "books#index"
-        post "/" => "books#create"
-        put "/:book_id" => "books#upd ate"
+        get "/" => "books#index", as: :books_index
+        post "/" => "books#create", as: :books_create
+        put "/:book_id" => "books#update", as: :books_update
       end
 
       scope '/publisher' do
-        get "/" => "publishers#index"
-        post "/" => "publishers#create"
-        delete "/:publisher_id" => "publishers#delete"
-        put "/:publisher_id" => "publishers#update"
+        get "/" => "publishers#index", as: :publishers_index
+        post "/" => "publishers#create", as: :publishers_create
+        delete "/:publisher_id" => "publishers#delete", as: :publishers_delete
+        put "/:publisher_id" => "publishers#update", as: :publishers_update
       end
 
       scope '/author' do
-        get "/" => "authors#index"
-        post "/" => "authors#create"
-        delete "/:author_id" => "authors#delete"
-        put "/:author_id" => "authors#update"
+        get "/" => "authors#index", as: :authors_index
+        post "/" => "authors#create", as: :authors_create
+        delete "/:author_id" => "authors#delete", as: :authors_delete
+        put "/:author_id" => "authors#update", as: :authors_update
       end
     end
   end
-  # Defines the root path route ("/")
-  # root "posts#index"
 
   get '/(*path)', to: 'application#index', as: :application
-
 end
