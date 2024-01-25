@@ -6,10 +6,9 @@ class ApplicationController < ActionController::Base
   end
   
   def authorize_request
-    header = request.headers['Authorization']
-    header = header.split(' ').last if header
+    tokenCoded = request.cookies['token']
     begin
-      @decoded = JsonWebToken.decode(header)
+      @decoded = JsonWebToken.decode(tokenCoded)
       @current_user = User.find(@decoded[:user_id])
     rescue => e
       render json: { error: "You are not logged in. Please sign in to access the features" }, status: :unauthorized
