@@ -12,6 +12,9 @@ Rails.application.routes.draw do
       post "/register" => "users#register", as: :users_register
       post "/login" => "auth#login", as: :auth_login
 
+      scope '/auth' do
+        get "/" => "auth#get_authenticate_profile", as: :get_authenticate_profile
+      end
       scope '/order' do
         post "/" => "orders#create", as: :orders_create
         get "/" => "orders#get", as: :orders_get
