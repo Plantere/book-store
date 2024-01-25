@@ -1,6 +1,7 @@
 class Api::V1::AddressesController < ApplicationController
+  skip_before_action :verify_authenticity_token
   before_action :authorize_request
-
+  
   def create
     if Address.exists?(postal_code: params_address[:postal_code])
       render json: { error: "Address already exists" }, status: :unprocessable_entity

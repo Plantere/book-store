@@ -1,4 +1,6 @@
 class Api::V1::UsersController < ApplicationController
+  skip_before_action :verify_authenticity_token
+
   def register
     if User.registered?(params_user)
       render json: { error: "User already registered. Duplicates are not allowed." }, status: :unprocessable_entity

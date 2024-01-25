@@ -1,4 +1,5 @@
 class Api::V1::AuthorsController < ApplicationController
+  skip_before_action :verify_authenticity_token
   before_action :authorize_request, only: [ :create, :update ]
   before_action :is_admin, only: [ :create, :update ]
 
