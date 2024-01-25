@@ -27,6 +27,7 @@ export const useUserStore = defineStore('user', {
       const response = await makeRequest(api_v1_get_authenticate_profile_path(), {method: "get"})
 
       if(!response.ok){
+        this.$reset()
         return false
       }
 
