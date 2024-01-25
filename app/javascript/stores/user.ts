@@ -1,0 +1,45 @@
+import { defineStore } from 'pinia'
+import { api_v1_get_authenticate_profile_path } from '../utils/routes'
+import { makeRequest } from "../utils/request";
+
+export const useUserStore = defineStore('user', {
+  state: () => {
+    return {
+      profile: {
+        first_name: "",
+        last_name: "",
+        birth_date: "",
+        description: "",
+        avatar: "",
+      },
+      user: {
+        username: "",      
+        email: "",
+      },
+      utils:{
+        isAuthenticated: false,
+        isLoaded: false,
+      }
+    }
+  },
+  actions: {
+    async getAuthenticateUser(){
+      const response = await makeRequest(api_v1_get_authenticate_profile_path(), {method: "get"})
+
+      if(!response.ok){
+        return false
+      }
+
+      this.storeUser((await response.json()).data)
+    },
+    storeUser(data){
+      const { profile, user } = data;
+
+      this.profile = profile
+      this.user = user
+
+      this.utils.isAuthenticated = true
+      this.utils.isLoaded = true
+    },
+  },
+})
