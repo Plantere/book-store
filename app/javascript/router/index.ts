@@ -25,7 +25,7 @@ const router = createRouter({
       name: 'login',
       component: () => import('../pages/Login.vue'),
       meta: {
-        requiresAuth: false,
+        onlyGuest: true,
       },
     },
     {
@@ -33,7 +33,7 @@ const router = createRouter({
       name: 'register',
       component: () => import('../pages/Register.vue'),
       meta: {
-        requiresAuth: false,
+        onlyGuest: true,
       },
     }
   ]
@@ -44,11 +44,12 @@ router.beforeEach(async (to, from, next) => {
 
   const user = useUserStore();
 
-  if (to.meta.requiresAuth && user.utils.isAuth) {
+  if (to.meta.onlyGuest && user.utils.isAuth) {
     next({ name: 'home' });
-  } else {
-    next();
+    return
   }
+
+  next();
 })
 
 export default router
