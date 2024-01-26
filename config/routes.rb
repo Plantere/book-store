@@ -43,6 +43,7 @@ Rails.application.routes.draw do
 
       scope '/book' do
         get "/" => "books#index", as: :books_index
+        post "/search" => "books#search", as: :books_search
         post "/" => "books#create", as: :books_create
         put "/:book_id" => "books#update", as: :books_update
       end

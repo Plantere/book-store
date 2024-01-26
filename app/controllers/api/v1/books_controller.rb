@@ -38,6 +38,16 @@ class Api::V1::BooksController < ApplicationController
     render json: { error: "Failed to updated book. Please check the provided data." }, status: :unprocessable_entity
   end
 
+
+  def search
+    books = Book.joins(:publisher, :author, :genre).where("LOWER(books.name) LIKE :search_term OR LOWER(publishers.name) LIKE :search_term OR LOWER(authors.full_name) LIKE :search_term OR LOWER(genres.name) LIKE :search_term", {search_term: "%" + Book.sanitize_sql_like(params[:search].downcase) + "%"}).all
+
+    page, data = pagy(books, page: params[:page])
+    pagination = pagy_metadata(page)
+
+    render json: PaginationHelper.humanize_pagination(data, pagination, [:author, :publisher, :genre]), status: :ok
+  end
+
   private
   def params_book
     params.require(:book).permit(:name, :description, :price, :stock_quantity, :publisher_id, :author_id, :genre_id)
