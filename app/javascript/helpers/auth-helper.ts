@@ -10,3 +10,7 @@ export function hasTokenCookie() {
   const cookieArray = document.cookie.split(";").map(item => item.trim().split("="));
   return !!cookieArray.find(cookie => cookie[0] === "token");
 }
+
+export function removeTokenCookie(){
+  document.cookie = "token" + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;SameSite=Strict;'; 
+}
