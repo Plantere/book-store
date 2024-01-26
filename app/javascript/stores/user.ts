@@ -17,7 +17,7 @@ export const useUserStore = defineStore('user', {
         email: "",
       },
       utils:{
-        isAuthenticated: false,
+        isAuth: false,
         isLoaded: false,
       }
     }
@@ -39,7 +39,7 @@ export const useUserStore = defineStore('user', {
       this.profile = profile
       this.user = user
 
-      this.utils.isAuthenticated = true
+      this.utils.isAuth = true
       this.utils.isLoaded = true
     },
   },

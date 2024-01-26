@@ -2,6 +2,15 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { useUserStore } from '../stores/user'
 import { hasTokenCookie } from "../helpers/auth-helper";
 
+const checkAuthentication = async () => {
+  const user = useUserStore();
+  if (hasTokenCookie() && !user.utils.isLoaded) {
+    await user.getAuthenticateUser();
+  } else if (!hasTokenCookie() && user.utils.isAuth) {
+    user.$reset();
+  }
+};
+
 
 const router = createRouter({
   history: createWebHistory(),
@@ -15,25 +24,31 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: () => import('../pages/Login.vue'),
+      meta: {
+        requiresAuth: false,
+      },
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: () => import('../pages/Register.vue'),
+      meta: {
+        requiresAuth: false,
+      },
     }
   ]
 })
 
 router.beforeEach(async (to, from, next) => {
+  await checkAuthentication();
+
   const user = useUserStore();
 
-  if(hasTokenCookie() === true && !user.utils.isLoaded){
-    await user.getAuthenticateUser()
-  }else if(hasTokenCookie() === false && user.utils.isAuthenticated){
-    user.$reset()
+  if (to.meta.requiresAuth && user.utils.isAuth) {
+    next({ name: 'home' });
+  } else {
+    next();
   }
-
-  if(to.name === "login" && user.utils.isAuthenticated){
-    next({name: "home"})
-    return
-  }
-  
-  next()
 })
 
 export default router

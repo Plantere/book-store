@@ -75,7 +75,7 @@ const submit = async () => {
 
       <p class="mt-10 text-center text-sm text-gray-500">
         Don't have a account?
-        <RouterLink :to="{name: 'home'}" class="font-semibold leading-6 text-violet-600 hover:text-violet-500">Register here</RouterLink>
+        <RouterLink :to="{name: 'register'}" class="font-semibold leading-6 text-violet-600 hover:text-violet-500">Register here</RouterLink>
       </p>
     </div>
   </div>

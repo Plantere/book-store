@@ -1,4 +1,4 @@
 class Profile < ApplicationRecord
-  validates :first_name, :last_name, :birth_date, presence: true
+  validates :first_name, :last_name, presence: true
   belongs_to :user
 end
