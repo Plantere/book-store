@@ -1,6 +1,8 @@
 import { defineStore } from 'pinia'
 import { api_v1_get_authenticate_profile_path } from '../utils/routes'
 import { makeRequest } from "../utils/request";
+import { removeTokenCookie } from '../helpers/auth-helper';
+import { useNotificationStore } from './notification'
 
 export const useUserStore = defineStore('user', {
   state: () => {
@@ -42,5 +44,12 @@ export const useUserStore = defineStore('user', {
       this.utils.isAuth = true
       this.utils.isLoaded = true
     },
+    logoutUser(){
+      removeTokenCookie()
+      this.$reset()
+      
+      const notifications = useNotificationStore()
+      notifications.createNotification("User successfully logged out", "success")
+    }
   },
 })
