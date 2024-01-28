@@ -30,9 +30,9 @@ const props = withDefaults(defineProps<Book>(), {
       <p>
         <span class="text-3xl font-bold">${{ props.price }}</span>
       </p>
-      <a href="#" @click="cart.addProduct(props.tag)" class="flex items-center justify-center rounded-md bg-violet-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-violet-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-600">
+      <button @click="cart.addProduct(props.tag)" class="flex items-center justify-center rounded-md bg-violet-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-violet-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-600">
       <Icon name="cart" class="flex items-center w-4 mr-3"/>
-      Add to cart</a>
+      Add to cart</button>
     </div>
   </div>
 </div>
