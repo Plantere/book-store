@@ -40,9 +40,13 @@ class Api::V1::BooksController < ApplicationController
 
 
   def search
-    books = Book.joins(:publisher, :author, :genre).where("LOWER(books.name) LIKE :search_term OR LOWER(publishers.name) LIKE :search_term OR LOWER(authors.full_name) LIKE :search_term OR LOWER(genres.name) LIKE :search_term", {search_term: "%" + Book.sanitize_sql_like(params[:search].downcase) + "%"}).all
+    books = Book.joins(:publisher, :author, :genre)
 
-    page, data = pagy(books, page: params[:page])
+    if(params[:search] != nil)
+      books = books.where("LOWER(books.name) LIKE :search_term OR LOWER(publishers.name) LIKE :search_term OR LOWER(authors.full_name) LIKE :search_term OR LOWER(genres.name) LIKE :search_term", {search_term: "%" + Book.sanitize_sql_like(params[:search].downcase) + "%"})
+    end
+
+    page, data = pagy(books.all, page: params[:page])
     pagination = pagy_metadata(page)
 
     render json: PaginationHelper.humanize_pagination(data, pagination, [:author, :publisher, :genre]), status: :ok
