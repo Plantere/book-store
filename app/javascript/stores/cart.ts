@@ -54,5 +54,14 @@ export const useCartStore = defineStore(STORE_NAME, {
 
       storeLocalStorage(this.cartList)
     },
+    isAvailable(productId: number, stockQuantity: number) {
+      let product = this.cartList.find((product: Product) => product.productId === productId)
+      
+      if(!product){
+        return false
+      }
+
+      return product.quantity >= stockQuantity
+    }
   },
 });

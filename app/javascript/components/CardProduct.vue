@@ -5,6 +5,7 @@ import Icon from './shares/Icon.vue';
 const cart = useCartStore();
 
 interface Book {
+  quantity: number,
   image?: string,
   price: Number,
   title: string,
@@ -30,9 +31,10 @@ const props = withDefaults(defineProps<Book>(), {
       <p>
         <span class="text-3xl font-bold">${{ props.price }}</span>
       </p>
-      <button @click="cart.addProduct(props.tag)" class="flex items-center justify-center rounded-md bg-violet-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-violet-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-600">
-      <Icon name="cart" class="flex items-center w-4 mr-3"/>
-      Add to cart</button>
+      <button @click="cart.addProduct(props.tag)" :disabled="cart.isAvailable(props.tag, props.quantity)" :class="{'bg-violet-400 text-white': cart.isAvailable(props.tag, props.quantity), 'bg-violet-600 text-white hover:bg-violet-500': !cart.isAvailable(props.tag, props.quantity)}" class="flex items-center justify-center rounded-md  px-5 py-2.5 text-center text-sm font-medium  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-600">
+        <Icon name="cart" class="flex items-center w-4 mr-3"/>
+        {{cart.isAvailable(props.tag, props.quantity) ? 'Out of Stock' : 'Add to cart'}}
+      </button>
     </div>
   </div>
 </div>
