@@ -6,7 +6,7 @@ const props = defineProps({
   termSearch: { type: String },
   totalItems: { type: Number, required: true },
   currentPage: { type: Number, default: 1 },
-  perPage: { type: Number, default: 25 },
+  perPage: { type: Number, default: 15 },
 })
 
 const totalPages = Math.ceil(props.totalItems / props.perPage);
