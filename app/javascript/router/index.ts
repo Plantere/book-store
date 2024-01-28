@@ -29,6 +29,14 @@ const router = createRouter({
       },
     },
     {
+      path: '/books',
+      name: 'books',
+      component: () => import('../pages/Books.vue'),
+      meta: {
+        onlyGuest: true,
+      },
+    },
+    {
       path: '/register',
       name: 'register',
       component: () => import('../pages/Register.vue'),
