@@ -38,7 +38,6 @@ The project includes the following models:
 - Users
 - Profiles
 - Addresses
-- Telephones
 - Genres
 - Authors
 - Publishers

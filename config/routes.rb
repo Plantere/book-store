@@ -27,13 +27,6 @@ Rails.application.routes.draw do
         put "/:address_id" => "addresses#update", as: :addresses_update
       end
 
-      scope '/telephone' do
-        get "/" => "telephones#get", as: :telephones_get
-        post "/" => "telephones#create", as: :telephones_create
-        delete "/:telephone_id" => "telephones#delete", as: :telephones_delete
-        put "/:telephone_id" => "telephones#update", as: :telephones_update
-      end
-
       scope '/genre' do
         get "/" => "genres#index", as: :genres_index
         post "/" => "genres#create", as: :genres_create

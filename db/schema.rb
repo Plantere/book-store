@@ -40,6 +40,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_12_152108) do
     t.string "district", null: false
     t.string "number", null: false
     t.string "complement"
+    t.string "phone_number", null: false
     t.string "postal_code", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -131,17 +132,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_12_152108) do
     t.index ["name"], name: "index_publishers_on_name", unique: true
   end
 
-  create_table "telephones", force: :cascade do |t|
-    t.bigint "user_id"
-    t.string "phone_number", null: false
-    t.string "area_code", null: false
-    t.integer "ddi", null: false
-    t.string "name", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_telephones_on_user_id"
-  end
-
   create_table "users", force: :cascade do |t|
     t.string "username", null: false
     t.string "password_digest", null: false
@@ -164,5 +154,4 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_12_152108) do
   add_foreign_key "orders", "addresses"
   add_foreign_key "orders", "users"
   add_foreign_key "profiles", "users"
-  add_foreign_key "telephones", "users"
 end

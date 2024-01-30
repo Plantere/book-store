@@ -8,6 +8,7 @@ class CreateAddresses < ActiveRecord::Migration[7.1]
       t.string :district, null: false
       t.string :number, null: false
       t.string :complement
+      t.string :phone_number
       t.string :postal_code, null: false
       t.timestamps
     end
