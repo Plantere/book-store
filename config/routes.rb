@@ -15,6 +15,12 @@ Rails.application.routes.draw do
       scope '/auth' do
         get "/" => "auth#get_authenticate_profile", as: :get_authenticate_profile
       end
+
+      scope '/user' do
+        put "/" => "users#update", as: :user_update
+        put "/password" => "users#change_password", as: :user_change_password
+      end
+
       scope '/order' do
         post "/" => "orders#create", as: :orders_create
         get "/" => "orders#get", as: :orders_get

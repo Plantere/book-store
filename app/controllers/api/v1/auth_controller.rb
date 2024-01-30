@@ -28,7 +28,7 @@ class Api::V1::AuthController < ApplicationController
         },
         user: {
           username: @current_user[:username],
-          email: @current_user[:username]
+          email: @current_user[:email]
         }
       }
     }
