@@ -37,10 +37,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_12_152108) do
     t.string "name", null: false
     t.string "country", null: false
     t.string "state", null: false
+    t.string "street", null: false
     t.string "district", null: false
+    t.string "city", null: false
+    t.boolean "is_default", null: false
     t.string "number", null: false
     t.string "complement"
-    t.string "phone_number", null: false
+    t.string "phone_number"
     t.string "postal_code", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -116,7 +119,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_12_152108) do
     t.bigint "user_id"
     t.string "first_name", null: false
     t.string "last_name", null: false
-    t.date "birth_date", null: false
+    t.date "birth_date"
     t.string "avatar"
     t.text "description"
     t.datetime "created_at", null: false

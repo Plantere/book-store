@@ -44,7 +44,7 @@ class Api::V1::AddressesController < ApplicationController
   end
 
   def get
-    page, data = pagy(Address.where(user_id: @current_user[:id]).all, page: params[:page])
+    page, data = pagy(Address.where(user_id: @current_user[:id]).all, page: params[:page], items: 5)
     pagination = pagy_metadata(page)
 
     render json: PaginationHelper.humanize_pagination(data, pagination), status: :ok
@@ -52,6 +52,6 @@ class Api::V1::AddressesController < ApplicationController
 
   private
   def params_address
-    params.require(:address).permit(:name, :country, :state, :district, :postal_code, :number, :complement, :phone_number)
+    params.require(:address).permit(:name, :country, :state, :district, :postal_code, :number, :complement, :phone_number, :street, :city)
   end
 end
