@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { RouterLink } from 'vue-router';
+
+const emit = defineEmits(["changePage"]);
 
 const props = defineProps({
-  routerName: { type: String, required: true },
-  termSearch: { type: String },
   totalItems: { type: Number, required: true },
   currentPage: { type: Number, default: 1 },
   perPage: { type: Number, default: 15 },
@@ -15,6 +14,9 @@ const getPreviousPage = () => (props.currentPage > 1 ? props.currentPage - 1 : 0
 
 const getNextPage = () => (props.currentPage < totalPages ? props.currentPage + 1 : 0);
 
+const changePage = (page) => {
+  emit("changePage", page)
+}
 
 const generatePaginationLinks = (minimumPage: number = 5) => {
   const generatePageRange = (start: number, end: number) =>
@@ -54,38 +56,38 @@ const generatePaginationLinks = (minimumPage: number = 5) => {
 
 <template>
   <ul class="flex text-base h-10">
-    <RouterLink
+    <button
       v-if="getPreviousPage() > 0"
-      :to="{ name: props.routerName, query: { page: getPreviousPage(), search: props.termSearch } }"
+      @click="changePage(getPreviousPage())"
       class="flex items-center justify-center px-3 h-10 ms-0 leading-tight text-gray-500 bg-white rounded-s-lg hover:bg-violet-200 hover:text-violet-600"
     >
       Previous
-    </RouterLink>
+    </button>
 
     <span v-else class="flex items-center justify-center px-3 h-10 ms-0 leading-tight text-gray-500 bg-white rounded-s-lg hover:bg-violet-200 hover:text-violet-600 disabled">Previous</span>
 
     <div class="flex flex-row" v-for="page in generatePaginationLinks()">
-      <RouterLink
+      <button
         v-if="page != '...'"
         :key="page"
-        :to="{ name: props.routerName, query: { page: page, search: props.termSearch } }"
+        @click="changePage(page)"
         :class="{'text-violet-600 bg-violet-200': currentPage === page}"
         class="flex items-center justify-center px-3 h-10 leading-tight text-gray-500 bg-white  hover:bg-violet-200 hover:text-violet-600"
       >
         {{ page }}
-      </RouterLink>
+      </button>
 
       <span v-else class="flex items-center justify-center px-3 h-10 leading-tight text-gray-500 bg-white">{{ page }}</span>
     </div>
 
 
-    <RouterLink
+    <button
       v-if="getNextPage() > 0"
-      :to="{ name: props.routerName, query: { page: getNextPage(), search: props.termSearch } }"
+      @click="changePage(getNextPage())"
       class="flex items-center justify-center px-3 h-10 leading-tight text-gray-500 bg-white  rounded-e-lg hover:bg-violet-200 hover:text-violet-600"
     >
       Next
-    </RouterLink>
+    </button>
     <span v-else class="flex items-center justify-center px-3 h-10 leading-tight text-gray-500 bg-white  rounded-e-lg hover:bg-gray-100 hover:text-gray-700 disabled">Next</span>
   </ul>
 </template>

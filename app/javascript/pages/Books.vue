@@ -29,10 +29,9 @@ let paginationConfig = ref({
   currentPage: 0,
 });
 
-const getBooks = async () => {
-  const response = await makeRequest(api_v1_books_search_path(), {
-    method: "POST",
-    data: { search: router.currentRoute.value.query.search, page: router.currentRoute.value.query.page }
+const getBooks = async (page = 1) => {
+  const response = await makeRequest(api_v1_books_search_path({search: router.currentRoute.value.query.search, page}), {
+    method: "GET",
   })
 
   if(!response.ok){
@@ -52,6 +51,11 @@ const getBooks = async () => {
     tag: item.id, title: item.name, price: item.price, quantity: item.stock_quantity
   }))
 
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  })
+  
   paginationConfig.value = {
     totalItems: data.pagination.count,
     currentPage: data.pagination.page,
@@ -78,7 +82,7 @@ watch(() => router.currentRoute.value.query, () => {
         <div class="flex justify-center mt-8 mb-10" v-if="booksList.length > 0">
           <Pagination
             router-name="books"
-            :term-search="router.currentRoute.value.query.search"
+            @change-page="getBooks"
             :total-items="paginationConfig.totalItems" 
             :current-page="paginationConfig.currentPage" 
           />
