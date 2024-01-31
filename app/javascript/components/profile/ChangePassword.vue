@@ -23,7 +23,7 @@ const openModal = () => {
 }
 
 const changePassword = async () => {
-  if(canUpdatePassword) return
+  if(!canUpdatePassword) return
 
   const response = await makeRequest(api_v1_user_change_password_path(), {method: "PUT", data: {
     password: password.value
