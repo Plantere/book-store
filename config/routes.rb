@@ -31,6 +31,7 @@ Rails.application.routes.draw do
         post "/" => "addresses#create", as: :addresses_create
         delete "/:address_id" => "addresses#delete", as: :addresses_delete
         put "/:address_id" => "addresses#update", as: :addresses_update
+        put "/default/:address_id" => "addresses#update_default", as: :addresses_update_default
       end
 
       scope '/genre' do

@@ -43,8 +43,24 @@ class Api::V1::AddressesController < ApplicationController
     render json: { error: "Failed to updated address. Please check the provided data." }, status: :unprocessable_entity
   end
 
+  def update_default 
+    if !Address.exists?(id: params[:address_id])
+      render json: { error: "Address not found" }, status: :unprocessable_entity
+      return
+    end
+
+    Address.where(user_id: @current_user[:id]).update_all(is_default: false)
+    address = Address.where(id: params[:address_id], user_id: @current_user[:id]).first
+    if address.update(is_default: true)
+      render json: { message: "Address set as default" }, status: :ok
+      return
+    end
+    
+    render json: { error: "Address cannot be set as default" }, status: :unprocessable_entity
+  end
+
   def get
-    page, data = pagy(Address.where(user_id: @current_user[:id]).all, page: params[:page], items: 5)
+    page, data = pagy(Address.where(user_id: @current_user[:id]).order(is_default: :desc).all, page: params[:page], items: 5)
     pagination = pagy_metadata(page)
 
     render json: PaginationHelper.humanize_pagination(data, pagination), status: :ok
