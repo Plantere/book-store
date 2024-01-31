@@ -26,7 +26,7 @@ const router = useRouter()
 let booksList = ref<Book[]>([]);
 let paginationConfig = ref({
   totalItems: 0,
-  currentPage: 0,
+  currentPage: 1,
 });
 
 const getBooks = async (page = 1) => {
@@ -40,7 +40,7 @@ const getBooks = async (page = 1) => {
     booksList.value = []
     paginationConfig.value = {
       totalItems: 0,
-      currentPage: 0,
+      currentPage: 1,
     }
   }
   notifications.createNotification("Search conducted successfully", "success")

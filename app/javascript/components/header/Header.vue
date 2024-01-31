@@ -1,8 +1,15 @@
 <script setup>
+import { useRouter } from 'vue-router';
 import { useUserStore } from '../../stores/user'
 import Search from './Search.vue';
 
 const user = useUserStore()
+const router = useRouter()
+
+const logoutUser = () => {
+  user.logoutUser()
+  router.push({name: 'login'})
+}
 </script>
 
 <template>
@@ -21,8 +28,8 @@ const user = useUserStore()
         <RouterLink :to="{name: 'register'}" class="ml-5 rounded-md bg-violet-600 px-3 py-2 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-violet-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-600">Register</RouterLink>
       </div>
       <div v-else>
-        <button @click="user.logoutUser()" class="font-semibold leading-6 text-violet-600 hover:text-violet-500">Logout</button>
-        <RouterLink :to="{name: 'home'}" class="ml-5 rounded-md bg-violet-600 px-3 py-2 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-violet-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-600">Profile</RouterLink>
+        <button @click="logoutUser()" class="font-semibold leading-6 text-violet-600 hover:text-violet-500">Logout</button>
+        <RouterLink :to="{name: 'profile'}" class="ml-5 rounded-md bg-violet-600 px-3 py-2 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-violet-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-600">Profile</RouterLink>
       </div>
     </div>
   </nav>

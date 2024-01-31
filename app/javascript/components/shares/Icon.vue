@@ -5,6 +5,9 @@
     name: {
       type: String,
       required: true,
+    },
+    class: {
+      required: false,
     }
   });
 
@@ -16,6 +19,6 @@
 <template>
   <div>
     <span class="sr-only">{{ props.name }}</span>
-    <component :is="icon" />
+    <component :is="icon" :class="props.class" />
   </div>
 </template>

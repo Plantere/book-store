@@ -29,6 +29,14 @@ const router = createRouter({
       },
     },
     {
+      path: '/profile',
+      name: 'profile',
+      component: () => import('../pages/Profile.vue'),
+      meta: {
+        onlyAuthenticateUser: true,
+      },
+    },
+    {
       path: '/books',
       name: 'books',
       component: () => import('../pages/Books.vue'),
@@ -51,6 +59,11 @@ router.beforeEach(async (to, from, next) => {
 
   if (to.meta.onlyGuest && user.utils.isAuth) {
     next({ name: 'home' });
+    return
+  }
+
+  if(to.meta.onlyAuthenticateUser && !user.utils.isAuth){
+    next({ name: 'login' });
     return
   }
 
