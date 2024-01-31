@@ -31,10 +31,35 @@ class Api::V1::OrdersController < ApplicationController
   end
 
   def get
-    page, data = pagy(Order.where(user_id: @current_user[:id]).includes(:order_detail).all, page: params[:page])
+    page, data = pagy(Order.where(user_id: @current_user[:id]).includes(:address, order_detail: :book).order(created_at: :desc).all, page: params[:page], items: 5)
     pagination = pagy_metadata(page)
 
-    render json: PaginationHelper.humanize_pagination(data, pagination, [:order_detail]), status: :ok
+    render json: {
+      pagination: pagination.slice(:prev_url, :next_url, :count, :page),
+      data: data.map do |item|
+        {
+          id: item.id,
+          price: item.price,
+          description: item.description,
+          status: item.status,
+          created_at: item.created_at,
+          details: item.order_detail.map do |detail|
+            {
+              name: detail.book.name,
+              image: "https://m.media-amazon.com/images/I/616U6mSP3lL._SL1000_.jpg",
+              price: detail.price,
+              quantity: detail.quantity,
+            }
+          end,
+          address: {
+            name: item.address.name,
+            street: item.address.street,
+            district: item.address.district,
+            number: item.address.number,
+          }
+        }
+      end
+    }, status: :ok
   end
 
   def params_order_details
