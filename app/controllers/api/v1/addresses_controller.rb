@@ -29,7 +29,7 @@ class Api::V1::AddressesController < ApplicationController
   end
 
   def update 
-    if !Address.exists(id: params[:address_id])
+    if !Address.exists?(id: params[:address_id])
       render json: { error: "Address not found" }, status: :unprocessable_entity
       return
     end
