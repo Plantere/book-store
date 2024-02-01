@@ -43,7 +43,7 @@ class Api::V1::BooksController < ApplicationController
     books = Book.joins(:publisher, :author, :genre)
 
     if(params[:search] != nil)
-      books = books.where("LOWER(books.name) LIKE :search_term OR LOWER(publishers.name) LIKE :search_term OR LOWER(authors.full_name) LIKE :search_term OR LOWER(genres.name) LIKE :search_term", {search_term: "%" + Book.sanitize_sql_like(params[:search].downcase) + "%"})
+      books = books.where("stock_quantity > 1").where("LOWER(books.name) LIKE :search_term OR LOWER(publishers.name) LIKE :search_term OR LOWER(authors.full_name) LIKE :search_term OR LOWER(genres.name) LIKE :search_term", {search_term: "%" + Book.sanitize_sql_like(params[:search].downcase) + "%"})
     end
 
     page, data = pagy(books.all, page: params[:page])
@@ -51,6 +51,19 @@ class Api::V1::BooksController < ApplicationController
 
     render json: PaginationHelper.humanize_pagination(data, pagination, [:author, :publisher, :genre]), status: :ok
   end
+
+  def get_cart_items
+    books = Book.where(id: params[:cart].map{|book| book[:book_id]}).all
+    render json: {
+      data: books.map{ |book| {
+        id: book.id,
+        name: book.name,
+        price: book.price,
+        cart_quantity: params[:cart].find{|item| item[:book_id] == book[:id]}[:quantity],
+        stock_quantity: book.stock_quantity,
+      }}
+    }
+  end 
 
   private
   def params_book
