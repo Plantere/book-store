@@ -6,7 +6,7 @@ const notifications = useNotificationStore();
 </script>
 
 <template>
-  <div class="flex flex-col fixed right-0 w-full max-w-xs mr-5">
+  <div class="flex flex-col fixed right-0 w-full max-w-xs mr-5 z-50">
     <TransitionGroup name="fade">
       <CardNotification v-for="notification in notifications.notificationList" :key="notification.id" :message="notification.message" :type="notification.type" @close="notifications.closeNotification(notification.id)"/>
     </TransitionGroup>
