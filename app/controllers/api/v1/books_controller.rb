@@ -49,7 +49,15 @@ class Api::V1::BooksController < ApplicationController
     page, data = pagy(books.all, page: params[:page])
     pagination = pagy_metadata(page)
 
-    render json: PaginationHelper.humanize_pagination(data, pagination, [:author, :publisher, :genre]), status: :ok
+    render json: {
+      pagination: pagination,
+      data: data.map{ |book| {
+          id: book.id, 
+          title: book.name, 
+          price: book.price, 
+          stock_quantity: book.stock_quantity,
+        }}
+      }, status: :ok
   end
 
   def get_cart_items

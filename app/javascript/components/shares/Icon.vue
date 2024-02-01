@@ -1,19 +1,16 @@
 <script setup lang="ts">
-  import { defineAsyncComponent } from 'vue';
+import { defineAsyncComponent } from 'vue';
 
-  const props = defineProps({
-    name: {
-      type: String,
-      required: true,
-    },
-    class: {
-      required: false,
-    }
-  });
+interface Props {
+  name: string,
+  class?: string
+}
 
-  const icon = defineAsyncComponent(() =>
-    import(`../../assets/svgs/${props.name}.svg`)
-  );
+const props = defineProps<Props>();
+
+const icon = defineAsyncComponent(() =>
+  import(`../../assets/svgs/${props.name}.svg`)
+);
 </script>
 
 <template>

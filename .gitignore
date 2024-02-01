@@ -6,6 +6,7 @@
 
 # Ignore bundler config.
 /.bundle
+/.idea
 
 # Ignore all environment files (except templates).
 /.env*
@@ -16,7 +17,7 @@
 /tmp/*
 !/log/.keep
 !/tmp/.keep
-
+.idea
 db/test.*
 
 # Ignore pidfiles, but keep the directory.

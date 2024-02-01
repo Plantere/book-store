@@ -13,11 +13,11 @@ import { makeRequest } from '../utils/request';
 import { api_v1_books_search_path } from '../utils/routes';
 
 interface Book {
-  quantity: number,
+  id: number,
+  stock_quantity: number,
   image?: string,
-  price: Number,
+  price: number | string,
   title: string,
-  tag: number,
 }
 
 const notifications = useNotificationStore()
@@ -46,10 +46,7 @@ const getBooks = async (page = 1) => {
   notifications.createNotification("Search conducted successfully", "success")
 
   const data = await response.json();
-
-  booksList.value = data.data.map(item => ({
-    tag: item.id, title: item.name, price: item.price, quantity: item.stock_quantity
-  }))
+  booksList.value = data.data
 
   window.scrollTo({
     top: 0,
@@ -74,7 +71,7 @@ watch(() => router.currentRoute.value.query, () => {
     <div class="flex justify-center">
       <div :class="{'bg-white': booksList.length > 0}" class="max-w-screen-xl mx-4 md:mx-auto rounded-lg my-10">
         <div v-if="booksList.length > 0" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
-          <CardProduct v-for="book in booksList" :title="book.title" :tag="book.tag" :price="book.price" :quantity="book.quantity" class="mb-8"/>
+          <CardProduct v-for="book in booksList" :title="book.title" :id="book.id" :price="book.price" :stock_quantity="book.stock_quantity" class="mb-8"/>
         </div> 
         <div v-else class="text-center  mt-8 text-2xl font-bold">
           No books found.

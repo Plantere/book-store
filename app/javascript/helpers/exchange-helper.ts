@@ -1,4 +1,4 @@
-export const formatMoney = (money: number):string => {
+export const formatMoney = (money: number | string):string => {
   if(typeof money === "string"){
     money = parseFloat(money)
   }

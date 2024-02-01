@@ -2,10 +2,15 @@
 
 const emit = defineEmits(["changePage"]);
 
-const props = defineProps({
-  totalItems: { type: Number, required: true },
-  currentPage: { type: Number, default: 1 },
-  perPage: { type: Number, default: 15 },
+interface Props {
+  totalItems: number,
+  currentPage: number,
+  perPage?: number,
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  currentPage: 1,
+  perPage: 15,
 })
 
 const totalPages = Math.ceil(props.totalItems / props.perPage);

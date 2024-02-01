@@ -3,7 +3,7 @@ import { defineStore } from 'pinia';
 interface Notification {
   id: string;
   message: string;
-  type: string;
+  type: 'default' | 'error' | 'warning' | 'success';
   duration: number;
 }
 
@@ -13,7 +13,7 @@ export const useNotificationStore = defineStore('notifications', {
   }),
   
   actions: {
-    createNotification(message: string, type: string = "default", duration: number = 3000): void {
+    createNotification(message: string, type: 'default' | 'error' | 'warning' | 'success' = "default", duration: number = 3000): void {
       const id = crypto.randomUUID();
       this.notificationList.push({
         id,

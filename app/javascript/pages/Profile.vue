@@ -6,16 +6,19 @@ import Profile from '@/components/profile/Profile.vue';
 import Address from '@/components/address/Address.vue';
 import Icon from '@/components/shares/Icon.vue';
 
-const tabsLink = [
+interface Tab {
+  name: string,
+  icon: string,
+  tag: string,
+}
+
+const tabsLink: Tab[] = [
   {"name": "Orders", "icon": "cart", "tag": "orders-profile"},
   {"name": "Profile", "icon": "profile", "tag": "profile"},
   {"name": "Address", "icon": "map", "tag": "address-profile"},
 ]
 
 const currentTab = ref(tabsLink[0])
-const selectTab = (tab) => {
-  currentTab.value = tab
-}
 
 </script>
 
@@ -25,7 +28,7 @@ const selectTab = (tab) => {
     <div class="flex space-x-2 py-10 max-w-screen-xl md:mx-auto" >
       <div class="flex flex-col bg-white w-2/6 rounded-md">
         <ul>
-          <li :class="{'bg-violet-100': currentTab.tag === tab.tag}" class="flex text-xl font-bold p-5 hover:bg-violet-100 rounded-md" v-for="tab in tabsLink" :key="tab.tag" @click="selectTab(tab)">
+          <li :class="{'bg-violet-100': currentTab.tag === tab.tag}" class="flex text-xl font-bold p-5 hover:bg-violet-100 rounded-md" v-for="tab in tabsLink" :key="tab.tag" @click="currentTab = tab">
             <Icon :name="tab.icon" class="flex items-center w-5 mr-3 mt-1" />
             {{tab.name}}
           </li>

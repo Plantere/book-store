@@ -50,6 +50,17 @@ const getTotalCart = computed(() => {
   }, 0)
 })
 
+const setDefaultAddress = () => {
+  const address = addressesList.value.find(address => address.is_default === true)
+
+  if(!address) {
+    shippingInformations.address_id = 0
+    return
+  }
+
+  shippingInformations.address_id = address.id
+}
+
 const getAddresses = async (page = 1) => {
   const response = await makeRequest(api_v1_addresses_get_path({page}), {method: "GET"})
 
@@ -66,14 +77,7 @@ const getAddresses = async (page = 1) => {
 
   addressesList.value = data.data
 
-  const address = addressesList.value.find(address => address.is_default === true)
-
-  if(!address) {
-    shippingInformations.address_id = 0
-    return
-  }
-
-  shippingInformations.address_id = address.id
+  setDefaultAddress()
 
   window.scrollTo({
     top: 0,
@@ -104,7 +108,7 @@ getAddresses()
           <div class="border rounded-lg p-5 m-5 cursor-pointer" v-for="address in addressesList" @click="shippingInformations.address_id = address?.id">
             <div>
               <input type="radio" name="address.id.toString()" v-model="shippingInformations.address_id" :value="address?.id" :id="address.id.toString()" class="w-4 h-4 text-violet-600 bg-gray-100 border-gray-300 focus:ring-violet-500 focus:ring-2">
-              <label :for="address?.id.toString()" class="font-semibold p-5">{{address?.name}}</label>
+              <label :for="address.id.toString()" class="font-semibold p-5">{{address?.name}} <span class="font-medium">{{ address.is_default ? "(Default)" : "" }}</span> </label>
             </div>
             <div class="flex flex-col">
               <span class="text-sm text-gray-600">{{ address.street }} {{ address.number }}</span>
