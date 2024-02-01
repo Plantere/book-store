@@ -1,6 +1,6 @@
-<script setup>
+<script setup lang="ts">
 import { RouterView } from 'vue-router'
-import Toastfication from './notifications/Toastfication.vue';
+import Toastfication from '@/components/notifications/Toastfication.vue';
 
 </script>
 

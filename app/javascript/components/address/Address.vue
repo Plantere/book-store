@@ -1,19 +1,20 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { api_v1_addresses_delete_path, api_v1_addresses_get_path, api_v1_addresses_update_default_path } from '../../utils/routes';
-import { makeRequest } from '../../utils/request';
-import { useNotificationStore } from '../../stores/notification'
+import { api_v1_addresses_delete_path, api_v1_addresses_get_path, api_v1_addresses_update_default_path } from '@/utils/routes';
+import { makeRequest } from '@/utils/request';
+import { useNotificationStore } from '@/stores/notification'
 
-import Icon from '../shares/Icon.vue';
-import Pagination from '../shares/Pagination.vue';
+import Icon from '@/components/shares/Icon.vue';
+import Pagination from '@/components/shares/Pagination.vue';
 import CardAddress from './CardAddress.vue';
 import FormAddress from './FormAddress.vue';
+import type { Address } from '@/interfaces/address';
 
 const formAddressModal = ref<InstanceType<typeof FormAddress> | null>(null)
 
 const notifications = useNotificationStore();
 
-const addressesList = ref([])
+const addressesList = ref<Address[]>([])
 const paginationConfig = ref({
   totalItems: 0,
   currentPage: 1,
@@ -51,7 +52,7 @@ const getAddresses = async (page = 1) => {
   }
 }
 
-const removeAddress = async (addressId) => {
+const removeAddress = async (addressId: number) => {
   const response = await makeRequest(api_v1_addresses_delete_path({id: addressId}), {method: "DELETE"})
 
   if(!response.ok){
@@ -63,7 +64,7 @@ const removeAddress = async (addressId) => {
   notifications.createNotification("Address deleted successufly", "success")
 }
 
-const changeDefaultAddress = async (addressId) => {
+const changeDefaultAddress = async (addressId: number) => {
   const response = await makeRequest(api_v1_addresses_update_default_path({id: addressId}), {method: "PUT"})
 
   if(!response.ok){

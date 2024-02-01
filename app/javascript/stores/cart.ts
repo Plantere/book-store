@@ -1,19 +1,19 @@
 import { defineStore } from 'pinia';
 import { useNotificationStore } from './notification'
 
-interface Product {
-  productId: number;
+interface Book {
+  book_id: number;
   quantity: number;
 }
 
 const STORE_NAME = 'cart'
 
-const getCart = (): Product[] => {
+const getCart = (): Book[] => {
   const cart = localStorage.getItem(STORE_NAME)
   return cart ? JSON.parse(cart) : []
 }
 
-const storeLocalStorage = (cartList: Product[]): void => {
+const storeLocalStorage = (cartList: Book[]): void => {
   localStorage.setItem(STORE_NAME, JSON.stringify(cartList))
 }
 
@@ -23,52 +23,55 @@ export const useCartStore = defineStore(STORE_NAME, {
   state: () => ({
     cartList: getCart(),
   }),
+  getters: {
+    getTotalCart(){
+      return this.cartList.reduce((acc, cart) => {
+        return acc + cart.quantity
+      }, 0)
+    },
+    getTotalItems(){
+      return this.cartList.length
+    }
+  },
   actions: {
-    addProduct(productId: number): void {
-      let product = this.cartList.find((product: Product) => product.productId === productId)
+    addBook(bookId: number): void {
+      let book = this.cartList.find((book: Book) => book.book_id === bookId)
 
-      if (!product) {
+      if (!book) {
         this.cartList.push({
-          productId: productId,
+          book_id: bookId,
           quantity: 1,
         });
       } else {
-        product.quantity += 1;
+        book.quantity += 1;
       }
 
       storeLocalStorage(this.cartList);
       notifications.createNotification("Book added to the cart successfully", "success");
     },
-    removeProduct(productId: number): void {
-      this.cartList = this.cartList.filter((product: Product) => product.productId !== productId);
+    removeBook(bookId: number): void {
+      this.cartList = this.cartList.filter((book: Book) => book.book_id !== bookId);
       storeLocalStorage(this.cartList);
       notifications.createNotification("Book removed from the cart successfully", "success");
     },
-    decreaseProduct(productId: number): void {
-      let product = this.cartList.find((product: Product) => product.productId === productId);
+    changeQuantity(bookId: number, quantity: number): void {
+      let book = this.cartList.find((book: Book) => book.book_id === bookId);
 
-      if (!product) {
+      if (!book) {
         return;
       }
 
-      if (product.quantity <= 1) {
-        this.removeProduct(productId);
-      } else {
-        product.quantity -= 1;
-      }
-
+      book.quantity = quantity
       storeLocalStorage(this.cartList);
-
-      notifications.createNotification("Book quantity decreased in the cart successfully", "success");
     },
-    isAvailable(productId: number, stockQuantity: number) {
-      let product = this.cartList.find((product: Product) => product.productId === productId);
+    isAvailable(bookId: number, stockQuantity: number) {
+      let book = this.cartList.find((book: Book) => book.book_id === bookId);
 
-      if (!product) {
+      if (!book) {
         return false;
       }
 
-      return product.quantity >= stockQuantity;
+      return book.quantity >= stockQuantity;
     },
   },
 });

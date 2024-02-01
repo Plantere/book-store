@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { ref, computed, reactive } from 'vue';
-import { useUserStore } from '../../stores/user';
-import { useNotificationStore } from '../../stores/notification';
-import { api_v1_user_update_path } from '../../utils/routes';
-import { makeRequest } from '../../utils/request';
+import { useUserStore } from '@/stores/user';
+import { useNotificationStore } from '@/stores/notification';
+import { api_v1_user_update_path } from '@/utils/routes';
+import { makeRequest } from '@/utils/request';
 
 import ChangePassword from './ChangePassword.vue'
-import Icon from '../../components/shares/Icon.vue';
+import Icon from '@/components/shares/Icon.vue';
 
 const user = useUserStore()
 const notifications = useNotificationStore()

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue';
-import { makeRequest } from '../../utils/request';
-import { api_v1_addresses_create_path, api_v1_addresses_update_path } from '../../utils/routes';
-import { useNotificationStore } from '../../stores/notification'
+import { makeRequest } from '@/utils/request';
+import { api_v1_addresses_create_path, api_v1_addresses_update_path } from '@/utils/routes';
+import { useNotificationStore } from '@/stores/notification'
 
 const notifications = useNotificationStore();
 

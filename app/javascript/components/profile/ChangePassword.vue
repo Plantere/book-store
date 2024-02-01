@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { useNotificationStore } from '../../stores/notification';
-import {  api_v1_user_change_password_path } from '../../utils/routes';
-import { makeRequest } from '../../utils/request';
+import { useNotificationStore } from '@/stores/notification';
+import { api_v1_user_change_password_path } from '@/utils/routes';
+import { makeRequest } from '@/utils/request';
 
 const notifications = useNotificationStore()
 const isOpen = ref(false)

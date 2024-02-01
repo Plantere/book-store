@@ -1,6 +1,6 @@
-<script setup>
-import CardNotification from './CardNotification.vue';
-import { useNotificationStore } from '../../stores/notification'
+<script setup lang="ts">
+import CardNotification from '@/components/notifications/CardNotification.vue';
+import { useNotificationStore } from '@/stores/notification'
 
 const notifications = useNotificationStore();
 </script>

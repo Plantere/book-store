@@ -1,10 +1,15 @@
-<script setup>
-import Icon from '../shares/Icon.vue';
+<script setup lang="ts">
+import Icon from '@/components/shares/Icon.vue';
 
 const emit = defineEmits(["close"]);
-const props = defineProps({
-  message: { type: String, required: true },
-  type: { type: String, default: 'default', validator: (value) => ['default', 'error', 'warning', 'success'].includes(value) },
+
+interface Notification {
+  message: string,
+  type: 'default' | 'error' | 'warning' | 'success'
+}
+
+const props = withDefaults(defineProps<Notification>(), {
+  type: 'default'
 });
 
 const colors = {
@@ -32,7 +37,7 @@ const closeNotification = () => {
 </script>
 
 <template>
-  <div class="flex fade-out items-center p-4 text-gray-500 bg-white rounded-lg shadow mt-5" role="alert" :class="{ 'toast-default': props.type === 'default' }">
+  <div class="flex fade-out items-center p-4 text-gray-500 bg-white rounded-lg shadow mt-5 z-50" role="alert" :class="{ 'toast-default': props.type === 'default' }">
     <div v-if="props.type !== 'default'" :class="colors[props.type].class" class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 rounded-lg" :aria-label="colors[props.type].ariaLabel">
       <Icon class="w-5 h-5" :name="colors[props.type].iconName" />
     </div>

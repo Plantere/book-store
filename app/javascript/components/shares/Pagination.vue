@@ -14,7 +14,7 @@ const getPreviousPage = () => (props.currentPage > 1 ? props.currentPage - 1 : 0
 
 const getNextPage = () => (props.currentPage < totalPages ? props.currentPage + 1 : 0);
 
-const changePage = (page) => {
+const changePage = (page: number) => {
   emit("changePage", page)
 }
 

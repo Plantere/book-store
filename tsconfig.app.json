@@ -1,0 +1,13 @@
+{
+  "extends": "@vue/tsconfig/tsconfig.dom.json",
+  "include": ["env.d.ts", "app/javascript/**/*", "app/javascript/**/*.vue"],
+  "exclude": ["app/javascript/**/__tests__/*"],
+  "compilerOptions": {
+    "composite": true,
+    "noEmit": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./app/javascript/*"]
+    }
+  }
+}

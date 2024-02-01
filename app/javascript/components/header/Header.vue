@@ -1,10 +1,10 @@
-<script setup>
+<script setup lang="ts">
 import { useRouter } from 'vue-router';
-import { useUserStore } from '../../stores/user'
-import { useCartStore } from '../../stores/cart'
-import Icon from '../shares/Icon.vue';
+import { useUserStore } from '@/stores/user'
+import { useCartStore } from '@/stores/cart'
+import Icon from '@/components/shares/Icon.vue';
 
-import Search from './Search.vue';
+import Search from '@/components/header/Search.vue';
 
 const user = useUserStore()
 const cart = useCartStore()

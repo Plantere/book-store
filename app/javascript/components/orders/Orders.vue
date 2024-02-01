@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import Icon from '../../components/shares/Icon.vue';
-import Pagination from '../../components/shares/Pagination.vue';
+import Icon from '@/components/shares/Icon.vue';
+import Pagination from '@/components/shares/Pagination.vue';
 import CardOrder from './CardOrder.vue';
-import { makeRequest } from '../../utils/request';
-import { api_v1_orders_get_path } from '../../utils/routes';
+import { makeRequest } from '@/utils/request';
+import { api_v1_orders_get_path } from '@/utils/routes';
+import type { Order } from '@/interfaces/order';
 
-const orders = ref([]);
+const orders = ref<Order[]>([]);
 let paginationConfig = ref({
   totalItems: 0,
   currentPage: 1,
@@ -54,7 +55,7 @@ getOrders()
     <hr>
 
     <div class="p-5">
-      <div v-for="(order, index) in orders" :key="order?.id" >
+      <div v-for="(order, index) in orders" :key="order.id" >
         <CardOrder :order="order"/>
         <hr class="my-5" v-if="index != orders.length-1">
       </div>

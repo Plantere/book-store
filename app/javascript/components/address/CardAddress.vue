@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import Icon from '../shares/Icon.vue';
+import type { ItemsAddress } from '@/interfaces/address';
+import Icon from '@/components/shares/Icon.vue';
 
 const emit = defineEmits(["edit", "delete", "changeDefaultAddress"])
 
@@ -8,30 +9,28 @@ const openEditAddress = () => {
 }
 
 const deleteAddress = () => {
-  emit('delete', props.address?.id)
+  emit('delete', props.address.id)
 }
 
 const changeDefaultAddress = () => {
-  if(props.address?.is_default) return
+  if(props.address.is_default) return
 
-  emit('changeDefaultAddress', props.address?.id)
+  emit('changeDefaultAddress', props.address.id)
 }
 
-const props = defineProps({
-  address: Object
-})
+const props = defineProps<ItemsAddress>()
 
 </script>
 
 <template>
   <div class="relative flex flex-col shadow-md p-5 rounded-xl w-[320px] h-[250px]">
-    <Icon :class="{'fill-yellow-300 cursor-auto': props.address?.is_default}" name="star" class="absolute right-0 top-0 w-6 h-6 text-yellow-300 cursor-pointer" @click="changeDefaultAddress()"></Icon>
-    <span class="text-xl font-bold text-gray truncate">{{ props.address?.name }}</span>
-    <span class="text-sm font-semibold text-gray">{{props.address?.street}} {{props.address?.number}}</span>
-    <span class="text-sm font-semibold text-gray">{{props.address?.district}}</span>
-    <span class="text-sm font-semibold text-gray">{{props.address?.city}}, {{props.address?.state}} - {{props.address?.postal_code}}</span>
-    <span class="text-sm font-semibold text-gray">{{props.address?.country}}</span>
-    <span class="text-sm font-semibold text-gray">{{ props.address?.phone_number }}</span>
+    <Icon :class="{'fill-yellow-300 cursor-auto': props.address.is_default}" name="star" class="absolute right-0 top-0 w-6 h-6 text-yellow-300 cursor-pointer" @click="changeDefaultAddress()"></Icon>
+    <span class="text-xl font-bold text-gray truncate">{{ props.address.name }}</span>
+    <span class="text-sm font-medium text-gray">{{props.address.street}} {{props.address.number}}</span>
+    <span class="text-sm font-medium text-gray">{{props.address.district}}</span>
+    <span class="text-sm font-medium text-gray">{{props.address.city}}, {{props.address.state}} - {{props.address.postal_code}}</span>
+    <span class="text-sm font-medium text-gray">{{props.address.country}}</span>
+    <span class="text-sm font-medium text-gray">{{ props.address.phone_number }}</span>
     <div class="absolute bottom-4 flex space-x-4 mt-4">
       <button class="font-semibold leading-6 text-violet-600 hover:text-violet-500" @click="openEditAddress()">Edit</button>
       <span> | </span>

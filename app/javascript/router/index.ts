@@ -37,6 +37,14 @@ const router = createRouter({
       },
     },
     {
+      path: '/cart',
+      name: 'cart',
+      component: () => import('../pages/Cart.vue'),
+      meta: {
+        onlyGuest: false,
+      },
+    },
+    {
       path: '/books',
       name: 'books',
       component: () => import('../pages/Books.vue'),
