@@ -37,7 +37,8 @@ const submit = async () => {
 
   loginUser((await response.json()).token)
   notifications.createNotification("User successfully logged in", "success")
-  router.push({name: "home"})
+  
+  router.push({name: router.currentRoute.value.query.redirect?.toString() ?? "home"})
 }
 </script>
 
