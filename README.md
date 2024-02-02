@@ -7,29 +7,53 @@ This is a Ruby on Rails and VueJS-based web application for a Book Store. The pr
 ## Technology 🖥️
 - Ruby On Rails
 - VueJS
+- ViteRuby
+- StripeJS
 
 ## Getting Started 🚀
 
 To set up the project, follow these steps:
 
-1. Configure the database in `config/database.yml`, using PostgreSQL for both development and production environments, and SQLite3 for testing purposes. You can refer to an example configuration model in `config/database.yml.example`.
+1. Database Configuration: Configure the database settings in the `config/database.yml` file. Utilize PostgreSQL for both development and production environments, and SQLite3 for testing purposes. An example configuration model is provided in `config/database.yml.example`.
     ```yaml
     development:
       adapter: postgresql
       database: your_database_name
       url: your_database_url
       ...
-    
+
     test:
       adapter: sqlite3
       database: db/test.sqlite3
       ...
     ```
-2. Install dependencies by running `bundle install` and `yarn install`.
-3. Set up [Supabase Storage](https://supabase.com/docs/guides/storage) for storing images.
-4. Run `rails db:migrate` to apply database migrations.
-5. Start the Rails server with `rails server`.
-6. Run the VueJS app with `yarn start`.
+
+2. Stripe Configuration: Copy the `.env.example` file and rename it to `.env`. Proceed to configure the Stripe integration by referring to the documentation at [Stripe Keys](https://stripe.com/docs/keys).
+
+3. Dependency Installation: Install project dependencies by executing the following commands:
+    ```bash
+    bundle install
+    yarn install
+    ```
+
+4. Supabase Storage Setup: Set up [Supabase Storage](https://supabase.com/docs/guides/storage) to enable image storage functionalities within the application.
+
+5. Database Migrations: Apply database migrations using the command:
+    ```bash
+    rails db:migrate
+    ```
+
+6. JavaScript Routes Generation: Generate JavaScript routes files for middleware using the following command:
+    ```bash
+    rails generate js_routes:middleware --pretend
+    ```
+
+7. Project Start: Initiate the project by running the following command, which starts the Rails server and Vue.js concurrently:
+    ```bash
+    foreman start -f Procfile.dev
+    ```
+
+8. Accessing the Project: The project is now accessible at [http://127.0.0.1:5100](http://127.0.0.1:5100). Explore and interact with the application locally.
 
 ## Models 📊
 
