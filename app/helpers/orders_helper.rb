@@ -1,10 +1,20 @@
 module OrdersHelper
+
+  def self.set_order_to_status(transaction_id, status)
+    order = Order.where(transaction_id: transaction_id).first
+    order.update(status: status)
+    if status === 3
+      order.order_detail.each do |detail|
+        BooksHelper.decrease_stock_quantity(detail[:book_id], detail[:quantity])
+      end
+    end
+  end
+
   def self.create_order_intent(cart_items, address, carrier, user)
     order = user.order.create(address_id: address[:id])
     total_amount_cart = calculate_order_amount(order, cart_items, carrier)
-    order.update(price: total_amount_cart)
 
-    return Stripe::PaymentIntent.create(
+    order_intent = Stripe::PaymentIntent.create(
       amount: (total_amount_cart * 100).to_i,
       currency: 'usd',
       automatic_payment_methods: {
@@ -25,6 +35,10 @@ module OrdersHelper
       },
       receipt_email: user[:email]
     )
+
+    order.update(transaction_id: order_intent.id, price: total_amount_cart)
+
+    order_intent
   end
   
 

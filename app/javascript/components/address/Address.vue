@@ -83,7 +83,7 @@ getAddresses()
 <template>
   <div>
     <div class="flex px-5">
-      <Icon name="map" class="flex w-6 mr-3 mt-6"></Icon>
+      <Icon name="map" class="flex w-6 mr-3 mt-1"></Icon>
       <h1 class="text-2xl py-5 font-bold">Address</h1>
     </div>
     <hr>

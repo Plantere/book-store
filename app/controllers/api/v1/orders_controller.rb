@@ -31,7 +31,7 @@ class Api::V1::OrdersController < ApplicationController
   end
 
   def get
-    page, data = pagy(Order.where(user_id: @current_user[:id]).includes(:address, order_detail: :book).order(created_at: :desc).all, page: params[:page], items: 5)
+    page, data = pagy(Order.where(user_id: @current_user[:id]).where.not(status: 4).includes(:address, order_detail: :book).order(created_at: :desc).all, page: params[:page], items: 5)
     pagination = pagy_metadata(page)
 
     render json: {

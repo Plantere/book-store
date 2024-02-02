@@ -5,6 +5,7 @@ class CreateOrders < ActiveRecord::Migration[7.1]
       t.references :address, index: true, foreign_key: true
       t.decimal :price, precision: 16, scale: 2, null: false
       t.text :description
+      t.string :transaction_id, index: true
       t.integer :status
       t.timestamps
     end

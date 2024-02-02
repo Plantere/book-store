@@ -15,9 +15,11 @@ const getStatusOrder = () => {
     return {name: "Processing", icon: "loading", class: "bg-yellow-200", classIcon: "w-5 h-5 text-white animate-spin fill-blue-600"}
   }else if(props.order.status === 2){
     return {name: "Delivered", icon: "truck", class: "bg-green-100", classIcon: ""}
+  }else if(props.order.status === 3){
+    return {name: "Approved", icon: "check", class: "bg-green-100", classIcon: ""}
+  }else if(props.order.status === 4){
+    return {name: "Denied", icon: "xmark", class: "bg-red-200", classIcon: ""}
   }
-
-  return {name: "Denied", icon: "xmark", class: "bg-red-200", classIcon: ""}
 }
 
 </script>

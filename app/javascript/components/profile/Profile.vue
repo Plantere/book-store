@@ -64,7 +64,7 @@ const updateProfile = async () => {
 <template>
   <div>
     <div class="flex px-5">
-      <Icon name="profile" class="flex items-center w-6 mr-3 mt-6" />
+      <Icon name="profile" class="flex items-center w-6 mr-3 mt-1" />
       <h1 class="text-2xl py-5 font-bold">Profile</h1>
     </div>
     <hr>

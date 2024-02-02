@@ -9,6 +9,10 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
+      namespace :webhook do
+        post "/" => "stripe#index", as: :webhook_stripe
+      end
+
       post "/register" => "users#register", as: :users_register
       post "/login" => "auth#login", as: :auth_login
 
