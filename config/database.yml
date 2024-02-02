@@ -22,7 +22,7 @@ default: &default
 development:
   <<: *default
   database: book_store
-  url: #INCLUDE POSTGRESQL URL DATABASE HERE
+  url: <%= ENV["BOOK_STORE_DATABASE_URL"] %>
   # The specified database role being used to connect to PostgreSQL.
   # To create additional roles in PostgreSQL see `$ createuser --help`.
   # When left blank, PostgreSQL will use the default role. This is
@@ -81,6 +81,4 @@ test:
 #
 production:
   <<: *default
-  database: book_store_production
-  username: book_store
-  password: <%= ENV["BOOK_STORE_DATABASE_PASSWORD"] %>
+  url: <%= ENV["BOOK_STORE_DATABASE_URL"] %>
