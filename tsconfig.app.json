@@ -3,6 +3,7 @@
   "include": ["env.d.ts", "app/javascript/**/*", "app/javascript/**/*.vue"],
   "exclude": ["app/javascript/**/__tests__/*"],
   "compilerOptions": {
+    "types": ["vite/client"],
     "composite": true,
     "noEmit": true,
     "baseUrl": ".",

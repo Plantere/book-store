@@ -3,31 +3,31 @@ class Api::V1::OrdersController < ApplicationController
   before_action :authorize_request
   
   def create
-    if BooksHelper.any_books_below_ordered_quantity?(params_order_details)
-      render json: { error: "Invalid book quantities in the order." }, status: :unprocessable_entity
+    if BooksHelper.books_below_ordered(params[:cart]).exists?
+      render json: {
+        error: "Invalid book quantities in the order",
+        data: BooksHelper.books_below_ordered(params[:cart]).all.map{ |book| {
+          id: book[:id],
+          stock_quantity: book[:stock_quantity]
+        }}
+      }, status: :unprocessable_entity
       return
     end
 
-    order = Order.new(price: 0, user_id: @current_user[:id], **params_order)
-    if order.save
-      params_order_details.each do |order_detail|
-        price_book = BooksHelper.get_price_book(order_detail[:book_id])
-        order.price += price_book * order_detail[:quantity]
-
-        order_detail = OrderDetail.new(price: price_book, order_id: order[:id], **order_detail)
-        order_detail.save
-
-        BooksHelper.decrease_stock_quantity(order_detail[:book_id], order_detail[:quantity])
-      end
-
-      order.save
-      
-      render json: { message: "Order created successfully" }, status: :ok
+    address = Address.where(id: params[:address], user_id: @current_user[:id]).first
+    if !address
+      render json: {
+        error: "Address provided is invalid to process transaction"
+      }, status: :unprocessable_entity
       return
     end
 
-    render json: { error: order.errors.full_messages }, status: :ok
-    return
+    order_intent = OrdersHelper.create_order_intent(params[:cart], address, params[:carrier], @current_user)
+
+    render json: {
+      message: "Order created successfully",
+      client_secret: order_intent[:client_secret]
+    }, status: :ok
   end
 
   def get

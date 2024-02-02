@@ -34,9 +34,9 @@ const getStatusOrder = () => {
           </div>
         </div>
 
-        <div class="flex">
-          <Icon v-if="!collapse" class="h-5 w-5" name="down" @click="collapse = !collapse"/>
-          <Icon v-if="collapse" class="h-5 w-5" name="up" @click="collapse = !collapse"/>
+        <div class="flex" @click="collapse = !collapse">
+          <Icon v-if="!collapse" class="h-5 w-5" name="down" />
+          <Icon v-if="collapse" class="h-5 w-5" name="up" />
         </div>
       </div>
 

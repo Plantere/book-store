@@ -6,16 +6,22 @@ import { api_v1_addresses_get_path } from '@/utils/routes';
 import Icon from '@/components/shares/Icon.vue';
 import Pagination from '@/components/shares/Pagination.vue';
 import FormAddress from '@/components/address/FormAddress.vue';
+import StripePay from '@/components/stripe/StripePay.vue';
 
 import type { Address } from '@/interfaces/address'
 import type { ItemsCart } from '@/interfaces/cart'
+import { useRouter } from 'vue-router';
+import { useCartStore } from '@/stores/cart';
 
 const props = defineProps<ItemsCart>()
 const emit = defineEmits(["nextTab", "previousTab"])
 
+const cart = useCartStore()
+const router = useRouter()
+
 const shippingInformations = reactive({
   address_id: 0,
-  shipping_id: 1
+  carrier_id: 1
 })
 
 const addressesList = ref<Address[]>([])
@@ -40,8 +46,13 @@ const previousTab = () => {
   emit("previousTab")
 }
 
+const redirectSuccess = () => {
+  cart.cleanCart()
+  router.push({name: "home"})
+}
+
 const isPaymentAvailable = computed(() => {
-  return shippingInformations.address_id !== 0 && shippingInformations.shipping_id !== 0
+  return shippingInformations.address_id !== 0 && shippingInformations.carrier_id !== 0
 })
 
 const getTotalCart = computed(() => {
@@ -129,8 +140,8 @@ getAddresses()
       <div>
         <span class="pl-2 text-md font-semibold leading-6 text-gray-600">Choose Delivery Speed</span>
         <div class="grid grid-cols-2">
-          <div class="relative rounded-md border m-5 p-10 cursor-pointer" @click="shippingInformations.shipping_id = 1">
-            <input type="radio" :value="1" v-model="shippingInformations.shipping_id" class="absolute top-0 left-0 m-5 w-4 h-4 text-violet-600 bg-gray-100 border-gray-300 focus:ring-violet-500 focus:ring-2">
+          <div class="relative rounded-md border m-5 p-10 cursor-pointer" @click="shippingInformations.carrier_id = 1">
+            <input type="radio" :value="1" v-model="shippingInformations.carrier_id" class="absolute top-0 left-0 m-5 w-4 h-4 text-violet-600 bg-gray-100 border-gray-300 focus:ring-violet-500 focus:ring-2">
             <span class="absolute right-0 top-0 m-5 text-gray-600 font-semibold">$ 5</span>
             <div class="flex flex-col justify-center items-center">
               <Icon name="profile" class="w-7 h-7 text-gray-600" />
@@ -205,8 +216,14 @@ getAddresses()
       </div>
 
       <hr class="m-5 border-gray-300">
-      <div class="flex justify-center">
-        <button @click="nextTab()" :disabled="!isPaymentAvailable" class="rounded-md block w-full bg-violet-600 px-8 py-2 text-sm font-semibold  text-white shadow-sm hover:bg-violet-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-600 disabled:opacity-50">Payment</button>
+      <div class="flex flex-col">
+        <span class="text-md font-semibold leading-6 text-gray-600 mb-2">Card Information</span>
+        <StripePay 
+            :address="shippingInformations.address_id" 
+            :carrier="shippingInformations.carrier_id"
+            @success="redirectSuccess()"
+        />
+
       </div>
     </div>
     <FormAddress ref="formAddressModal" @update-address="getAddresses"></FormAddress>

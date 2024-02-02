@@ -24,7 +24,9 @@ const props = defineProps<ItemsAddress>()
 
 <template>
   <div class="relative flex flex-col shadow-md p-5 rounded-xl w-[320px] h-[250px]">
-    <Icon :class="{'fill-yellow-300 cursor-auto': props.address.is_default}" name="star" class="absolute right-0 top-0 w-6 h-6 text-yellow-300 cursor-pointer" @click="changeDefaultAddress()"></Icon>
+    <div @click="changeDefaultAddress()">
+      <Icon :class="{'fill-yellow-300 cursor-auto': props.address.is_default}" name="star" class="absolute right-0 top-0 w-6 h-6 text-yellow-300 cursor-pointer"></Icon>
+    </div>
     <span class="text-xl font-bold text-gray truncate">{{ props.address.name }}</span>
     <span class="text-sm font-medium text-gray">{{props.address.street}} {{props.address.number}}</span>
     <span class="text-sm font-medium text-gray">{{props.address.district}}</span>

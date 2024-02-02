@@ -1,11 +1,11 @@
 module BooksHelper
-  def self.any_books_below_ordered_quantity?(books)
+  def self.books_below_ordered(books)
     conditions = books.map { |condition| "(id = ? AND stock_quantity < ?)" }
     conditions_string = conditions.join(" OR ")
     
     conditions_hash = books.flat_map { |condition| [condition[:book_id], condition[:quantity]] }
 
-    Book.where(conditions_string, *conditions_hash).exists?
+    Book.where(conditions_string, *conditions_hash)
   end
   
   def self.get_price_book(book_id)

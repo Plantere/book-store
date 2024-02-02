@@ -38,6 +38,10 @@ gem 'vite_rails'
 
 gem "js-routes"
 
+gem 'stripe'
+
+gem 'dotenv'
+
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"
 

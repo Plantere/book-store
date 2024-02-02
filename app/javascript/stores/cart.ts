@@ -34,6 +34,10 @@ export const useCartStore = defineStore(STORE_NAME, {
     }
   },
   actions: {
+    cleanCart() {
+      this.cartList = []
+      storeLocalStorage(this.cartList);
+    },
     addBook(bookId: number): void {
       let book = this.cartList.find((book: Book) => book.book_id === bookId)
 
