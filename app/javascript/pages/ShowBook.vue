@@ -31,7 +31,7 @@ const quantity = ref(1)
 const cart = useCartStore()
 
 const getBook = async () => { 
-  const response = await makeRequest(api_v1_books_index_path({id: router.currentRoute.value.params.book_id}), {
+  const response = await makeRequest(api_v1_books_index_path({id: router.currentRoute.value.params.book_id.toString()}), {
     method: "GET",
   })
 
@@ -59,7 +59,7 @@ const checkStockQuantity = () => {
   }
 }
 
-const isDisabled = computed<Boolean>(() => {
+const isDisabled = computed(() => {
   if(!book.value) return false;
   return cartQuantity.value >= book.value.stock_quantity
 })
@@ -72,10 +72,6 @@ const stockAvailable = computed<number>(() => {
 const cartQuantity = computed<number>(() => {
   return cart.cartList.find(item => item.book_id === book.value?.id)?.quantity ?? 0
 })
-
-const buyNow = () => {
-  return
-}
 
 const addBookInCart = () => {
   if(isDisabled.value || !book.value) return
@@ -130,7 +126,6 @@ onBeforeMount( async () => {
 
         <div class="flex flex-row space-x-1 justify-center mt-4">
           <button class="rounded-md bg-violet-600 px-2 py-2 text-sm font-semibold text-white shadow-sm hover:bg-violet-500 disabled:opacity-50" :disabled="isDisabled" @click="addBookInCart()">Add Cart</button>
-          <!-- <button class="rounded-md bg-violet-600 px-2 py-2 text-sm font-semibold text-white shadow-sm hover:bg-violet-500 disabled:opacity-50" :disabled="isDisabled" @click="buyNow()">Buy now</button> -->
         </div>
       </div>
     </div>
