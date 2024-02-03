@@ -24,7 +24,7 @@ const redirectCartPage = () => {
 
 <template>
   <nav class="bg-white px-4 lg:px-6 py-3">
-    <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
+    <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-2xl">
       <div class="w-3/12">
         <RouterLink :to="{name: 'home'}">
           <h1 class="text-3xl font-bold">BookStore.</h1>

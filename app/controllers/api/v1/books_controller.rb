@@ -38,7 +38,7 @@ class Api::V1::BooksController < ApplicationController
 
 
   def update 
-    if !Book.exists(id: params[:book_id])
+    if !Book.exists?(id: params[:book_id])
       render json: { error: "Book not found" }, status: :unprocessable_entity
       return
     end
@@ -54,13 +54,8 @@ class Api::V1::BooksController < ApplicationController
 
 
   def search
-    books = Book.joins(:publisher, :author, :genre)
-
-    if(params[:search] != nil)
-      books = books.where("stock_quantity > 1").where("LOWER(books.name) LIKE :search_term OR LOWER(publishers.name) LIKE :search_term OR LOWER(authors.full_name) LIKE :search_term OR LOWER(genres.name) LIKE :search_term", {search_term: "%" + Book.sanitize_sql_like(params[:search].downcase) + "%"})
-    end
-
-    page, data = pagy(books.all, page: params[:page])
+    search_params = {search: params[:search], stock: 1}
+    page, data = pagy(BooksHelper.get_filtered_books(search_params).all, page: params[:page])
     pagination = pagy_metadata(page)
 
     render json: {
@@ -76,6 +71,7 @@ class Api::V1::BooksController < ApplicationController
 
   def get_cart_items
     books = Book.where(id: params[:cart].map{|book| book[:book_id]}).all
+    
     render json: {
       data: books.map{ |book| {
         id: book.id,
@@ -85,7 +81,37 @@ class Api::V1::BooksController < ApplicationController
         stock_quantity: book.stock_quantity,
       }}
     }
-  end 
+  end
+
+
+  def get_books
+    page, data = pagy(BooksHelper.get_filtered_books(params).all, page: params[:page])
+    pagination = pagy_metadata(page)
+
+    render json: {
+      pagination: pagination,
+      data: data.map{ |book| {
+          id: book.id, 
+          title: book.name, 
+          price: book.price, 
+          genre: {
+            id: book.genre.id,
+            name: book.genre.name
+          }, 
+          description: book.description, 
+          author: {
+            id: book.author.id,
+            name: book.author.full_name
+          },
+          publisher: {
+            id: book.publisher.id,
+            name: book.publisher.name
+          },
+          status: 1,
+          stock_quantity: book.stock_quantity,
+        }}
+      }, status: :ok
+  end
 
   private
   def params_book

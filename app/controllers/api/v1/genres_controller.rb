@@ -22,6 +22,15 @@ class Api::V1::GenresController < ApplicationController
     render json: { error: "Failed to create genre. Please check the provided data." }, status: :unprocessable_entity
   end
 
+  def get_all
+    render json: {
+      data: Genre.all.map{ |genre| {
+        id: genre[:id],
+        name: genre[:name]
+      }}
+    }
+  end
+
   def update 
     if !Genre.exists(id: params[:genre_id])
       render json: { error: "Genre not found" }, status: :unprocessable_entity

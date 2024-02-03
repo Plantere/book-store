@@ -51,7 +51,7 @@ const router = createRouter({
     },
     {
       path: '/book/:book_id',
-      name: 'showBook',
+      name: 'show-book',
       component: () => import('../pages/ShowBook.vue'),
     },
     {
@@ -60,6 +60,14 @@ const router = createRouter({
       component: () => import('../pages/Register.vue'),
       meta: {
         onlyGuest: true,
+      },
+    },
+    {
+      path: '/admin',
+      name: 'admin-page',
+      component: () => import('../pages/Admin.vue'),
+      meta: {
+        onlyAdmin: true,
       },
     }
   ]
@@ -77,6 +85,11 @@ router.beforeEach(async (to, from, next) => {
 
   if(to.meta.onlyAuthenticateUser && !user.utils.isAuth){
     next({ name: 'login' });
+    return
+  }
+
+  if(to.meta.onlyAdmin && user.user.type_user !== 2){
+    next({ name: 'home' });
     return
   }
 

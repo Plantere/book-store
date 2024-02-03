@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import Header from '@/components/header/Header.vue';
-import Orders from '@/components/orders/Orders.vue';
-import Profile from '@/components/profile/Profile.vue';
-import Address from '@/components/address/Address.vue';
 import Icon from '@/components/shares/Icon.vue';
+import BooksManager from '@/components/admin/books/BooksManager.vue';
+import UsersManager from '@/components/admin/users/UsersManager.vue';
+import OrdersManager from '@/components/admin/orders/OrdersManager.vue';
 
 interface Tab {
   name: string,
@@ -13,9 +13,9 @@ interface Tab {
 }
 
 const tabsLink: Tab[] = [
-  {"name": "Orders", "icon": "cart", "tag": "orders-profile"},
-  {"name": "Profile", "icon": "profile", "tag": "profile"},
-  {"name": "Address", "icon": "map", "tag": "address-profile"},
+  {"name": "Orders", "icon": "cart", "tag": "admin-orders"},
+  {"name": "Users", "icon": "profile", "tag": "admin-users"},
+  {"name": "Books", "icon": "book", "tag": "admin-books"},
 ]
 
 const currentTab = ref(tabsLink[0])
@@ -34,16 +34,11 @@ const currentTab = ref(tabsLink[0])
           </li>
         </ul>
       </div>
-
       <div class="relative w-4/6 bg-white rounded-md">
-        <Orders v-if="currentTab.tag == 'orders-profile'"/>
-        <Profile v-if="currentTab.tag == 'profile'"/>
-        <Address v-if="currentTab.tag == 'address-profile'"/>
+        <OrdersManager v-if="currentTab.tag === 'admin-orders'"/>
+        <UsersManager v-if="currentTab.tag === 'admin-users'"/>
+        <BooksManager v-if="currentTab.tag === 'admin-books'"/>
       </div>
     </div>
   </div>
-
 </template>
-
-<style>
-</style>

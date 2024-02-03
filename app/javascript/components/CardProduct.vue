@@ -8,7 +8,7 @@ const router = useRouter()
 const cart = useCartStore();
 
 const redirectBookPage = () => {
-  router.push({name: "showBook", params: {book_id: props.id}})
+  router.push({name: "show-book", params: {book_id: props.id}})
 }
 
 interface Book {

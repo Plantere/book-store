@@ -22,6 +22,15 @@ class Api::V1::PublishersController < ApplicationController
     render json: { error: "Failed to create publisher. Please check the provided data." }, status: :unprocessable_entity
   end
 
+  def get_all
+    render json: {
+      data: Publisher.all.map{ |publisher|  {
+        id: publisher[:id],
+        name: publisher[:name],
+      }}
+    }
+  end
+
   def update 
     if !Publisher.exists(id: params[:publisher_id])
       render json: { error: "Publisher not found" }, status: :unprocessable_entity

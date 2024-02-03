@@ -17,6 +17,7 @@ export const useUserStore = defineStore('user', {
       user: {
         username: "",      
         email: "",
+        type_user: 1,
       },
       utils:{
         isAuth: false,

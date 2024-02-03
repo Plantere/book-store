@@ -87,7 +87,7 @@ onBeforeMount( async () => {
 <template>
   <div>
     <Header />
-    <div class="flex space-x-2 py-10 max-w-screen-xl md:mx-auto" v-if="book">
+    <div class="flex space-x-2 py-10 max-w-screen-2xl px-10 md:mx-auto" v-if="book">
       <div class="flex flex-col bg-white w-2/6 h-2/6 rounded-md">
         <div class="relative">
           <span class="text-xl font-bold absolute inset-y-2/4 right-4">

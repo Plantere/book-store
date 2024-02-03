@@ -25,7 +25,7 @@ const getStatusOrder = () => {
 }
 
 const redirectBookPage = (bookId: number) => {
-  router.push({name: "showBook", params: {book_id: bookId}})
+  router.push({name: "show-book", params: {book_id: bookId}})
 }
 
 </script>

@@ -88,7 +88,7 @@ getCartItems()
 <template>
   <div>
     <Header />
-    <div class="flex space-x-2 py-10 max-w-screen-xl md:mx-auto rounded-md" >
+    <div class="flex space-x-2 py-10 max-w-screen-2xl px-10 md:mx-auto rounded-md" >
       <div class="w-full flex bg-white rounded-md" v-if="currentTab === 0">
         <div class="flex flex-col w-5/6 p-5 mt-5">
           <span class="text-md font-semibold leading-6 text-gray-600">My Cart ({{ cart.getTotalItems }} Items)</span>

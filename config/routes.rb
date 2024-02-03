@@ -48,9 +48,29 @@ Rails.application.routes.draw do
       scope '/book' do
         get "/search" => "books#search", as: :books_search
         post "/cart" => "books#get_cart_items", as: :books_get_cart_items
-        post "/" => "books#create", as: :books_create
         get "/:book_id" => "books#index", as: :books_index
-        put "/:book_id" => "books#update", as: :books_update
+      end
+
+      scope '/admin' do 
+        scope '/genre' do
+          get '/' => "genres#get_all", as: :admin_genres_get_all 
+        end
+        
+        scope '/publisher' do
+          get '/' => "publishers#get_all", as: :admin_publishers_get_all 
+        end
+        
+
+        scope '/author' do
+          get '/' => "authors#get_all", as: :admin_authors_get_all 
+        end
+        
+
+        scope '/book' do 
+          get "/" => "books#get_books", as: :admin_books_get
+          put "/:book_id" => "books#update", as: :admin_books_update
+          post "/" => "books#create", as: :admin_books_create
+        end
       end
 
       scope '/publisher' do

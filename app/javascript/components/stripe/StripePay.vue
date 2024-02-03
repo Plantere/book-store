@@ -31,7 +31,7 @@ const elementOptions = ref({
       color: '#000',
       fontWeight: '500',
       fontFamily: 'Roboto, Open Sans, Segoe UI, sans-serif',
-      fontSize: '16px',
+      fontSize: '15px',
       fontSmoothing: 'antialiased',
       '::placeholder': {
         color: '#000',
@@ -129,7 +129,7 @@ onBeforeMount(() => {loadStripe(stripeKey.value).then(() => stripeLoaded.value =
     :stripe-key="stripeKey"
   >
     <StripeElement
-      class="py-4 px-2 border rounded-md border-gray-300"
+      class="py-4 px-1 border rounded-md border-gray-300"
       ref="StripeElementRef"
       :elements="elements"
       :options="elementOptions"

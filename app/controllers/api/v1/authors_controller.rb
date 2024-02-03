@@ -22,6 +22,15 @@ class Api::V1::AuthorsController < ApplicationController
     render json: { error: "Failed to create author. Please check the provided data." }, status: :unprocessable_entity
   end
 
+  def get_all
+    render json: {
+      data: Author.all.map{ |author|  {
+        id: author[:id],
+        full_name: author[:full_name],
+      }}
+    }
+  end
+
   def update 
     if !Author.exists(id: params[:author_id])
       render json: { error: "Author not found" }, status: :unprocessable_entity
