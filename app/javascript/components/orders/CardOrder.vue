@@ -4,8 +4,10 @@ import Icon from '@/components/shares/Icon.vue';
 import type { OrderItem } from '@/interfaces/order';
 import { formatMoney } from '@/helpers/exchange-helper';
 import { formatDate } from '@/helpers/date-helper';
+import { useRouter } from 'vue-router';
 
 const props = defineProps<OrderItem>()
+const router = useRouter()
 
 const collapse = ref(false)
 const showMore = ref(false)
@@ -22,10 +24,14 @@ const getStatusOrder = () => {
   }
 }
 
+const redirectBookPage = (bookId: number) => {
+  router.push({name: "showBook", params: {book_id: bookId}})
+}
+
 </script>
 
 <template>
-  <div>
+  <div v-if="getStatusOrder()">
     <div class="mb-4 flex flex-col">
       <div class="flex justify-between">
         <div class="flex">
@@ -54,9 +60,9 @@ const getStatusOrder = () => {
 
     <div v-for="(bookDetail, index) in props.order.details" :key="bookDetail?.id" class="flex flex-col">
       <div class="flex space-x-4 mt-4" v-if="index < 3">
-        <img class="rounded-lg border  h-32" :src="bookDetail?.image" alt="">
+        <img class="rounded-lg border  h-32 cursor-pointer" :src="bookDetail?.image" alt="" @click="redirectBookPage(bookDetail?.id)">
         <div class="flex flex-col justify-center w-screen">
-          <span class="text-xl font-medium text-gray-700">{{bookDetail?.name}}</span>
+          <span class="text-xl font-medium text-gray-700 cursor-pointer" @click="redirectBookPage(bookDetail?.id)">{{bookDetail?.name}}</span>
           <div class="flex justify-between mt-2">
             <span class="text-xl font-medium text-gray-800">{{bookDetail?.quantity}} x {{formatMoney(bookDetail?.price)}}</span>
             <button class="bg-violet-600 p-2 text-white shadow-md rounded-md text-sm font-semibold leading-6 disabled:opacity-50" disabled>Evalute the Product</button>

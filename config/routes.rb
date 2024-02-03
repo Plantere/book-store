@@ -46,10 +46,10 @@ Rails.application.routes.draw do
       end
 
       scope '/book' do
-        get "/" => "books#index", as: :books_index
         get "/search" => "books#search", as: :books_search
         post "/cart" => "books#get_cart_items", as: :books_get_cart_items
         post "/" => "books#create", as: :books_create
+        get "/:book_id" => "books#index", as: :books_index
         put "/:book_id" => "books#update", as: :books_update
       end
 

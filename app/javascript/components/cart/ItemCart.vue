@@ -25,7 +25,7 @@ const setCartQuantity = (itemId: number, cartQuantity: number): void => {
     <div class="flex flex-row justify-between w-full">
       <div class="flex">
         <div>
-          <img class="rounded-lg border  h-32" src="https://m.media-amazon.com/images/I/616U6mSP3lL._SL1000_.jpg" alt="">
+          <img class="rounded-lg border  h-32" src="https://placehold.co/990x1500" alt="">
         </div>
         <div class="flex flex-col pl-3 justify-between">
           <div class="flex flex-col">

@@ -2,8 +2,14 @@
 import { useCartStore } from '@/stores/cart';
 import Icon from '@/components/shares/Icon.vue';
 import { formatMoney } from '@/helpers/exchange-helper';
+import { useRouter } from 'vue-router';
 
+const router = useRouter()
 const cart = useCartStore();
+
+const redirectBookPage = () => {
+  router.push({name: "showBook", params: {book_id: props.id}})
+}
 
 interface Book {
   stock_quantity: number,
@@ -21,13 +27,9 @@ const props = withDefaults(defineProps<Book>(), {
 
 <template>
   <div class="relative m-10 flex w-full max-w-xs flex-col overflow-hidden rounded-2xl shadow-xl">
-  <a class="relative mx-3 mt-3 flex justify-center h-60 overflow-hidden rounded-xl" href="#">
-    <img class="object-cover" :src="props.image" alt="product image" />
-  </a>
+  <img class="object-cover cursor-pointer" :src="props.image" alt="product image" @click="redirectBookPage()"/>
   <div class="mt-4 px-5">
-    <a href="#">
-      <h5 class="text-lg font-bold tracking-tight">{{props.title}}</h5>
-    </a>
+    <h5 class="text-lg font-bold tracking-tight cursor-pointer" @click="redirectBookPage()">{{props.title}}</h5>
     <div class="mt-2 mb-5 flex items-center justify-between">
       <p>
         <span class="text-3xl font-bold">{{ formatMoney(props.price) }}</span>

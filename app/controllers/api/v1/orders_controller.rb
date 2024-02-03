@@ -45,8 +45,9 @@ class Api::V1::OrdersController < ApplicationController
           created_at: item.created_at,
           details: item.order_detail.map do |detail|
             {
+              id: detail.book.id,
               name: detail.book.name,
-              image: "https://m.media-amazon.com/images/I/616U6mSP3lL._SL1000_.jpg",
+              image: "https://placehold.co/990x1500",
               price: detail.price,
               quantity: detail.quantity,
             }

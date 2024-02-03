@@ -4,7 +4,21 @@ class Api::V1::BooksController < ApplicationController
   before_action :is_admin, only: [ :create, :update ]
   
   def index
-    render json: Book.all
+    book = Book.find(params[:book_id])
+
+    render json: {
+      id: book.id,
+      name: book.name,
+      stock_quantity: book.stock_quantity,
+      description: book.description,
+      genre: book.genre.name,
+      author: {
+        name: book.author.full_name
+      },
+      publisher: {
+        name: book.publisher.name
+      }
+    }
   end
 
   def create

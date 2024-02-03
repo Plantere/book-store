@@ -38,16 +38,16 @@ export const useCartStore = defineStore(STORE_NAME, {
       this.cartList = []
       storeLocalStorage(this.cartList);
     },
-    addBook(bookId: number): void {
+    addBook(bookId: number, quantity = 1): void {
       let book = this.cartList.find((book: Book) => book.book_id === bookId)
 
       if (!book) {
         this.cartList.push({
           book_id: bookId,
-          quantity: 1,
+          quantity: quantity,
         });
       } else {
-        book.quantity += 1;
+        book.quantity += quantity;
       }
 
       storeLocalStorage(this.cartList);

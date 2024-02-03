@@ -68,7 +68,7 @@ watch(() => router.currentRoute.value.query, () => {
 <template>
   <div>
     <Header />
-    <div class="flex justify-center">
+    <div class="flex justify-center" v-if="booksList.length > 0">
       <div :class="{'bg-white': booksList.length > 0}" class="max-w-screen-xl mx-4 md:mx-auto rounded-lg my-10">
         <div v-if="booksList.length > 0" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
           <CardProduct v-for="book in booksList" :title="book.title" :id="book.id" :price="book.price" :stock_quantity="book.stock_quantity" class="mb-8"/>
