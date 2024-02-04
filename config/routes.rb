@@ -68,6 +68,11 @@ Rails.application.routes.draw do
           get '/' => "orders#get_all", as: :admin_orders_get_all 
         end
 
+        scope '/user' do
+          get '/' => "users#get_all", as: :admin_users_get_all 
+          put '/:user_id' => "users#update_admin", as: :admin_users_update
+        end
+
         scope '/book' do 
           get "/" => "books#get_books", as: :admin_books_get
           put "/:book_id" => "books#update", as: :admin_books_update
