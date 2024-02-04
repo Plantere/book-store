@@ -1,3 +1,4 @@
 
 vite: bin/vite dev
 web: bin/rails s
+stripe_hook: stripe listen --forward-to localhost:5100/api/v1/webhook
