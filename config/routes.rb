@@ -62,6 +62,9 @@ Rails.application.routes.draw do
 
         scope '/author' do
           get '/' => "authors#get_all", as: :admin_authors_get_all 
+          get '/get' => "authors#get", as: :admin_authors_get
+          post "/" => "authors#create", as: :admin_authors_create
+          put "/:author_id" => "authors#update", as: :admin_authors_update
         end
 
         scope '/order' do
@@ -89,9 +92,7 @@ Rails.application.routes.draw do
 
       scope '/author' do
         get "/" => "authors#index", as: :authors_index
-        post "/" => "authors#create", as: :authors_create
         delete "/:author_id" => "authors#delete", as: :authors_delete
-        put "/:author_id" => "authors#update", as: :authors_update
       end
     end
   end

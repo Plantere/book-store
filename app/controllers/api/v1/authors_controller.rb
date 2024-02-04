@@ -31,6 +31,22 @@ class Api::V1::AuthorsController < ApplicationController
     }
   end
 
+  def get
+    page, data = pagy(AuthorsHelper.get_filtered(params).all, page: params[:page])
+    pagination = pagy_metadata(page)
+
+    render json: {
+      pagination: pagination,
+      data: data.map{ |author| {
+          id: author.id, 
+          full_name: author.full_name, 
+          total_books: author.book.count(), 
+          biography: author.biography,
+          birth_date: author.birth_date,
+        }}
+      }, status: :ok
+  end
+
   def update 
     if !Author.exists(id: params[:author_id])
       render json: { error: "Author not found" }, status: :unprocessable_entity
