@@ -107,7 +107,7 @@ class Api::V1::BooksController < ApplicationController
             id: book.publisher.id,
             name: book.publisher.name
           },
-          status: 1,
+          status: book.status,
           stock_quantity: book.stock_quantity,
         }}
       }, status: :ok
@@ -115,6 +115,6 @@ class Api::V1::BooksController < ApplicationController
 
   private
   def params_book
-    params.require(:book).permit(:name, :description, :price, :stock_quantity, :publisher_id, :author_id, :genre_id)
+    params.require(:book).permit(:name, :description, :price, :stock_quantity, :publisher_id, :author_id, :genre_id, :status)
   end
 end

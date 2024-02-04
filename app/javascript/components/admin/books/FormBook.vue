@@ -2,51 +2,77 @@
 import Icon from '@/components/shares/Icon.vue';
 import { useNotificationStore } from '@/stores/notification';
 import { makeRequest } from '@/utils/request';
-import { api_v1_admin_books_create_path, api_v1_admin_books_update_path, api_v1_admin_authors_get_all_path, api_v1_admin_genres_get_all_path, api_v1_admin_publishers_get_all_path } from '@/utils/routes';
-import { reactive, ref } from 'vue';
+import { api_v1_admin_books_update_path, api_v1_admin_books_create_path, api_v1_admin_genres_get_all_path, api_v1_admin_authors_get_all_path, api_v1_admin_publishers_get_all_path } from '@/utils/routes';
+import { onBeforeMount, ref, toRaw } from 'vue';
 
-const statusModal = ref(false)
-const emit = defineEmits(["update"])
-const notification = useNotificationStore()
+interface IDefault {
+  id?: number,
+  name?: string
+}
 
-const initialData = {
-  id: null,
-  title: null, 
-  description: null,
-  stock_quantity: null,
-  price: null,
-  status: null,
+interface IAuthor {
+  id: number,
+  full_name: string
+}
+
+interface IBook {
+  id?: number,
+  title?: string,
+  description?: string,
+  stock_quantity?: number,
+  price?: number | string,
+  status?: number,
+  author: IDefault,
+  publisher: IDefault,
+  genre: IDefault,
+}
+
+const initialData: IBook = {
+  id: undefined,
+  title: undefined, 
+  description: undefined,
+  stock_quantity: undefined,
+  price: undefined,
+  status: undefined,
   author: {
-    id: null,
-    name: null,
+    id: undefined,
+    name: undefined,
   },
   publisher: {
-    id: null,
-    name: null,
+    id: undefined,
+    name: undefined,
   },
   genre: {
-    id: null,
-    name: null,
+    id: undefined,
+    name: undefined,
   },
 }
 
-const book = reactive({...initialData})
+const notification = useNotificationStore()
 
-const openModal = (bookData = initialData) => {
-  statusModal.value = true
-  Object.assign(book, bookData)
+const emit = defineEmits(["update-book"])
+const statusModal = ref(false)
+const bookData = ref<IBook | null>()
+
+const genres = ref<IDefault[]>()
+const authors = ref<IDefault[]>()
+const publishers = ref<IDefault[]>()
+
+const handleModal = (value: boolean, book: IBook= initialData) => {
+  statusModal.value = value
+  bookData.value = structuredClone(toRaw(book)) 
 }
 
-const genres = ref([])
-const authors = ref([])
-const publishers = ref([])
+const statusEnums = [
+  {value: 1, name: "Active"},
+  {value: 2, name: "Inactive"}
+]
 
 const getGenres = async () => {
   const response = await makeRequest(api_v1_admin_genres_get_all_path(), {method: "GET"})
   if(!response.ok) return
 
   const data = await response.json()
-
   genres.value = data.data
 }
 const getAuthors = async () => {
@@ -55,143 +81,147 @@ const getAuthors = async () => {
 
   const data = await response.json()
 
-  authors.value = data.data
+  authors.value = data.data.map((item: IAuthor) => {
+    return {id: item.id, name: item.full_name}
+  })
 }
 const getPublishers = async () => {
   const response = await makeRequest(api_v1_admin_publishers_get_all_path(), {method: "GET"})
   if(!response.ok) return
 
   const data = await response.json()
-
   publishers.value = data.data
 }
 
-getPublishers()
-getGenres()
-getAuthors()
-
-const closeModal = () => {
-  statusModal.value = false
-}
-
-const submit = async () => {
-  const bookData = {
-    name: book.title,
-    publisher_id: book.publisher?.id,
-    author_id: book.author?.id,
-    description: book.description,
-    price: book.price,
-    stock_quantity: book.stock_quantity,
-    genre_id: book.genre?.id,
+const submitBook = async () => {
+  if(!bookData.value) return;
+  
+  const book = {
+    name: bookData.value.title,
+    status: bookData.value.status,
+    publisher_id: bookData.value.publisher?.id,
+    author_id: bookData.value.author?.id,
+    description: bookData.value.description,
+    price: bookData.value.price,
+    stock_quantity: bookData.value.stock_quantity,
+    genre_id: bookData.value.genre?.id,
   }
   
   let response;
-  if(book.id){
-    response = await makeRequest(api_v1_admin_books_update_path({id: book.id}), {method: "PUT", data: bookData})
-  }else{
-    response = await makeRequest(api_v1_admin_books_create_path(), {method: "POST", data: bookData})
+  if(bookData.value.id) {
+    response = await makeRequest(api_v1_admin_books_update_path({id: bookData.value.id}), {method: "PUT", data: book})
+  } else {
+    response = await makeRequest(api_v1_admin_books_create_path(), {method: "POST", data: book})
   }
 
   if(!response.ok) {
-    notification.createNotification(`Book cannot be ${book.id ? "updated" : "created"}`, 'success')
+    notification.createNotification(`Book cannot be ${bookData.value.id ? "updated" : "created"}`, 'success')
     return
   }
 
-  notification.createNotification(`Book ${book.id ? "updated" : "created"} successufly`, 'success')
-  emit("update")
-  closeModal()
+  notification.createNotification(`Book ${bookData.value.id ? "updated" : "created"} successufly`, 'success')
+  emit("update-book")
+  handleModal(false)
 }
 
-defineExpose({
-  openModal,
+onBeforeMount( () => {
+  getPublishers()
+  getGenres()
+  getAuthors()
 })
-</script>
 
+defineExpose({
+  handleModal,
+})
+
+</script>
 <template>
-  <div v-if="statusModal">
+  <div v-if="statusModal && bookData">
     <div class="relative z-10">
       <div>
         <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
       </div>
 
-      <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
-        <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-          <div>
-            <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
-              <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-                <div class="sm:flex sm:items-start">
-                  <div class="mt-3 sm:mt-0">
-                    <span class="text-2xl font-semibold leading-6 text-gray-900">Book</span>
-                    <hr class="my-5">
-                    <div class="mt-2 flex flex-col w-96">
-                      <div class="relative flex mb-5 justify-center">
-                        <span class="text-xl font-bold absolute inset-y-2/4 right-4">
-                          <Icon class="w-2 text-purple-600 hover:text-purple-400 cursor-pointer" name="next"></Icon>
-                        </span>
-                        <img  class="w-[200px]" src="https://placehold.co/990x1500"/>
-                        <span class="text-xl font-bold absolute inset-y-2/4 left-4">
-                          <Icon class="w-2 text-purple-600 hover:text-purple-400 cursor-pointer" name="previous"></Icon>
-                        </span>
-                      </div>
-                      <div class="flex space-x-2">
-                        <div class="w-full">
-                          <label for="name" class="text-sm font-medium leading-6 text-gray-900">Name</label>
-                          <input id="name" name="name" type="text" v-model="book.title" required class="mt-2 mb-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6" />
-                        </div>
-                      </div>
-
-                      <div class="flex space-x-2">
-                        <div class="w-3/12">
-                          <label for="stock_quantity" class="text-sm font-medium leading-6 text-gray-900">Quantity</label>
-                          <input id="stock_quantity" name="stock_quantity" type="number" v-model="book.stock_quantity" required class="mt-2 mb-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6" />
-                        </div>
-                        <div class="w-3/12">
-                          <label for="price" class="text-sm font-medium leading-6 text-gray-900">Price</label>
-                          <input id="price" name="price" type="text" v-model="book.price" required class="mt-2 mb-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6" />
-                        </div>
-                        <div class="w-6/12">
-                          <label for="genre" class="text-sm font-medium leading-6 text-gray-900">Genre</label>
-                          <select name="genre" v-model="book.genre.id" id="genre" class="mt-2 mb-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6">
-                            <option :value="null" class="text-gray-200" selected>Genres</option>
-                            <option v-for="genre in genres" :value="genre.id">{{ genre.name }}</option>
-                          </select>
-                        </div>
-                      </div>
-
-                      <div class="flex space-x-2">
-                        <div class="w-6/12">
-                          <label for="publisher" class="text-sm font-medium leading-6 text-gray-900">Publisher</label>
-                          <select name="publisher" v-model="book.publisher.id" id="publisher" class="mt-2 mb-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6">
-                            <option :value="null" class="text-gray-200" selected>Publisher</option>
-                            <option v-for="publisher in publishers" :value="publisher.id">{{ publisher.name }}</option>
-                          </select>
-                        </div>
-                        <div class="w-6/12">
-                          <label for="author" class="text-sm font-medium leading-6 text-gray-900">Author</label>
-                          <select name="author" v-model="book.author.id" id="author" class="mt-2 mb-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6">
-                            <option :value="null" class="text-gray-200" selected>Author</option>
-                            <option v-for="author in authors" :value="author.id">{{ author.full_name }}</option>
-                          </select>
-                        </div>
-                      </div>
-                      
-                      <div class="flex space-x-2">
-                        <div class="w-full">
-                          <label for="description" class="block mb-2 text-sm font-medium text-gray-900">Description</label>
-                          <textarea id="description" rows="4" v-model="book.description" class="block p-2.5 w-full text-sm text-gray-900 rounded-lg border border-gray-300 focus:ring-violet-600 focus:border-violet-600"></textarea>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+      <div class="fixed inset-0 z-10 w-screen overflow-x-auto">
+        <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0 ">
+          <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl  my-8 w-full max-w-screen-lg">
+            <div class="relative p-4">
+              <span class="text-xl font-semibold">Book</span>
+              <div class="absolute top-0 right-0 p-5 cursor-pointer" @click="handleModal(false)">
+                <Icon name="xmark" class="w-6"></Icon>
               </div>
+            </div>
 
-              <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                <button class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto" @click="closeModal()">Cancel</button>
-                <button class="inline-flex w-full justify-center rounded-md bg-violet-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-violet-500 sm:ml-3 sm:w-auto" @click="submit()">
-                  {{ book.id ? 'Update' : 'Create' }}
-                </button>
+            <hr class="w-full mb-4">
+            
+            <div class="relative flex w-full mb-5 justify-center">
+              <span class="text-xl font-bold absolute inset-y-2/4 right-4">
+                <Icon class="w-2 text-purple-600 hover:text-purple-400 cursor-pointer" name="next"></Icon>
+              </span>
+              <img  class="w-[200px]" src="https://placehold.co/990x1500"/>
+              <span class="text-xl font-bold absolute inset-y-2/4 left-4">
+                <Icon class="w-2 text-purple-600 hover:text-purple-400 cursor-pointer" name="previous"></Icon>
+              </span>
+            </div>
+            <div class="flex flex-row">              
+              <div class="flex flex-col px-4 w-4/6">
+                <label for="title" class="text-sm font-medium leading-6 text-gray-900">Title</label>
+                <input id="title" v-model="bookData.title" name="title" type="text" class="mt-2 mb-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6">
               </div>
+              <div class="flex flex-col px-4 w-2/6">
+                <label for="genre" class="text-sm font-medium leading-6 text-gray-900">Genre</label>
+                <select name="genre" id="genre" v-model="bookData.genre.id" class="mt-2 mb-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6">
+                  <option :value="undefined" selected disabled class="text-center text-gray-200"> Genre </option>
+                  <option :value="data.id" v-for="data in genres">{{ data.name }}</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="flex flex-row">
+              <div class="flex flex-col px-4 w-2/6">
+                <label for="quantity" class="text-sm font-medium leading-6 text-gray-900">Quantity</label>
+                <input id="quantity" v-model="bookData.stock_quantity" name="quantity" type="number" class="mt-2 mb-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6">
+              </div>
+              <div class="flex flex-col px-4 w-2/6">
+                <label for="price" class="text-sm font-medium leading-6 text-gray-900">Price</label>
+                <input id="price" v-model="bookData.price" name="price" type="text" class="mt-2 mb-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6">
+              </div>
+              <div class="flex flex-col px-4 w-2/6">
+                <label for="status" class="text-sm font-medium leading-6 text-gray-900">Status</label>
+                <select name="status" id="status" v-model="bookData.status" class="mt-2 mb-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6">
+                  <option :value="undefined" selected disabled class="text-center text-gray-200"> Status </option>
+                  <option :value="data.value" v-for="data in statusEnums">{{ data.name }}</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="flex flex-row">
+              <div class="flex flex-col px-4 w-3/6">
+                <label for="title" class="text-sm font-medium leading-6 text-gray-900">Publisher</label>
+                <select name="publisher" id="publisher" v-model="bookData.publisher.id" class="mt-2 mb-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6">
+                  <option :value="undefined" selected disabled class="text-center text-gray-200"> Publisher </option>
+                  <option :value="data.id" v-for="data in publishers">{{ data.name }}</option>
+                </select>
+              </div>
+              <div class="flex flex-col px-4 w-3/6">
+                <label for="title" class="text-sm font-medium leading-6 text-gray-900">Author </label>
+                <select name="author" id="author" v-model="bookData.author.id" class="mt-2 mb-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6">
+                  <option :value="undefined" selected disabled class="text-center text-gray-200"> Author </option>
+                  <option :value="data.id" v-for="data in authors">{{ data.name }}</option>
+                </select>
+              </div>
+            </div>
+
+
+            <div class="flex flex-row">
+              <div class="flex flex-col px-4 w-full">
+                <label for="description" class="text-sm font-medium leading-6 text-gray-900">Description</label>
+                <textarea id="description" v-model="bookData.description" name="title" type="text" class="mt-2 mb-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6"></textarea>
+              </div>
+            </div>
+
+            <div class="flex flex-row m-5 justify-end">
+              <button @click="submitBook()" class="rounded-md bg-violet-600 px-3 py-2 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-violet-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-600">{{ bookData.id ? "Update" : "Create" }}</button>
             </div>
           </div>
         </div>

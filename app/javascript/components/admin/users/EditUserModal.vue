@@ -44,17 +44,18 @@ const handleModal = (value: boolean, user?: IUser) => {
 }
 
 const updateUser = async () => {
-  const response = await makeRequest(api_v1_admin_users_update_path({id: userData.value?.id}), {method: "PUT", data: {
+  if(!userData.value) return 
+  const response = await makeRequest(api_v1_admin_users_update_path({id: userData.value.id}), {method: "PUT", data: {
     user: {
-      status: userData.value?.status,
-      user_type: userData.value?.user_type,
-      email: userData.value?.email,
-      username: userData.value?.username,
+      status: userData.value.status,
+      user_type: userData.value.user_type,
+      email: userData.value.email,
+      username: userData.value.username,
     },
     profile: {
-      first_name: userData.value?.profile.first_name,
-      last_name: userData.value?.profile.last_name,
-      description: userData.value?.profile.description
+      first_name: userData.value.profile.first_name,
+      last_name: userData.value.profile.last_name,
+      description: userData.value.profile.description
     },
   }})
 
@@ -85,7 +86,7 @@ defineExpose({
         <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0 ">
           <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl  my-8 w-full max-w-screen-lg">
             <div class="relative p-4">
-              <span class="text-xl font-semibold">Usuario #{{ userData.id }} </span>
+              <span class="text-xl font-semibold">User #{{ userData.id }} </span>
               <div class="absolute top-0 right-0 p-5 cursor-pointer" @click="handleModal(false)">
                 <Icon name="xmark" class="w-6"></Icon>
               </div>
@@ -126,7 +127,7 @@ defineExpose({
               </div>
               <div class="flex flex-col px-4 w-3/6">
                 <label for="username" class="text-sm font-medium leading-6 text-gray-900">Status</label>
-                <select name="type" id="type" v-model="userData.status" class="mt-2 mb-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6"s>
+                <select name="type" id="type" v-model="userData.status" class="mt-2 mb-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6">
                   <option :value="null" selected disabled>User Status</option>
                   <option :value="date.value" v-for="date in statusUserEnums">{{ date.name }}</option>
                 </select>

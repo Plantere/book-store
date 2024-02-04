@@ -25,7 +25,7 @@ const emit = defineEmits(["update"])
         v-for="book in props.booksList" 
         :key="book.id" 
         :book="book"
-        @update="emit('update', book.id)"
+        @update="emit('update', book)"
       />
     </tbody>
   </table>

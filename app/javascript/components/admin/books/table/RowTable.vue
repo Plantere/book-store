@@ -49,8 +49,8 @@ const emit = defineEmits(["update"])
     <td class="px-6 py-4">{{ formatMoney(props.book.price) }}</td>
     <td class="px-6 py-4">{{ props.book.stock_quantity }}</td>
     <td class="text-center">
-      <div :class="{'text-red-700': !props.book.status}" class="bg-green-300 p-1 mx-3 rounded-xl">
-        <span :class="{'text-red-700': !props.book.status}" class="text-green-700">{{ props.book.status ? "Active" : "Inactive" }}</span>
+      <div :class="{'bg-red-300': props.book.status !== 1}" class="bg-green-300 p-1 mx-3 rounded-xl">
+        <span :class="{'text-red-700': props.book.status !== 1}" class="text-green-700">{{ props.book.status === 1 ? "Active" : "Inactive" }}</span>
       </div>
     </td>
     <td class="relative flex justify-center my-8">

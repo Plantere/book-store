@@ -8,48 +8,50 @@ import BookTable from '@/components/admin/books/table/BookTable.vue'
 import FormBook from '@/components/admin/books/FormBook.vue'
 import type { IPagination } from '@/interfaces/pagination';
 
-interface Author {
+interface IDefault {
   id: number,
   name: string
 }
 
-interface Publisher {
+interface IBook {
   id: number,
-  name: string
-}
-
-interface Book {
-  id: number,
-  genre: string,
+  genre: IDefault,
   title: string,
+  description: string,
   stock_quantity: number,
   price: number | string,
   status: number,
-  author: Author,
-  publisher: Publisher,
+  author: IDefault,
+  publisher: IDefault,
 }
 
-const searchData = ref({
-  genre: null,
-  stock: null,
-  status: null,
-  search: null,
+interface FormSearch {
+  genre?: number,
+  stock?: number,
+  status?: number,
+  search?: string,
+}
+
+const formSearch = ref<FormSearch>({
+  genre: undefined,
+  stock: undefined,
+  status: undefined,
+  search: undefined,
 })
 
-const booksList = ref<Book[]>([])
-const formBookModal = ref<InstanceType<typeof FormBook> | null>(null)
-
+const booksList = ref<IBook[]>([])
+const formBook = ref<InstanceType<typeof FormBook> | null>(null)
 const paginationConfig = ref<IPagination>({
   totalItems: 0,
   currentPage: 1,
   perPage: 15,
 })
 
-const getBooks = async (search = searchData.value, page = paginationConfig.value.currentPage) => {
+const getBooks = async (search = formSearch.value, page = paginationConfig.value.currentPage) => {
   const response = await makeRequest(api_v1_admin_books_get_path({page, ...search}), {method: "GET"})
 
-  if(JSON.stringify(searchData.value) !== JSON.stringify(search)){
-    searchData.value = search
+  if(JSON.stringify(formSearch.value) !== JSON.stringify(search)){
+    formSearch.value = search
   }
 
   if(!response.ok){
@@ -80,15 +82,8 @@ onBeforeMount(async () => {
   await getBooks()
 })
 
-const openFormBook = (bookId?: number) => {
-  if(!bookId){
-    return formBookModal.value?.openModal()
-  }
-
-  const bookSelected = booksList.value.find(book => book.id === bookId)
-  if(!bookSelected) return
-
-  formBookModal.value?.openModal(bookSelected)
+const openFormBook = (book?: IBook) => {
+  formBook.value?.handleModal(true, book)
 }
 
 </script>
@@ -103,9 +98,9 @@ const openFormBook = (bookId?: number) => {
         @update="openFormBook" 
       />
       <div class="flex justify-center p-5" v-if="paginationConfig.totalItems > paginationConfig.perPage">
-        <Pagination :total-items="paginationConfig.totalItems" :per-page="paginationConfig.perPage" :current-page="paginationConfig.currentPage" @change-page="getBooks(searchData, $event)" />
+        <Pagination :total-items="paginationConfig.totalItems" :per-page="paginationConfig.perPage" :current-page="paginationConfig.currentPage" @change-page="getBooks(formSearch, $event)" />
       </div>
     </div>
   </div>
-  <FormBook ref="formBookModal" @update="getBooks" />
+  <FormBook ref="formBook" @update-book="getBooks" />
 </template>
