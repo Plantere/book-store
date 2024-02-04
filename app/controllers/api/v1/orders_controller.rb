@@ -1,6 +1,7 @@
 class Api::V1::OrdersController < ApplicationController
   skip_before_action :verify_authenticity_token
   before_action :authorize_request
+  before_action :is_admin, only: [:get_all]
   
   def create
     if BooksHelper.books_below_ordered(params[:cart]).exists?

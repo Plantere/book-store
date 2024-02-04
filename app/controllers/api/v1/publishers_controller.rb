@@ -1,7 +1,7 @@
 class Api::V1::PublishersController < ApplicationController
   skip_before_action :verify_authenticity_token
   before_action :authorize_request, only: [ :create, :update ]
-  before_action :is_admin, only: [ :create, :update ]
+  before_action :is_admin, only: [ :create, :update, :get_all ]
   
   def index
     render json: Publisher.all
