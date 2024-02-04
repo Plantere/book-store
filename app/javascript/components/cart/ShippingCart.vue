@@ -8,12 +8,13 @@ import Pagination from '@/components/shares/Pagination.vue';
 import FormAddress from '@/components/address/FormAddress.vue';
 import StripePay from '@/components/stripe/StripePay.vue';
 
-import type { Address } from '@/interfaces/address'
-import type { ItemsCart } from '@/interfaces/cart'
+import type { IAddress } from '@/interfaces/address'
+import type { IItemsCart } from '@/interfaces/cart'
 import { useRouter } from 'vue-router';
 import { useCartStore } from '@/stores/cart';
+import type { IPagination } from '@/interfaces/pagination';
 
-const props = defineProps<ItemsCart>()
+const props = defineProps<IItemsCart>()
 const emit = defineEmits(["nextTab", "previousTab"])
 
 const cart = useCartStore()
@@ -24,8 +25,8 @@ const shippingInformations = reactive({
   carrier_id: 1
 })
 
-const addressesList = ref<Address[]>([])
-const paginationConfig = ref({
+const addressesList = ref<IAddress[]>([])
+const paginationConfig = ref<IPagination>({
   totalItems: 0,
   currentPage: 1,
   perPage: 5,

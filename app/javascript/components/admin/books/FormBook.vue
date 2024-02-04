@@ -93,11 +93,11 @@ const submit = async () => {
   }
 
   if(!response.ok) {
-    notification.createNotification(`Book cannot be ${book.id ? "updated" : "created"}`)
+    notification.createNotification(`Book cannot be ${book.id ? "updated" : "created"}`, 'success')
     return
   }
 
-  notification.createNotification(`Book ${book.id ? "updated" : "created"} successufly`)
+  notification.createNotification(`Book ${book.id ? "updated" : "created"} successufly`, 'success')
   emit("update")
   closeModal()
 }

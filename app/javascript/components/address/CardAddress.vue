@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ItemsAddress } from '@/interfaces/address';
+import type { IItemsAddress } from '@/interfaces/address';
 import Icon from '@/components/shares/Icon.vue';
 
 const emit = defineEmits(["edit", "delete", "changeDefaultAddress"])
@@ -18,7 +18,7 @@ const changeDefaultAddress = () => {
   emit('changeDefaultAddress', props.address.id)
 }
 
-const props = defineProps<ItemsAddress>()
+const props = defineProps<IItemsAddress>()
 
 </script>
 

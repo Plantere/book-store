@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import RowTable from './RowTable.vue';
-import type { Order } from '@/interfaces/order'
+import type { IOrder } from '@/interfaces/order'
 
 const emit = defineEmits(['open-detail'])
 
 interface Props {
-  ordersList: Order[]
+  ordersList: IOrder[]
 }
 
 const props = defineProps<Props>()

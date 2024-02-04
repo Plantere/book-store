@@ -2,12 +2,12 @@
 import { ref } from 'vue';
 import { formatMoney, convertStringToNumber } from '@/helpers/exchange-helper';
 import Icon from '../../shares/Icon.vue';
-import type { Order } from '@/interfaces/order';
+import type { IOrder } from '@/interfaces/order';
 
 const statusModal = ref(false)
-const orderData = ref<Order | null>()
+const orderData = ref<IOrder | null>()
 
-const handleModal = (value: boolean, order=null) => {
+const handleModal = (value: boolean, order?: IOrder) => {
   statusModal.value = value
   orderData.value = order 
 }

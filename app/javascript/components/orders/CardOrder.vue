@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import Icon from '@/components/shares/Icon.vue';
-import type { OrderItem } from '@/interfaces/order';
+import type { IOrderItem } from '@/interfaces/order';
 import { formatMoney } from '@/helpers/exchange-helper';
 import { formatDate } from '@/helpers/date-helper';
 import { useRouter } from 'vue-router';
 
-const props = defineProps<OrderItem>()
+const props = defineProps<IOrderItem>()
 const router = useRouter()
 
 const collapse = ref(false)

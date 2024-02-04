@@ -6,6 +6,7 @@ import Pagination from '@/components/shares/Pagination.vue';
 import Filter from '@/components/admin/books/Filter.vue'
 import BookTable from '@/components/admin/books/table/BookTable.vue'
 import FormBook from '@/components/admin/books/FormBook.vue'
+import type { IPagination } from '@/interfaces/pagination';
 
 interface Author {
   id: number,
@@ -38,7 +39,7 @@ const searchData = ref({
 const booksList = ref<Book[]>([])
 const formBookModal = ref<InstanceType<typeof FormBook> | null>(null)
 
-const paginationConfig = ref({
+const paginationConfig = ref<IPagination>({
   totalItems: 0,
   currentPage: 1,
   perPage: 15,

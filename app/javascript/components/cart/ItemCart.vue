@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { formatMoney } from "@/helpers/exchange-helper";
-import type { ItemCart } from "@/interfaces/cart";
+import type { IItemCart } from "@/interfaces/cart";
 import Icon from "@/components/shares/Icon.vue";
 
-const props = defineProps<ItemCart>()
+const props = defineProps<IItemCart>()
 
 const emit = defineEmits(["remove", "setCartQuantity"])
 

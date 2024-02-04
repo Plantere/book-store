@@ -1,4 +1,4 @@
-export interface Cart {
+export interface ICart {
   id: number;
   name: string;
   image: string;
@@ -7,10 +7,10 @@ export interface Cart {
   stock_quantity: number;
 }
 
-export interface ItemsCart {
-  cart: Cart[]
+export interface IItemsCart {
+  cart: ICart[]
 }
 
-export interface ItemCart {
-  cart: Cart
+export interface IItemCart {
+  cart: ICart
 }

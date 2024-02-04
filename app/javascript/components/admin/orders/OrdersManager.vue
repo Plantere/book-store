@@ -6,7 +6,8 @@ import { makeRequest } from '@/utils/request';
 import { api_v1_admin_orders_get_all_path } from '@/utils/routes';
 import Pagination from '@/components/shares/Pagination.vue';
 import DetailsModal from './DetailsModal.vue';
-import type { Order } from '@/interfaces/order'
+import type { IOrder } from '@/interfaces/order'
+import type { IPagination} from '@/interfaces/pagination'
 
 interface FormSearch {
   status?: string,
@@ -20,8 +21,8 @@ const formSearch = ref<FormSearch>({
   date: undefined,
 })
 
-const ordersList = ref<Order[]>()
-const paginationConfig = ref({
+const ordersList = ref<IOrder[]>()
+const paginationConfig = ref<IPagination>({
   totalItems: 0,
   currentPage: 1,
   perPage: 15,
@@ -29,7 +30,7 @@ const paginationConfig = ref({
 
 const detailsModal = ref<InstanceType<typeof DetailsModal> | null>(null)
 
-const getOrders = async (search = formSearch.value, page = paginationConfig.currentPage) => {
+const getOrders = async (search = formSearch.value, page = paginationConfig.value.currentPage) => {
   const response = await makeRequest(api_v1_admin_orders_get_all_path({page, ...search}), {method: "GET"})
   formSearch.value = search
 
@@ -57,6 +58,12 @@ const getOrders = async (search = formSearch.value, page = paginationConfig.curr
   }
 }
 
+const emitOpenDetail = (orderDetail: IOrder) => {
+  if(!detailsModal) return
+
+  detailsModal.value?.handleModal(true, orderDetail)
+}
+
 onBeforeMount(() => {
   getOrders()
 })
@@ -67,7 +74,7 @@ onBeforeMount(() => {
     <Filter @search-order="getOrders"/>
     <hr class="block w-full my-5">
     <div class="px-5 pb-4" v-if="ordersList">
-      <OrdersTable :ordersList="ordersList" @open-detail="detailsModal.handleModal(true, $event)"/>
+      <OrdersTable :ordersList="ordersList" @open-detail="emitOpenDetail($event)"/>
       <div class="flex justify-center p-5" v-if="paginationConfig.totalItems > paginationConfig.perPage">
         <Pagination :total-items="paginationConfig.totalItems" :per-page="paginationConfig.perPage" :current-page="paginationConfig.currentPage" @change-page="getOrders(formSearch, $event)" />
       </div>

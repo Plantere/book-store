@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { formatMoney } from '@/helpers/exchange-helper';
-import type { ItemsCart } from '@/interfaces/cart';
+import type { IItemsCart } from '@/interfaces/cart';
 
 const emit = defineEmits(["nextTab"])
 
-const props = defineProps<ItemsCart>()
+const props = defineProps<IItemsCart>()
 
 const getBagTotal = () => {
   return props.cart.reduce((acc, item) => {

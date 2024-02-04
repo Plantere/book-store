@@ -10,14 +10,14 @@ import { useRouter } from 'vue-router';
 import ItemCart from '@/components/cart/ItemCart.vue';
 import ResumeCart from '@/components/cart/ResumeCart.vue';
 import ShippingCart from '@/components/cart/ShippingCart.vue';
-import type { Cart } from '@/interfaces/cart';
+import type { ICart } from '@/interfaces/cart';
 
 const router = useRouter()
 const cart = useCartStore()
 const notifications = useNotificationStore()
 const user = useUserStore()
 
-const cartItems = ref<Cart[]>([]);
+const cartItems = ref<ICart[]>([]);
 const currentTab = ref<number>(0);
 
 const getCartItems = async () => {

@@ -1,4 +1,4 @@
-export interface Address {
+export interface IAddress {
   name: string,
   id: number,
   is_default: boolean,
@@ -12,6 +12,6 @@ export interface Address {
   phone_number: string,
 }
 
-export interface ItemsAddress {
-  address: Address
+export interface IItemsAddress {
+  address: IAddress
 }

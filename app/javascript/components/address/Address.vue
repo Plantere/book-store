@@ -8,14 +8,15 @@ import Icon from '@/components/shares/Icon.vue';
 import Pagination from '@/components/shares/Pagination.vue';
 import CardAddress from './CardAddress.vue';
 import FormAddress from './FormAddress.vue';
-import type { Address } from '@/interfaces/address';
+import type { IAddress } from '@/interfaces/address';
+import type { IPagination } from '@/interfaces/pagination';
 
 const formAddressModal = ref<InstanceType<typeof FormAddress> | null>(null)
 
 const notifications = useNotificationStore();
 
-const addressesList = ref<Address[]>([])
-const paginationConfig = ref({
+const addressesList = ref<IAddress[]>([])
+const paginationConfig = ref<IPagination>({
   totalItems: 0,
   currentPage: 1,
   perPage: 5,

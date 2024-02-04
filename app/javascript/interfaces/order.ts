@@ -1,23 +1,23 @@
-import type { Address } from './address'
+import type { IAddress } from './address'
 
-export interface Order {
+export interface IOrder {
   id: number;
   status: number;
-  address: Address;
-  user?: User;
+  address: IAddress;
+  user?: IUser;
   description: string;
   price: number | string;
-  details: OrderDetail[];
+  details: IOrderDetail[];
   created_at: string;
 }
 
-export interface User {
+export interface IUser {
   first_name: string,
   last_name: string,
   email: string,
 }
 
-export interface OrderDetail {
+export interface IOrderDetail {
   id: number
   name: string
   image?: string
@@ -25,6 +25,6 @@ export interface OrderDetail {
   price: number
 }
 
-export interface OrderItem {
-  order: Order
+export interface IOrderItem {
+  order: IOrder
 }

@@ -2,11 +2,11 @@
 import { formatMoney } from '@/helpers/exchange-helper';
 import { formatDate } from '@/helpers/date-helper';
 import Icon from '@/components/shares/Icon.vue';
-import type { Order } from '@/interfaces/order'
-import { computed, ref } from 'vue';
+import type { IOrder } from '@/interfaces/order'
+import { computed } from 'vue';
 
 interface Props {
-  order: Order
+  order: IOrder
 }
 
 const emit = defineEmits(["open-detail"])

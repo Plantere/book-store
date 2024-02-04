@@ -5,9 +5,9 @@ import Pagination from '@/components/shares/Pagination.vue';
 import CardOrder from './CardOrder.vue';
 import { makeRequest } from '@/utils/request';
 import { api_v1_orders_get_path } from '@/utils/routes';
-import type { Order } from '@/interfaces/order';
+import type { IOrder } from '@/interfaces/order';
 
-const orders = ref<Order[]>([]);
+const orders = ref<IOrder[]>([]);
 let paginationConfig = ref({
   totalItems: 0,
   currentPage: 1,
