@@ -59,12 +59,14 @@ Rails.application.routes.draw do
         scope '/publisher' do
           get '/' => "publishers#get_all", as: :admin_publishers_get_all 
         end
-        
 
         scope '/author' do
           get '/' => "authors#get_all", as: :admin_authors_get_all 
         end
-        
+
+        scope '/order' do
+          get '/' => "orders#get_all", as: :admin_orders_get_all 
+        end
 
         scope '/book' do 
           get "/" => "books#get_books", as: :admin_books_get

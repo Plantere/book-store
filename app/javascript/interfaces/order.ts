@@ -3,11 +3,18 @@ import type { Address } from './address'
 export interface Order {
   id: number;
   status: number;
-  created_at: string;
   address: Address;
+  user?: User;
   description: string;
-  price: number;
+  price: number | string;
   details: OrderDetail[];
+  created_at: string;
+}
+
+export interface User {
+  first_name: string,
+  last_name: string,
+  email: string,
 }
 
 export interface OrderDetail {

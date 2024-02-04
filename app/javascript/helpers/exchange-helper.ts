@@ -8,3 +8,9 @@ export const formatMoney = (money: number | string):string => {
     currency: 'USD',
   });
 }
+
+export const convertStringToNumber = (price: number | string): number => {
+  if(typeof price === "number")
+    return price
+  return parseFloat(price)
+}

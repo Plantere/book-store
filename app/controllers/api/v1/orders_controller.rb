@@ -63,6 +63,48 @@ class Api::V1::OrdersController < ApplicationController
     }, status: :ok
   end
 
+  def get_all
+    page, data = pagy(OrdersHelper.get_filtered(params).all)
+    pagination = pagy_metadata(page)
+
+    render json: {
+      pagination: pagination.slice(:prev_url, :next_url, :count, :page),
+      data: data.map do |item|
+        {
+          id: item.id,
+          price: item.price,
+          description: item.description,
+          status: item.status,
+          created_at: item.created_at,
+          user: {
+            first_name: item.user.profile.first_name,
+            last_name: item.user.profile.last_name,
+            email: item.user.email
+          },
+          details: item.order_detail.map do |detail|
+            {
+              id: detail.book.id,
+              name: detail.book.name,
+              image: "https://placehold.co/990x1500",
+              price: detail.price,
+              quantity: detail.quantity,
+            }
+          end,
+          address: {
+            name: item.address.name,
+            street: item.address.street,
+            city: item.address.city,
+            state: item.address.state,
+            district: item.address.district,
+            number: item.address.number,
+            postal_code: item.address.postal_code,
+            phone_number: item.address.phone_number,
+          }
+        }
+      end
+    }, status: :ok
+  end
+
   def params_order_details
     params.require(:order_details).map do |order_detail|
       order_detail.permit(:book_id, :quantity)

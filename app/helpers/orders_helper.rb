@@ -1,4 +1,28 @@
 module OrdersHelper
+  def self.get_filtered(filter)
+    orders = Order
+
+    if(filter[:status] != nil)
+      orders = orders.where('orders.status = ?', filter[:status])
+    end
+    
+    if(filter[:search] != nil)
+      orders = orders.joins(user: :profile)
+      orders = orders.where('LOWER(profiles.first_name) LIKE :search OR LOWER(profiles.last_name) LIKE :search OR LOWER(users.email) LIKE :search OR LOWER(users.username) LIKE :search OR LOWER(orders.transaction_id) LIKE :search', {search: "%" + Book.sanitize_sql_like(filter[:search].downcase) + "%"})
+    end
+
+    if(filter[:date] != nil)
+      dateEnums = {
+        1 => Time.now.strftime('%Y-%m-%d 00:00:00'),
+        2 => 7.days.ago,
+        3 => 1.months.ago,
+        4 => 6.months.ago,
+      }
+      orders = orders.where('orders.created_at >= ?', dateEnums[filter[:date].to_i])
+    end
+
+    orders
+  end
 
   def self.set_order_to_status(transaction_id, status)
     order = Order.where(transaction_id: transaction_id).first
