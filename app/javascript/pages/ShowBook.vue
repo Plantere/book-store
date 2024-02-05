@@ -61,7 +61,7 @@ const checkStockQuantity = () => {
 
 const isDisabled = computed(() => {
   if(!book.value) return false;
-  return cartQuantity.value >= book.value.stock_quantity
+  return cartQuantity.value >= book.value.stock_quantity || quantity.value > stockAvailable.value
 })
 
 const stockAvailable = computed<number>(() => {
@@ -120,7 +120,7 @@ onBeforeMount( async () => {
           <span class="text-md font-semibold p-2 bg-violet-400 rounded-xl text-white">Stock Available: {{ stockAvailable }}</span>
         </div>
         <div class="flex flex-col items-center justify-center">
-          <label for="postal_code" class="text-sm font-medium leading-6 text-gray-900">Quantity</label>
+          <label for="quantity" class="text-sm font-medium leading-6 text-gray-900">Quantity</label>
           <input @change="checkStockQuantity()" type="number" v-model="quantity" :max="book.stock_quantity" :min="1" class="w-28 rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-violet-600">
         </div>
 
