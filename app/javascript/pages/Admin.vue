@@ -6,6 +6,7 @@ import BooksManager from '@/components/admin/books/BooksManager.vue';
 import UsersManager from '@/components/admin/users/UsersManager.vue';
 import OrdersManager from '@/components/admin/orders/OrdersManager.vue';
 import AuthorsManager from '@/components/admin/authors/AuthorsManager.vue';
+import PublishersManager from '@/components/admin/publishers/PublishersManager.vue';
 
 interface Tab {
   name: string,
@@ -18,6 +19,7 @@ const tabsLink: Tab[] = [
   {"name": "Users", "icon": "profile", "tag": "admin-users"},
   {"name": "Books", "icon": "book", "tag": "admin-books"},
   {"name": "Authors", "icon": "pencil", "tag": "admin-authors"},
+  {"name": "Publishers", "icon": "bookmark", "tag": "admin-publishers"},
 ]
 
 const currentTab = ref(tabsLink[0])
@@ -41,6 +43,7 @@ const currentTab = ref(tabsLink[0])
         <UsersManager v-if="currentTab.tag === 'admin-users'"/>
         <BooksManager v-if="currentTab.tag === 'admin-books'"/>
         <AuthorsManager v-if="currentTab.tag === 'admin-authors'"/>
+        <PublishersManager v-if="currentTab.tag === 'admin-publishers'"/>
       </div>
     </div>
   </div>

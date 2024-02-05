@@ -58,6 +58,9 @@ Rails.application.routes.draw do
         
         scope '/publisher' do
           get '/' => "publishers#get_all", as: :admin_publishers_get_all 
+          get '/get' => "publishers#get", as: :admin_publishers_get
+          post "/" => "publishers#create", as: :admin_publishers_create
+          put "/:publisher_id" => "publishers#update", as: :admin_publishers_update
         end
 
         scope '/author' do
@@ -85,9 +88,7 @@ Rails.application.routes.draw do
 
       scope '/publisher' do
         get "/" => "publishers#index", as: :publishers_index
-        post "/" => "publishers#create", as: :publishers_create
         delete "/:publisher_id" => "publishers#delete", as: :publishers_delete
-        put "/:publisher_id" => "publishers#update", as: :publishers_update
       end
 
       scope '/author' do

@@ -31,8 +31,23 @@ class Api::V1::PublishersController < ApplicationController
     }
   end
 
+  def get
+    page, data = pagy(PublishersHelper.get_filtered(params).all, page: params[:page])
+    pagination = pagy_metadata(page)
+
+    render json: {
+      pagination: pagination,
+      data: data.map{ |publisher| {
+          id: publisher.id, 
+          name: publisher.name, 
+          total_books: publisher.book.count(), 
+          description: publisher.description,
+        }}
+      }, status: :ok
+  end
+
   def update 
-    if !Publisher.exists(id: params[:publisher_id])
+    if !Publisher.exists?(id: params[:publisher_id])
       render json: { error: "Publisher not found" }, status: :unprocessable_entity
       return
     end
