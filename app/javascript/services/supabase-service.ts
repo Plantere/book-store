@@ -26,6 +26,7 @@ export const getImages = (imagePaths: string[]): string[] => {
   return imageLinks
 }
 
-export const getImage = (imagePath: string): string => {
+export const getImage = (imagePath: string | undefined): string => {
+  if(imagePath === undefined || !imagePath.length) return "https://placehold.co/990x1500"
   return supabase.storage.from('books').getPublicUrl(imagePath).data.publicUrl
 }

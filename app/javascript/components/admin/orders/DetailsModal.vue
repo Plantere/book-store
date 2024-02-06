@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import { formatMoney, convertStringToNumber } from '@/helpers/exchange-helper';
 import Icon from '../../shares/Icon.vue';
 import type { IOrder } from '@/interfaces/order';
+import { getImage } from '@/services/supabase-service';
 
 const statusModal = ref(false)
 const orderData = ref<IOrder | null>()
@@ -47,7 +48,7 @@ defineExpose({
                 <div class="flex flex-col gap-5 my-5 ml-3">
                   <div class="flex flex-row space-x-2 items-center" v-for="book in orderData.details" :key="book.id">
                     <div>
-                      <img class="w-20 rounded-xl" src="https://placehold.co/990x1500" alt="">
+                      <img class="w-20 rounded-xl" :src="getImage(book.image)" alt="">
                     </div>
                     <div class="flex flex-col">
                       <span class="font-bold text-xl">{{ book.name }}</span>

@@ -11,6 +11,7 @@ import { useNotificationStore } from '../stores/notification'
 
 import { makeRequest } from '../utils/request';
 import { api_v1_books_search_path } from '../utils/routes';
+import { getImage } from '@/services/supabase-service';
 
 interface Book {
   id: number,
@@ -71,7 +72,7 @@ watch(() => router.currentRoute.value.query, () => {
     <div class="flex justify-center">
       <div :class="{'bg-white': booksList.length > 0}" class="max-w-screen-xl mx-4 md:mx-auto rounded-lg my-10">
         <div v-if="booksList.length > 0" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
-          <CardProduct v-for="book in booksList" :title="book.title" :id="book.id" :price="book.price" :stock_quantity="book.stock_quantity" class="mb-8"/>
+          <CardProduct v-for="book in booksList" :title="book.title" :id="book.id" :price="book.price" :stock_quantity="book.stock_quantity" :image="getImage(book.image)" class="mb-8"/>
         </div> 
         <div v-else class="text-center  mt-8 text-2xl font-bold">
           No books found.

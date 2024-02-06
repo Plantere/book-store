@@ -48,7 +48,7 @@ class Api::V1::OrdersController < ApplicationController
             {
               id: detail.book.id,
               name: detail.book.name,
-              image: "https://placehold.co/990x1500",
+              image: detail.book.book_image.get_default_or_first(),
               price: detail.price,
               quantity: detail.quantity,
             }
@@ -86,7 +86,7 @@ class Api::V1::OrdersController < ApplicationController
             {
               id: detail.book.id,
               name: detail.book.name,
-              image: "https://placehold.co/990x1500",
+              image: detail.book.book_image.get_default_or_first(),
               price: detail.price,
               quantity: detail.quantity,
             }

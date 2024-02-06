@@ -13,6 +13,7 @@ import type { IItemsCart } from '@/interfaces/cart'
 import { useRouter } from 'vue-router';
 import { useCartStore } from '@/stores/cart';
 import type { IPagination } from '@/interfaces/pagination';
+import { getImage } from '@/services/supabase-service';
 
 const props = defineProps<IItemsCart>()
 const emit = defineEmits(["nextTab", "previousTab"])
@@ -165,7 +166,7 @@ getAddresses()
               <div class="t-0 absolute right-0 bottom-0">
                 <p class="flex h-2 w-2 items-center justify-center rounded-full bg-violet-500 p-3 text-xs text-white">{{ cart.cart_quantity }}</p>
               </div>
-              <img width="50" class="border rounded-lg" src="https://placehold.co/990x1500" alt="">
+              <img width="50" class="border rounded-lg h-32 w-[100px]" :src="getImage(cart.image)" alt="">
             </div>
             <div class="min-w-0 flex flex-col p-2">
               <p class="text-md text-gray-500 truncate">{{ cart.name }}</p>

@@ -6,9 +6,16 @@ import { useRouter } from 'vue-router';
 import { makeRequest } from '@/utils/request';
 import { api_v1_books_index_path } from '@/utils/routes';
 import { useCartStore } from '@/stores/cart';
+import { getImage } from '@/services/supabase-service';
 
 interface Author {
   name: string,
+}
+
+interface IImage {
+  path: string,
+  token_image: string,
+  is_default: boolean,
 }
 
 interface Publisher {
@@ -19,6 +26,7 @@ interface Book {
   id: number,
   name: string,
   stock_quantity: number,
+  image: IImage[],
   publisher: Publisher,
   author: Author,
   genre: string
@@ -82,6 +90,24 @@ onBeforeMount( async () => {
   await getBook();
 })
 
+const currentIndex = ref(0)
+
+const nextImage = () => {
+  if(!book.value || book.value.image.length <= 0) return
+
+  if(currentIndex.value === book.value.image.length-1) return currentIndex.value = 0
+
+  currentIndex.value += 1
+}
+
+const previousImage = () => {
+  if(!book.value || book.value.image.length <= 0) return
+
+  if(currentIndex.value === 0) return currentIndex.value = book.value.image.length-1
+
+  currentIndex.value -= 1
+}
+
 </script>
 
 <template>
@@ -90,11 +116,12 @@ onBeforeMount( async () => {
     <div class="flex space-x-2 py-10 max-w-screen-2xl px-10 md:mx-auto" v-if="book">
       <div class="flex flex-col bg-white w-2/6 h-2/6 rounded-md">
         <div class="relative">
-          <span class="text-xl font-bold absolute inset-y-2/4 right-4">
+          <span class="text-xl font-bold absolute inset-y-2/4 right-4" @click="nextImage()">
             <Icon class="w-2 text-purple-600 hover:text-purple-400" name="next"></Icon>
           </span>
-          <img class="rounded-md" src="https://placehold.co/990x1500">
-          <span class="text-xl font-bold absolute inset-y-2/4 left-4">
+          <img class="rounded-md h-[720px] w-[480px]" src="https://placehold.co/990x1500" v-if="book.image.length <= 0">
+          <img class="rounded-md h-[720px] w-[480px]" :src="getImage(book.image[currentIndex].path)" v-else>
+          <span class="text-xl font-bold absolute inset-y-2/4 left-4" @click="previousImage()">
             <Icon class="w-2 text-purple-600 hover:text-purple-400" name="previous"></Icon>
           </span>
           <div class="absolute top-0 right-0 bg-purple-600 p-1 m-2 rounded-xl">

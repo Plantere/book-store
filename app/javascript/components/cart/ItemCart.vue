@@ -2,6 +2,7 @@
 import { formatMoney } from "@/helpers/exchange-helper";
 import type { IItemCart } from "@/interfaces/cart";
 import Icon from "@/components/shares/Icon.vue";
+import { getImage } from "@/services/supabase-service";
 
 const props = defineProps<IItemCart>()
 
@@ -25,7 +26,7 @@ const setCartQuantity = (itemId: number, cartQuantity: number): void => {
     <div class="flex flex-row justify-between w-full">
       <div class="flex">
         <div>
-          <img class="rounded-lg border  h-32" src="https://placehold.co/990x1500" alt="">
+          <img class="rounded-lg border  h-32 w-[100px]" :src="getImage(props.cart.image)" alt="">
         </div>
         <div class="flex flex-col pl-3 justify-between">
           <div class="flex flex-col">

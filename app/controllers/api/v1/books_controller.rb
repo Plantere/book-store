@@ -12,6 +12,7 @@ class Api::V1::BooksController < ApplicationController
       stock_quantity: book.stock_quantity,
       description: book.description,
       genre: book.genre.name,
+      image: book.book_image,
       author: {
         name: book.author.full_name
       },
@@ -64,7 +65,8 @@ class Api::V1::BooksController < ApplicationController
       data: data.map{ |book| {
           id: book.id, 
           title: book.name, 
-          price: book.price, 
+          price: book.price,
+          image: book.book_image.get_default_or_first(),
           stock_quantity: book.stock_quantity,
         }}
       }, status: :ok
@@ -77,6 +79,7 @@ class Api::V1::BooksController < ApplicationController
       data: books.map{ |book| {
         id: book.id,
         name: book.name,
+        image: book.book_image.get_default_or_first(),
         price: book.price,
         cart_quantity: params[:cart].find{|item| item[:book_id] == book[:id]}[:quantity],
         stock_quantity: book.stock_quantity,

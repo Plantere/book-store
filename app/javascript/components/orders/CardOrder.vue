@@ -5,6 +5,7 @@ import type { IOrderItem } from '@/interfaces/order';
 import { formatMoney } from '@/helpers/exchange-helper';
 import { formatDate } from '@/helpers/date-helper';
 import { useRouter } from 'vue-router';
+import { getImage } from '@/services/supabase-service';
 
 const props = defineProps<IOrderItem>()
 const router = useRouter()
@@ -60,7 +61,7 @@ const redirectBookPage = (bookId: number) => {
 
     <div v-for="(bookDetail, index) in props.order.details" :key="bookDetail?.id" class="flex flex-col">
       <div class="flex space-x-4 mt-4" v-if="index < 3">
-        <img class="rounded-lg border  h-32 cursor-pointer" :src="bookDetail?.image" alt="" @click="redirectBookPage(bookDetail?.id)">
+        <img class="rounded-lg border  h-32 w-[100px] cursor-pointer" :src="getImage(bookDetail?.image)" alt="" @click="redirectBookPage(bookDetail?.id)">
         <div class="flex flex-col justify-center w-screen">
           <span class="text-xl font-medium text-gray-700 cursor-pointer" @click="redirectBookPage(bookDetail?.id)">{{bookDetail?.name}}</span>
           <div class="flex justify-between mt-2">
@@ -70,7 +71,7 @@ const redirectBookPage = (bookId: number) => {
         </div>
       </div>
       <div class="flex space-x-4 mt-4" v-else-if="showMore">
-        <img class="rounded-lg border h-32" :src="bookDetail?.image">
+        <img class="rounded-lg border h-32 w-[100px]" :src="getImage(bookDetail?.image)">
         <div class="flex flex-col justify-center w-screen">
           <span class="text-xl font-medium text-gray-700">{{bookDetail?.name}}</span>
           <div class="flex justify-between mt-2">
