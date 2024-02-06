@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import Icon from '@/components/shares/Icon.vue';
 import type { IOrderItem } from '@/interfaces/order';
 import { formatMoney } from '@/helpers/exchange-helper';
@@ -13,7 +13,7 @@ const router = useRouter()
 const collapse = ref(false)
 const showMore = ref(false)
 
-const getStatusOrder = () => {
+const statusOrder = computed(() => {
   if(props.order.status === 1){
     return {name: "Processing", icon: "loading", class: "bg-yellow-200", classIcon: "w-5 h-5 text-white animate-spin fill-blue-600"}
   }else if(props.order.status === 2){
@@ -23,7 +23,9 @@ const getStatusOrder = () => {
   }else if(props.order.status === 4){
     return {name: "Denied", icon: "xmark", class: "bg-red-200", classIcon: ""}
   }
-}
+
+  return false
+})
 
 const redirectBookPage = (bookId: number) => {
   router.push({name: "show-book", params: {book_id: bookId}})
@@ -32,14 +34,14 @@ const redirectBookPage = (bookId: number) => {
 </script>
 
 <template>
-  <div v-if="getStatusOrder()">
+  <div v-if="statusOrder">
     <div class="mb-4 flex flex-col">
       <div class="flex justify-between">
         <div class="flex">
           <span class="text-2xl font-semibold">Order. {{props.order.id}}</span>
-          <div :class="getStatusOrder().class" class="flex ml-2 items-center space-x-2 px-3 rounded-xl">
-            <Icon :class="getStatusOrder().classIcon" :name="getStatusOrder().icon" class="w-5 flex items-center"></Icon>
-            <span class="font-semibold">{{getStatusOrder().name}}</span>
+          <div :class="statusOrder.class" class="flex ml-2 items-center space-x-2 px-3 rounded-xl">
+            <Icon :class="statusOrder.classIcon" :name="statusOrder.icon" class="w-5 flex items-center"></Icon>
+            <span class="font-semibold">{{statusOrder.name}}</span>
           </div>
         </div>
 
