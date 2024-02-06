@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import ImageInput from '@/components/ImageInput.vue';
 import Icon from '@/components/shares/Icon.vue';
 import { useNotificationStore } from '@/stores/notification';
 import { makeRequest } from '@/utils/request';
@@ -57,6 +58,7 @@ const bookData = ref<IBook | null>()
 const genres = ref<IDefault[]>()
 const authors = ref<IDefault[]>()
 const publishers = ref<IDefault[]>()
+const hashImages = ref([])
 
 const handleModal = (value: boolean, book: IBook= initialData) => {
   statusModal.value = value
@@ -154,14 +156,8 @@ defineExpose({
 
             <hr class="w-full mb-4">
             
-            <div class="relative flex w-full mb-5 justify-center">
-              <span class="text-xl font-bold absolute inset-y-2/4 right-4">
-                <Icon class="w-2 text-purple-600 hover:text-purple-400 cursor-pointer" name="next"></Icon>
-              </span>
-              <img  class="w-[200px]" src="https://placehold.co/990x1500"/>
-              <span class="text-xl font-bold absolute inset-y-2/4 left-4">
-                <Icon class="w-2 text-purple-600 hover:text-purple-400 cursor-pointer" name="previous"></Icon>
-              </span>
+            <div class="flex w-full mb-20 justify-center">
+              <ImageInput v-model="hashImages" path="avatar/1"/>
             </div>
             <div class="flex flex-row">              
               <div class="flex flex-col px-4 w-4/6">

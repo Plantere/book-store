@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@stripe/stripe-js": "^2.4.0",
+    "@supabase/supabase-js": "^2.39.3",
     "@tailwindcss/forms": "^0.5.7",
     "@vitejs/plugin-vue": "^5.0.3",
     "pinia": "^2.1.7",
