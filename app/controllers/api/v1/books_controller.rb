@@ -29,6 +29,7 @@ class Api::V1::BooksController < ApplicationController
 
     book = Book.new(params_book)
     if book.save
+      BookImagesHelper.create_image(book, params[:images])
       render json: { message: "Book created successfully" }, status: :ok
       return
     end
@@ -94,6 +95,11 @@ class Api::V1::BooksController < ApplicationController
           id: book.id, 
           title: book.name, 
           price: book.price, 
+          images: book.book_image.map{ |image| {
+            path: image[:path],
+            is_default: image[:is_default],
+            token_image: image[:token_image]
+          }},
           genre: {
             id: book.genre.id,
             name: book.genre.name

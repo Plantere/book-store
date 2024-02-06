@@ -1,10 +1,17 @@
 <script setup lang="ts">
 import ImageInput from '@/components/ImageInput.vue';
 import Icon from '@/components/shares/Icon.vue';
+import { getImage } from '@/services/supabase-service';
 import { useNotificationStore } from '@/stores/notification';
 import { makeRequest } from '@/utils/request';
 import { api_v1_admin_books_update_path, api_v1_admin_books_create_path, api_v1_admin_genres_get_all_path, api_v1_admin_authors_get_all_path, api_v1_admin_publishers_get_all_path } from '@/utils/routes';
 import { onBeforeMount, ref, toRaw } from 'vue';
+
+interface IImage {
+  path: string,
+  token_image: string,
+  is_default: boolean,
+}
 
 interface IDefault {
   id?: number,
@@ -23,6 +30,7 @@ interface IBook {
   stock_quantity?: number,
   price?: number | string,
   status?: number,
+  images?: IImage[],
   author: IDefault,
   publisher: IDefault,
   genre: IDefault,
@@ -58,11 +66,20 @@ const bookData = ref<IBook | null>()
 const genres = ref<IDefault[]>()
 const authors = ref<IDefault[]>()
 const publishers = ref<IDefault[]>()
-const hashImages = ref([])
+const images = ref([])
 
 const handleModal = (value: boolean, book: IBook= initialData) => {
   statusModal.value = value
   bookData.value = structuredClone(toRaw(book)) 
+  if(!bookData.value.images) return
+
+  bookData.value.images = bookData.value.images.map(image => {
+    return {
+      path: getImage(image.path),
+      token_image: image.token_image,
+      is_default: image.is_default,
+    }
+  })
 }
 
 const statusEnums = [
@@ -107,6 +124,9 @@ const submitBook = async () => {
     price: bookData.value.price,
     stock_quantity: bookData.value.stock_quantity,
     genre_id: bookData.value.genre?.id,
+    images: bookData.value.images?.map(image => {
+      return {url: `public/${image.token_image}.png`, token_image: image.token_image, is_default: image.is_default}
+    })
   }
   
   let response;
@@ -155,9 +175,8 @@ defineExpose({
             </div>
 
             <hr class="w-full mb-4">
-            
             <div class="flex w-full mb-20 justify-center">
-              <ImageInput v-model="hashImages" path="avatar/1"/>
+              <ImageInput v-model="bookData.images" />
             </div>
             <div class="flex flex-row">              
               <div class="flex flex-col px-4 w-4/6">
@@ -207,7 +226,6 @@ defineExpose({
                 </select>
               </div>
             </div>
-
 
             <div class="flex flex-row">
               <div class="flex flex-col px-4 w-full">

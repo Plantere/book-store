@@ -2,6 +2,12 @@
 import { formatMoney } from '@/helpers/exchange-helper';
 import Icon from '@/components/shares/Icon.vue';
 import { ref } from 'vue';
+import { getImage } from '@/services/supabase-service';
+
+interface IImage {
+  path: string,
+  is_default: boolean,
+}
 
 interface Genre {
   id: string,
@@ -22,6 +28,7 @@ interface Book {
   stock_quantity: number,
   price: number | string,
   status: number,
+  images?: IImage[],
   author: Author,
   publisher: Publisher,
 }
@@ -33,12 +40,20 @@ interface Props {
 const props = defineProps<Props>()
 const emit = defineEmits(["update"])
 
+const defaultImage = () => {
+  if(!props.book.images?.length) return "https://placehold.co/990x1500"
+
+  const pathImage = props.book.images.find(image => image.is_default === true)?.path ?? props.book.images[0].path
+
+  return getImage(pathImage)
+}
+
 </script>
 <template>
   <tr class="bg-white border-b">
     <td class="px-6 py-4">
       <div class="flex space-x-1 justify-center items-center">
-        <img width="38" src="https://placehold.co/990x1500" alt="">
+        <img width="38" :src="defaultImage()" alt="">
         <div class="w-56">
           <p class="truncate font-bold text-black">{{ props.book.title }}</p>
           <p class="truncate">{{ props.book.author.name }}</p>

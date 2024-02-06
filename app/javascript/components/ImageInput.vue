@@ -1,117 +1,136 @@
 <script setup lang="ts">
 import Icon from '@/components/shares/Icon.vue';
 import { watch, computed, ref } from 'vue';
-import { storeImage } from '@/services/supabase-service';
-import { Console } from 'console';
-import { randomUUID } from 'crypto';
-
-const currentImage = ref<number>(0)
-const hashImages = ref<string[]>([])
-
+import { getImage, storeImage } from '@/services/supabase-service';
 
 interface Image {
-  hash: string | undefined,
-  url: string | undefined,
+  token_image: string | undefined,
+  path: string | undefined,
+  is_default: boolean,
 }
 
 const images =  ref<Image[]>(
   [
     {
-      hash: undefined,
-      url: undefined,
+      token_image: undefined,
+      path: undefined,
+      is_default: false,
     }
   ]
 )
 
+const currentImage = ref<Image>(images.value[0])
 
 const storageImage = async (event: Event) => {
   const target = event.target as HTMLInputElement;
   const files = target.files as FileList;
 
   Array.from(files).forEach( async (element) => {
+    const tokenImage = await storeImage(props.path, element)
     images.value.push({
-      hash: await storeImage(props.path, element),
-      url: URL.createObjectURL(element),
+      token_image: tokenImage,
+      path: getImage(`public/${tokenImage}.png`),
+      is_default: images.value.length < 2,
     })
   });
 }
 
 const previousImage = () => {
-  if(images.value.length <= 1) return
+  const index = images.value.findIndex((image: Image) => image.token_image === currentImage.value.token_image)
+  const image = images.value[index]
+  const firstImage = images.value[0]
 
-  if(currentImage.value === 0) return currentImage.value = images.value.length-1
-  
-  currentImage.value -= 1
+  if(image?.token_image === firstImage.token_image) {
+    return currentImage.value = images.value[images.value.length-1]
+  }
 
+  currentImage.value = images.value[index-1]
 }
 
 const nextImage = () => {
-  if(images.value.length <= 1) return
-  if(currentImage.value === images.value.length-1) return currentImage.value = 0
+  const index = images.value.findIndex((image: Image) => image.token_image === currentImage.value.token_image)
+  const image = images.value[index]
+  const lastImage = images.value[images.value.length-1]
 
-  currentImage.value += 1
+  if(image?.token_image === lastImage.token_image) {
+    return currentImage.value = images.value[0]
+  }
+
+  currentImage.value = images.value[index+1]
 }
 
-const removeImage = (imageIndex: number) => {
-  // previousImage()
-  // images.value = images.value.filter((item, index) => index !== imageIndex)
-  // hashImages.value = hashImages.value.filter((item, index) => index !== imageIndex)
-  // console.log(images.value)
-  // console.log(hashImages.value)
+const removeImage = () => {
+  images.value = images.value.filter((image: Image) => image.token_image !== currentImage.value.token_image)
+  previousImage()
 }
 
-const setImageDefault = (imageIndex: number) => {
+const setImageDefault = () => {
+  if(getCurrentImage.value.is_default) return
+
+  const actualImage = images.value.find((image: Image) => image.token_image === currentImage.value.token_image)
+  const defaultImage = images.value.find((image: Image) => image.is_default === true)
+
+  if(actualImage === undefined) return
+
+  if(defaultImage !== undefined){
+    defaultImage.is_default = false
+  }
+
+  actualImage.is_default = true
+  currentImage.value = actualImage
 }
 
-const changeImage = (hashImage: string | undefined) => {
-  if(hashImage === undefined) return 
-  currentImage.value = images.value.findIndex((image: Image) => image.hash !== hashImage)
+const changeImage = (image: Image) => {
+  currentImage.value = image
 }
 
 interface Props {
-  modelValue?: string[];
+  modelValue?: Image[];
   width?: number,
   height?: number,
-  path: string,
+  path?: string,
 }
 
 const props = withDefaults(defineProps<Props>(), {
   width: 220,
   height: 300,
+  path: 'public',
 })
 
 const getAvailableImage = computed( () => {
-  return images.value.filter((image: Image) => image.url !== undefined)
+  return images.value.filter((image: Image) => image.path !== undefined)
 })
 
 const getCurrentImage = computed( () => {
-  if(currentImage === undefined) return images.value[0]
-  return images.value[currentImage.value]
+  return currentImage.value
 })
 
 const emit = defineEmits(['update:modelValue'])
 
-watch(hashImages.value, () => {
-  emit('update:modelValue', hashImages.value)
+watch(images.value, () => {
+  emit('update:modelValue', getAvailableImage.value.map( image => {
+    return { path: image.path, token_image: image.token_image, is_default: image.is_default }
+  }))
 }, {deep: true})
+
 
 </script>
 <template>
-  <div :class="`relative flex flex-row justify-center w-[${props.width+100}px]`" >
+  <div class="relative flex flex-row justify-center w-[330px]" >
     <span class="text-xl font-bold absolute inset-y-2/4 right-4" @click="nextImage()">
       <Icon class="w-2 text-purple-600 hover:text-purple-400 cursor-pointer" name="next"></Icon>
     </span>
-    <div :class="`w-[${props.width}px] h-[${props.height}px]`">
-      <div class="relative" v-if="currentImage >= 1">
-        <div @click="setImageDefault(currentImage)">
-          <Icon name="star" class="absolute right-2 top-2 w-6 h-6 text-yellow-300 cursor-pointer"></Icon>
+    <div class="w-[220px] h-[300px]">
+      <div class="relative" v-if="getCurrentImage.token_image != null">
+        <div @click="setImageDefault()">
+          <Icon name="star" :class="{'fill-yellow-300 cursor-auto': getCurrentImage.is_default}" class="absolute right-2 top-2 w-6 h-6 text-yellow-300 cursor-pointer"></Icon>
         </div>
-        <div @click="removeImage(currentImage)">
+        <div @click="removeImage()">
           <Icon name="xmark" class="absolute right-2 top-10 w-6 h-6 text-red-600 cursor-pointer"></Icon>
         </div>
-        <img :src="images[currentImage].url" :class="`w-[${props.width}px] h-[${props.height}px]`"/>
+        <img :src="getCurrentImage.path" class="w-[220px] h-[300px]"/>
       </div>
-      <label v-else for="dropzone-file" :class="`flex flex-col items-center justify-center border-2 w-[${props.width}px] h-[${props.height}px] border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50`">
+      <label v-else for="dropzone-file" class="flex flex-col items-center justify-center border-2 w-[220px] h-[300px] border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50">
         <div class="flex flex-col items-center  text-center justify-center pt-5 pb-6">
           <Icon name="dropzone" class="w-8 h-8 mb-4 text-gray-500" />
           <p class="mb-2 text-xs text-gray-500"><span class="font-semibold">Click to upload a image</span></p>
@@ -119,11 +138,8 @@ watch(hashImages.value, () => {
         </div>
         <input @change="storageImage" multiple id="dropzone-file" type="file" class="hidden" accept="image/png, image/webp, image/jpeg"/>
       </label>
-
       <div class="flex flex-row space-x-2 justify-center p-3">
-        <div v-for="image in getAvailableImage" :key="image.hash">
-          <img :class="{'border-violet-100': image.hash !== getCurrentImage.hash}"  class="w-[38px] h-[50px] border border-violet-600 shadow-xl" :src="image.url" alt="" @click="changeImage(image.hash)">
-        </div>
+        <img v-for="image in modelValue" :key="image.token_image" :class="{'border-violet-600': image.token_image === getCurrentImage.token_image}"  class="w-[38px] h-[50px] border border-violet-100 shadow-xl" :src="image.path" alt="" @click="changeImage(image)">
       </div>
     </div>
     <span class="text-xl font-bold absolute inset-y-2/4 left-4" @click="previousImage()">

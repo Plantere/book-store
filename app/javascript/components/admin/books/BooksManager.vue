@@ -13,6 +13,12 @@ interface IDefault {
   name: string
 }
 
+interface IImage {
+  path: string,
+  token_image: string,
+  is_default: boolean,
+}
+
 interface IBook {
   id: number,
   genre: IDefault,
@@ -21,6 +27,7 @@ interface IBook {
   stock_quantity: number,
   price: number | string,
   status: number,
+  images?: IImage[],
   author: IDefault,
   publisher: IDefault,
 }

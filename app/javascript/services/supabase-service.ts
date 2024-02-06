@@ -8,7 +8,7 @@ export const storeImage = async (path: string, fileBody: File) => {
   await supabase
     .storage
     .from('books')
-    .upload(`public/${path}/${uuidImage}.png`, fileBody, {
+    .upload(`${path}/${uuidImage}.png`, fileBody, {
       cacheControl: '3600',
       upsert: false
     })

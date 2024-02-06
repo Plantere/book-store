@@ -3,7 +3,7 @@ import { defineAsyncComponent } from 'vue';
 
 interface Props {
   name: string,
-  class?: string
+  class?: any
 }
 
 const props = defineProps<Props>();
