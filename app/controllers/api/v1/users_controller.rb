@@ -1,7 +1,7 @@
 class Api::V1::UsersController < ApplicationController
   skip_before_action :verify_authenticity_token
   before_action :authorize_request, except: [:register]
-  before_action :is_admin, except: [:get_all]
+  before_action :is_admin, only: [:get_all, :update_admin]
 
   def register
     if User.registered?(params_user)

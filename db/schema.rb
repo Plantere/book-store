@@ -61,9 +61,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_12_152108) do
 
   create_table "book_images", force: :cascade do |t|
     t.bigint "book_id"
-    t.string "image_type", null: false
-    t.string "image_path", null: false
-    t.string "alt_text", null: false
+    t.string "path", null: false
+    t.boolean "is_default", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["book_id"], name: "index_book_images_on_book_id"
@@ -109,9 +108,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_12_152108) do
     t.bigint "address_id"
     t.decimal "price", precision: 16, scale: 2, null: false
     t.text "description"
+    t.string "transaction_id"
+    t.integer "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["address_id"], name: "index_orders_on_address_id"
+    t.index ["transaction_id"], name: "index_orders_on_transaction_id"
     t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
