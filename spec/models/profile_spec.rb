@@ -15,5 +15,9 @@ RSpec.describe Profile, type: :model do
       profile.last_name = nil
       expect(profile).to_not be_valid
     end
+
+    it "should be valid with all values correct" do
+      expect(profile).to be_valid
+    end
   end
 end
