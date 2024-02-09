@@ -2,9 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Address, type: :model do
   describe 'validations' do
-    let(:user) {User.create!(username: "example", email: "test@example.com", password_digest: "test_example123", status: 1,  user_type: 1)}
-    subject(:address) { Address.new(user_id: user[:id], name: "Address 1", country: "United States", state: "New York", street: "West 42nd Street",  district: "Manhattan", city: "New York", complement: "Madame Toussauds", postal_code: "10036", number: 234, phone_number: "4383828382392", is_default: true) } 
-    before { address.save }
+    let(:address) {create(:address)}
 
     it "should not be valid without presence of name" do
       address.name = nil

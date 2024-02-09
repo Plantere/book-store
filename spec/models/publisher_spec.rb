@@ -2,9 +2,9 @@ require 'rails_helper'
 
 RSpec.describe Publisher, type: :model do
   describe 'validations' do
-    subject(:publisher) { Publisher.new(name: "Penguin Random House", description: "Penguin Random House is a global publisher committed to publishing great books, connecting readers and authors globally, and spreading the love of reading. They also provide resources for authors looking to publish their works, including a guide to demystifying the publishing process.") } 
-    let(:duplicate_publisher) {Publisher.create(name: "Penguin Random House", description: "Penguin Random House is a global publisher committed to publishing great books, connecting readers and authors globally, and spreading the love of reading. They also provide resources for authors looking to publish their works, including a guide to demystifying the publishing process.")}
-    before { publisher.save }
+    let(:publisher) {create(:publisher)}
+    let(:duplicate_publisher) {build(:publisher)}
+
 
     it "should not be valid without presence of name" do
       publisher.name = nil
@@ -12,6 +12,7 @@ RSpec.describe Publisher, type: :model do
     end
 
     it "should not be valid with duplicate name" do
+      publisher
       expect(duplicate_publisher).to_not be_valid
     end
 

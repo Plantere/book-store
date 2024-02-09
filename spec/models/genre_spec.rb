@@ -2,10 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Genre, type: :model do
   describe 'validations' do
-    subject(:genre) { Genre.new(name: "Romance", description: "There is love somewhere in the world and it is in this genre of romance") } 
-    let(:duplicate_genre) {Genre.create(name: "Romance", description: "There is love somewhere in the world and it is in this genre of romance")}
-    before { genre.save }
-
+    let(:genre) {create(:genre)}
 
     it "should not be valid without presence of name" do
       genre.name = nil

@@ -2,9 +2,8 @@ require 'rails_helper'
 
 RSpec.describe Author, type: :model do
   describe 'validations' do
-    subject(:author) { Author.new(full_name: "George Orwell", birth_date: "2001-02-02") } 
-    let(:duplicate_author) {Author.create(full_name: "George Orwell", birth_date: "2001-02-02")}
-    before { author.save }
+    let(:author) {create(:author)}
+    let(:duplicate_author) {build(:author)}
 
     it "should not be valid without presence of full_name" do
       author.full_name = nil
@@ -17,6 +16,7 @@ RSpec.describe Author, type: :model do
     end
     
     it "should not be valid with duplicate full_name and birth_date" do
+      author
       expect(duplicate_author).to_not be_valid
     end
 
