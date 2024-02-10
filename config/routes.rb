@@ -64,6 +64,7 @@ Rails.application.routes.draw do
           get '/get' => "authors#get", as: :admin_authors_get
           post "/" => "authors#create", as: :admin_authors_create
           put "/:author_id" => "authors#update", as: :admin_authors_update
+          delete "/:author_id" => "authors#delete", as: :authors_delete
         end
 
         scope '/order' do
@@ -86,9 +87,6 @@ Rails.application.routes.draw do
         delete "/:publisher_id" => "publishers#delete", as: :publishers_delete
       end
 
-      scope '/author' do
-        delete "/:author_id" => "authors#delete", as: :authors_delete
-      end
     end
   end
 
