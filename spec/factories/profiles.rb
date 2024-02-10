@@ -3,6 +3,6 @@ FactoryBot.define do
     first_name { "John" }
     last_name { "Doe" }
     birth_date { 21.years.ago }
-    association :user, factory: :user
+    association :user, factory: :user, strategy: :build
   end
 end 

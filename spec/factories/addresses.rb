@@ -11,6 +11,6 @@ FactoryBot.define do
     number { 234 }
     phone_number { "4383828382392" }
     is_default { true }
-    association :user, factory: :user
+    association :user, factory: :user, strategy: :build
   end
 end 
