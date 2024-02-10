@@ -1,7 +1,7 @@
 class Api::V1::AuthorsController < ApplicationController
   skip_before_action :verify_authenticity_token
-  before_action :authorize_request, only: [ :create, :update, :get_all ]
-  before_action :is_admin, only: [ :create, :update, :get_all ]
+  before_action :authorize_request, only: [ :create, :update, :get_all, :get, :delete ]
+  before_action :is_admin, only: [ :create, :update, :get_all, :get, :delete ]
 
   def create
     if Author.exists?(full_name: params_author[:full_name])
