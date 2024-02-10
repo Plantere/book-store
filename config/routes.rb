@@ -87,7 +87,6 @@ Rails.application.routes.draw do
       end
 
       scope '/author' do
-        get "/" => "authors#index", as: :authors_index
         delete "/:author_id" => "authors#delete", as: :authors_delete
       end
     end

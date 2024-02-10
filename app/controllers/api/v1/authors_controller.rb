@@ -3,10 +3,6 @@ class Api::V1::AuthorsController < ApplicationController
   before_action :authorize_request, only: [ :create, :update, :get_all ]
   before_action :is_admin, only: [ :create, :update, :get_all ]
 
-  def index
-    render json: Author.all
-  end
-
   def create
     if Author.exists?(full_name: params_author[:full_name])
       render json: { error: "Author already exists" }, status: :unprocessable_entity
