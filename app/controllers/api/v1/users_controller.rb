@@ -10,8 +10,8 @@ class Api::V1::UsersController < ApplicationController
     end
 
     user = User.new(params_user)
+    user.build_profile(params_profile)
     if user.save
-      user.create_profile(params_profile)
       render json: { "message": "User created successufly" }, status: :ok
       return
     end
@@ -51,20 +51,21 @@ class Api::V1::UsersController < ApplicationController
     @current_user.update(**params_update_user)
     @current_user.profile.update(**params_update_profile)
 
-    render json: { error: "User updated successufly" }, status: :ok
+    render json: { message: "User updated successufly" }, status: :ok
   end
 
   def update_admin
-    if User.where.not(id: params[:user_id]).where("username = ? or email = ?", params_admin_update_user[:username], params_admin_update_user[:email]).exists?()
+    if params_user_update_admin.present? && User.where.not(id: params[:user_id]).where("username = ? or email = ?", params_user_update_admin[:username], params_user_update_admin[:email]).exists?()
       render json: { error: "Email, or username already been used" }, status: :unprocessable_entity
       return
     end
 
     user = User.find(params[:user_id])
-    user.update(**params_admin_update_user)
-    user.profile.update(**params_update_profile)
 
-    render json: { error: "User updated successufly" }, status: :ok
+    user.update(**params_user_update_admin) if params_user_update_admin.present?
+    user.profile.update(**params_profile_update_admin) if params_profile_update_admin.present?
+
+    render json: { message: "User updated successufly" }, status: :ok
   end
 
   def change_password
@@ -73,6 +74,7 @@ class Api::V1::UsersController < ApplicationController
   end
 
   private
+
   def params_user
     params.require(:user).permit(:username, :email, :password)
   end
@@ -89,8 +91,12 @@ class Api::V1::UsersController < ApplicationController
     params.require(:user).permit(:username, :email)
   end
 
-  def params_admin_update_user
-    params.require(:user).permit(:username, :email, :status, :user_type)
+  def params_user_update_admin
+    params.permit(:user => [:username, :email, :status, :user_type])[:user]
+  end
+
+  def params_profile_update_admin
+    params.permit(:profile => [:first_name, :last_name, :birth_date, :description])[:profile]
   end
 
   def params_change_password
