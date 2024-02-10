@@ -28,7 +28,7 @@ class Api::V1::GenresController < ApplicationController
   end
 
   def update 
-    if !Genre.exists(id: params[:genre_id])
+    if !Genre.exists?(id: params[:genre_id])
       render json: { error: "Genre not found" }, status: :unprocessable_entity
       return
     end
