@@ -38,13 +38,6 @@ Rails.application.routes.draw do
         put "/default/:address_id" => "addresses#update_default", as: :addresses_update_default
       end
 
-      scope '/genre' do
-        get "/" => "genres#index", as: :genres_index
-        post "/" => "genres#create", as: :genres_create
-        delete "/:genre_id" => "genres#delete", as: :genres_delete
-        put "/:genre_id" => "genres#update", as: :genres_update
-      end
-
       scope '/book' do
         get "/search" => "books#search", as: :books_search
         post "/cart" => "books#get_cart_items", as: :books_get_cart_items
@@ -54,6 +47,9 @@ Rails.application.routes.draw do
       scope '/admin' do 
         scope '/genre' do
           get '/' => "genres#get_all", as: :admin_genres_get_all 
+          post "/" => "genres#create", as: :genres_create
+          delete "/:genre_id" => "genres#delete", as: :genres_delete
+          put "/:genre_id" => "genres#update", as: :genres_update
         end
         
         scope '/publisher' do

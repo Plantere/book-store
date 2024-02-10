@@ -1,12 +1,8 @@
 class Api::V1::GenresController < ApplicationController
   skip_before_action :verify_authenticity_token
-  before_action :authorize_request, only: [ :create, :update, :get_all ]
-  before_action :is_admin, only: [ :create, :update, :get_all ]
+  before_action :authorize_request, only: [ :create, :update, :get_all, :delete ]
+  before_action :is_admin, only: [ :create, :update, :get_all, :delete ]
   
-  def index
-    render json: Genre.all
-  end
-
   def create
     if Genre.exists?(name: params_genre[:name])
       render json: { error: "Genre already exists" }, status: :unprocessable_entity
