@@ -10,6 +10,8 @@ class User < ApplicationRecord
   has_many :address, dependent: :destroy
   has_many :order, dependent: :destroy
   has_one :profile, dependent: :destroy
+  
+  accepts_nested_attributes_for :profile
 
   def self.registered?(user_params)
     exists?(email: user_params[:email]) || exists?(username: user_params[:username])
