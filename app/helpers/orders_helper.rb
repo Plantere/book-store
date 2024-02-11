@@ -71,7 +71,7 @@ module OrdersHelper
       books = Book.where(id: cart_items.map { |book| book[:book_id] }).index_by(&:id)
     
       total_amount = cart_items.sum do |item|
-        book = books[item[:book_id]]
+        book = Book.where(id: item[:book_id]).first
         order.order_detail.create!(quantity: item[:quantity], price: book[:price], book_id: book[:id])
         item[:quantity].to_i * book.price
       end
