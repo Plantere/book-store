@@ -85,7 +85,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_12_152108) do
   create_table "orders", force: :cascade do |t|
     t.integer "user_id"
     t.integer "address_id"
-    t.decimal "price", precision: 16, scale: 2, null: false
+    t.decimal "price", precision: 16, scale: 2
     t.text "description"
     t.string "transaction_id"
     t.integer "status"
