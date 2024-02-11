@@ -21,7 +21,10 @@ module BooksHelper
     books
   end
 
-
+  def self.check_books_in_cart(cart)
+    Book.where(id: cart.map{|item| item[:book_id]}).count == cart.count
+  end
+  
   def self.books_below_ordered(books)
     conditions = books.map { |condition| "(id = ? AND stock_quantity < ?)" }
     conditions_string = conditions.join(" OR ")

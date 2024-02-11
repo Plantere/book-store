@@ -4,6 +4,13 @@ class Api::V1::OrdersController < ApplicationController
   before_action :is_admin, only: [:get_all]
   
   def create
+    if !BooksHelper.check_books_in_cart(params[:cart])
+      render json: {
+        error: "No books in your cart"
+      }, status: :unprocessable_entity
+      return
+    end
+
     if BooksHelper.books_below_ordered(params[:cart]).exists?
       render json: {
         error: "Invalid book quantities in the order",
