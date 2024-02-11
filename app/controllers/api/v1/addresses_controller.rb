@@ -68,6 +68,6 @@ class Api::V1::AddressesController < ApplicationController
 
   private
   def params_address
-    params.require(:address).permit(:name, :country, :state, :district, :postal_code, :number, :complement, :phone_number, :street, :city)
+    params.require(:address).permit(:name, :country, :state, :district, :postal_code, :number, :complement, :phone_number, :street, :city, :is_default)
   end
 end
