@@ -35,7 +35,7 @@ module OrdersHelper
   end
 
   def self.create_order_intent(cart_items, address, carrier, user)
-    order = user.order.create(address_id: address[:id])
+    order = user.order.create!(address_id: address[:id])
     total_amount_cart = calculate_order_amount(order, cart_items, carrier)
 
     order_intent = Stripe::PaymentIntent.create(
@@ -72,7 +72,7 @@ module OrdersHelper
     
       total_amount = cart_items.sum do |item|
         book = books[item[:book_id]]
-        order.order_detail.create(quantity: item[:quantity], price: book.price, book_id: book[:id])
+        order.order_detail.create!(quantity: item[:quantity], price: book[:price], book_id: book[:id])
         item[:quantity] * book.price
       end
     
