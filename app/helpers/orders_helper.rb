@@ -73,7 +73,7 @@ module OrdersHelper
       total_amount = cart_items.sum do |item|
         book = books[item[:book_id]]
         order.order_detail.create!(quantity: item[:quantity], price: book[:price], book_id: book[:id])
-        item[:quantity] * book.price
+        item[:quantity].to_i * book.price
       end
     
       total_amount + get_shipping_value(carrier)
