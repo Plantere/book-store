@@ -44,7 +44,7 @@ class Api::V1::AuthorsController < ApplicationController
   end
 
   def update 
-    if !Author.exists(id: params[:author_id])
+    if !Author.exists?(id: params[:author_id])
       render json: { error: "Author not found" }, status: :unprocessable_entity
       return
     end
