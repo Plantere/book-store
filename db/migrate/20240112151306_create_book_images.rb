@@ -4,6 +4,7 @@ class CreateBookImages < ActiveRecord::Migration[7.1]
       t.references :book, index: true, foreign_key: true
       t.string :path, null: false
       t.boolean :is_default, default: false
+      t.string :token_image, null: false
       t.timestamps
     end
   end

@@ -63,6 +63,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_12_152108) do
     t.bigint "book_id"
     t.string "path", null: false
     t.boolean "is_default", default: false
+    t.string "token_image", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["book_id"], name: "index_book_images_on_book_id"
