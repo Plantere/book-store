@@ -8,7 +8,7 @@ class CreateAddresses < ActiveRecord::Migration[7.1]
       t.string :street, null: false
       t.string :district, null: false
       t.string :city, null: false
-      t.boolean :is_default, null: false
+      t.boolean :is_default, :default => false
       t.string :number, null: false
       t.string :complement
       t.string :phone_number

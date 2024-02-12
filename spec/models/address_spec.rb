@@ -44,11 +44,6 @@ RSpec.describe Address, type: :model do
       expect(address).to_not be_valid  
     end
 
-    it "should not be valid without presence of is_default" do
-      address.is_default = nil
-      expect(address).to_not be_valid 
-    end
-
     it "should be valid with all values correct" do
       expect(address).to be_valid
     end

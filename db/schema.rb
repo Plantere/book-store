@@ -11,15 +11,36 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[7.1].define(version: 2024_01_12_152108) do
+  create_schema "auth"
+  create_schema "extensions"
+  create_schema "graphql"
+  create_schema "graphql_public"
+  create_schema "pgbouncer"
+  create_schema "pgsodium"
+  create_schema "pgsodium_masks"
+  create_schema "realtime"
+  create_schema "storage"
+  create_schema "vault"
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_graphql"
+  enable_extension "pg_stat_statements"
+  enable_extension "pgcrypto"
+  enable_extension "pgjwt"
+  enable_extension "pgsodium"
+  enable_extension "plpgsql"
+  enable_extension "supabase_vault"
+  enable_extension "uuid-ossp"
+
   create_table "addresses", force: :cascade do |t|
-    t.integer "user_id"
+    t.bigint "user_id"
     t.string "name", null: false
     t.string "country", null: false
     t.string "state", null: false
     t.string "street", null: false
     t.string "district", null: false
     t.string "city", null: false
-    t.boolean "is_default", null: false
+    t.boolean "is_default", default: false
     t.string "number", null: false
     t.string "complement"
     t.string "phone_number"
@@ -39,7 +60,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_12_152108) do
   end
 
   create_table "book_images", force: :cascade do |t|
-    t.integer "book_id"
+    t.bigint "book_id"
     t.string "path", null: false
     t.boolean "is_default", default: false
     t.datetime "created_at", null: false
@@ -48,12 +69,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_12_152108) do
   end
 
   create_table "books", force: :cascade do |t|
-    t.integer "author_id"
-    t.integer "publisher_id"
-    t.integer "genre_id"
+    t.bigint "author_id"
+    t.bigint "publisher_id"
+    t.bigint "genre_id"
     t.string "name", null: false
     t.text "description"
     t.integer "stock_quantity", null: false
+    t.integer "status", default: 1
     t.decimal "price", precision: 16, scale: 2, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -72,8 +94,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_12_152108) do
   end
 
   create_table "order_details", force: :cascade do |t|
-    t.integer "order_id"
-    t.integer "book_id"
+    t.bigint "order_id"
+    t.bigint "book_id"
     t.integer "quantity", null: false
     t.decimal "price", precision: 16, scale: 2, null: false
     t.datetime "created_at", null: false
@@ -83,8 +105,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_12_152108) do
   end
 
   create_table "orders", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "address_id"
+    t.bigint "user_id"
+    t.bigint "address_id"
     t.decimal "price", precision: 16, scale: 2
     t.text "description"
     t.string "transaction_id"
@@ -97,7 +119,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_12_152108) do
   end
 
   create_table "profiles", force: :cascade do |t|
-    t.integer "user_id"
+    t.bigint "user_id"
     t.string "first_name", null: false
     t.string "last_name", null: false
     t.date "birth_date"
