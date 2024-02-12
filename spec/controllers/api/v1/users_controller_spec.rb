@@ -15,14 +15,14 @@ RSpec.describe Api::V1::UsersController, type: :controller do
         user = create(:user)
         post "register", params: {user: attributes_for(:user, password: "password_test"), profile: attributes_for(:profile)}
         expect(response).to have_http_status(422)
-        expect(JSON.parse(response.body)).to eq({"error" => "User already registered. Duplicates are not allowed."})
+        expect(JSON.parse(response.body)).to eq({"error" => "User already registered"})
       end
 
       it "should return error message for existing email with status 422" do
         user = create(:user)
         post "register", params: {user: attributes_for(:user, username: "dontexist", password: "password_test"), profile: attributes_for(:profile)}
         expect(response).to have_http_status(422)
-        expect(JSON.parse(response.body)).to eq({"error" => "User already registered. Duplicates are not allowed."})
+        expect(JSON.parse(response.body)).to eq({"error" => "User already registered"})
       end
 
 
@@ -30,7 +30,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
         user = create(:user)
         post "register", params: {user: attributes_for(:user, email: "dontexist@example.com", password: "password_test"), profile: attributes_for(:profile)}
         expect(response).to have_http_status(422)
-        expect(JSON.parse(response.body)).to eq({"error" => "User already registered. Duplicates are not allowed."})
+        expect(JSON.parse(response.body)).to eq({"error" => "User already registered"})
       end
 
 

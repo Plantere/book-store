@@ -5,7 +5,7 @@ class Api::V1::UsersController < ApplicationController
 
   def register
     if User.registered?(params_user)
-      render json: { error: "User already registered. Duplicates are not allowed." }, status: :unprocessable_entity
+      render json: { error: "User already registered" }, status: :unprocessable_entity
       return
     end
 

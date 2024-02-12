@@ -1,15 +1,22 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { reactive, ref } from 'vue'
 import { makeRequest } from "../utils/request";
 import { useRouter } from 'vue-router'
 import { useNotificationStore } from '../stores/notification'
 import { api_v1_users_register_path } from '../utils/routes';
 
-const email = ref("")
-const firstName = ref("")
-const lastName = ref("")
-const username = ref("")
-const password = ref("")
+const fieldsForm = reactive({
+  user: {
+    email: "",
+    username: "",
+    password: "",
+  },
+  profile: {
+    firstName: "",
+    lastName: "",
+  }
+})
+
 const isSubmiting = ref(false)
 
 const router = useRouter()
@@ -23,21 +30,11 @@ const submit = async () => {
   isSubmiting.value = true
   const response = await makeRequest(api_v1_users_register_path(), {
     method: "POST",
-    data: {
-      user:{
-        email: email.value,
-        password: password.value,
-        username: username.value
-      },
-      profile:{
-        first_name: firstName.value,
-        last_name: lastName.value,
-      }
-    }
+    data: fieldsForm
   })
 
   if(!response.ok){
-    notifications.createNotification("Error creating user. Please check the provided data.", "error")
+    notifications.createNotification("User already registered", "error")
     isSubmiting.value = false
     return
   }
@@ -59,22 +56,22 @@ const submit = async () => {
           <div class="flex items-center justify-between">
             <div>
               <label for="first_name" class="block text-sm font-medium leading-6 text-gray-900">First Name</label>
-              <input id="first_name" name="first_name" type="text" v-model="firstName" autocomplete="first_name" required class="mt-2 mb-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6" />
+              <input id="first_name" name="first_name" type="text" v-model="fieldsForm.profile.firstName" autocomplete="first_name" required class="mt-2 mb-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6" />
             </div>
             <div class="ml-3">
               <label for="last_name" class="block text-sm font-medium leading-6 text-gray-900">Last Name</label>
-              <input id="last_name" name="last_name" type="text" v-model="lastName" autocomplete="last_name" required class="mt-2 mb-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6" />
+              <input id="last_name" name="last_name" type="text" v-model="fieldsForm.profile.lastName" autocomplete="last_name" required class="mt-2 mb-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6" />
             </div>
           </div>
 
           <label for="username" class="block text-sm font-medium leading-6 text-gray-900">Username</label>
-          <input id="username" name="username" type="text" v-model="username" autocomplete="username" required class="mt-2 mb-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6" />
+          <input id="username" name="username" type="text" v-model="fieldsForm.user.username" autocomplete="username" required class="mt-2 mb-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6" />
 
           <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Email</label>
-          <input id="email" name="email" type="email" v-model="email" autocomplete="email" required class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6" />
+          <input id="email" name="email" type="email" v-model="fieldsForm.user.email" autocomplete="email" required class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6" />
 
           <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Password</label>
-          <input id="password" name="password" v-model="password" type="password" autocomplete="current-password" required class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6" />
+          <input id="password" name="password" v-model="fieldsForm.user.password" type="password" autocomplete="current-password" required class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6" />
         </div>
 
         <div>
