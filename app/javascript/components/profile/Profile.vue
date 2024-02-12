@@ -34,7 +34,7 @@ const openChangePassword = () => {
   ChangePasswordModal.value?.openModal()
 }
 
-const updateProfile = async () => {
+const submit = async () => {
   if(!isUpdating) return
 
   const response = await makeRequest(api_v1_user_update_path(), {method: "PUT", data: {
@@ -68,46 +68,45 @@ const updateProfile = async () => {
       <h1 class="text-2xl py-5 font-bold">Profile</h1>
     </div>
     <hr>
-    <div class="p-5">
+    <form @submit.prevent="submit()" class="p-5">
       <div class="flex flex-row space-x-3">
-        <div class="flex flex-col w-6/12">
+        <fieldset class="flex flex-col w-6/12">
           <label for="first_name" class="text-sm font-medium leading-6 text-gray-900">First Name</label>
-          <input id="first_name" name="first_name" v-model="profileData.firstName" type="text" autocomplete="first_name" required
+          <input id="first_name" name="first_name" v-model="profileData.firstName" type="text" required autocomplete="first_name"
             class="mt-2 mb-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6" />
-        </div>
-        <div class="flex flex-col w-6/12">
+        </fieldset>
+        <fieldset class="flex flex-col w-6/12">
           <label for="last_name" class="text-sm font-medium leading-6 text-gray-900">Last Name</label>
-          <input id="last_name" name="last_name" v-model="profileData.lastName" type="text" autocomplete="last_name" required
+          <input id="last_name" name="last_name" v-model="profileData.lastName" type="text" required autocomplete="last_name"
             class="mt-2 mb-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6" />
-        </div>
+        </fieldset>
       </div>
 
       <div class="flex flex-row space-x-3">
-        <div class="flex flex-col w-6/12">
+        <fieldset class="flex flex-col w-6/12">
           <label for="username" class="text-sm font-medium leading-6 text-gray-900">Username</label>
-          <input id="username" name="username" type="text" v-model="profileData.username" autocomplete="username" required
+          <input id="username" name="username" type="text" v-model="profileData.username" required autocomplete="username"
             class="mt-2 mb-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6" />
-        </div>
+        </fieldset>
 
-        <div class="flex flex-col w-6/12">
+        <fieldset class="flex flex-col w-6/12">
           <label for="email" class="text-sm font-medium leading-6 text-gray-900">E-mail</label>
-          <input id="email" name="email" type="text" v-model="profileData.email" autocomplete="email" required class="mt-2 mb-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6" />
-        </div>
+          <input id="email" name="email" type="text" v-model="profileData.email" required autocomplete="email"  class="mt-2 mb-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6" />
+        </fieldset>
       </div>
-      <div>
+      <fieldset>
         <label for="description" class="block mb-2 text-sm font-medium text-gray-900">Description</label>
         <textarea id="description" rows="4" v-model="profileData.description" class="block p-2.5 w-full text-sm text-gray-900 rounded-lg border border-gray-300 focus:ring-violet-600 focus:border-violet-600" placeholder="Write about yourself."></textarea>
-      </div>
+      </fieldset>
       <div class="flex justify-end space-x-3 mt-10">
         <button @click="openChangePassword()" class="flex justify-center items-center bg-violet-600 p-2 text-white shadow-md rounded-md text-sm font-semibold leading-6">
           <Icon name="lock" class="mr-3 w-6"></Icon>
           Change Passsword
         </button>
-        <button :class="{'disabled:opacity-50': isUpdating}" class="bg-violet-600 p-2 text-white shadow-md rounded-md text-sm font-semibold leading-6" :disabled="isUpdating" @click="updateProfile()">Apply Changes</button>
+        <button type="submit" :class="{'disabled:opacity-50': isUpdating}" class="bg-violet-600 p-2 text-white shadow-md rounded-md text-sm font-semibold leading-6" :disabled="isUpdating">Apply Changes</button>
       </div>
-    </div>
-
-    <ChangePassword ref="ChangePasswordModal"/>
+    </form>
   </div>
-
+  
+  <ChangePassword ref="ChangePasswordModal"/>
 </template>

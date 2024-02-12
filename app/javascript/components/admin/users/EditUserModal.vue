@@ -43,7 +43,7 @@ const handleModal = (value: boolean, user?: IUser) => {
   userData.value = structuredClone(toRaw(user)) 
 }
 
-const updateUser = async () => {
+const submit = async () => {
   if(!userData.value) return 
   const response = await makeRequest(api_v1_admin_users_update_path({id: userData.value.id}), {method: "PUT", data: {
     user: {
@@ -94,57 +94,58 @@ defineExpose({
 
             <hr class="w-full mb-4">
 
-            <div class="flex flex-row">
-              <div class="flex flex-col px-4 w-3/6">
-                <label for="first_name" class="text-sm font-medium leading-6 text-gray-900">First Name</label>
-                <input id="first_name" name="first_name" type="text" v-model="userData.profile.first_name" class="mt-2 mb-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6">
+            <form @submit.prevent="submit">
+              <div class="flex flex-row">
+                <fieldset class="flex flex-col px-4 w-3/6">
+                  <label for="first_name" class="text-sm font-medium leading-6 text-gray-900">First Name</label>
+                  <input id="first_name" name="first_name" type="text" v-model="userData.profile.first_name" required class="mt-2 mb-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6">
+                </fieldset>
+                <fieldset class="flex flex-col px-4 w-3/6">
+                  <label for="last_name" class="text-sm font-medium leading-6 text-gray-900">Last Name</label>
+                  <input id="last_name" name="last_name" type="text" v-model="userData.profile.last_name" required class="mt-2 mb-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6">
+                </fieldset>
               </div>
-              <div class="flex flex-col px-4 w-3/6">
-                <label for="last_name" class="text-sm font-medium leading-6 text-gray-900">Last Name</label>
-                <input id="last_name" name="last_name" type="text" v-model="userData.profile.last_name" class="mt-2 mb-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6">
-              </div>
-            </div>
 
-            <div class="flex flex-row">
-              <div class="flex flex-col px-4 w-3/6">
-                <label for="email" class="text-sm font-medium leading-6 text-gray-900">E-mail</label>
-                <input id="email" name="email" type="email" v-model="userData.email" class="mt-2 mb-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6">
+              <div class="flex flex-row">
+                <fieldset class="flex flex-col px-4 w-3/6">
+                  <label for="email" class="text-sm font-medium leading-6 text-gray-900">E-mail</label>
+                  <input id="email" name="email" type="email" v-model="userData.email" required class="mt-2 mb-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6">
+                </fieldset>
+                <fieldset class="flex flex-col px-4 w-3/6">
+                  <label for="username" class="text-sm font-medium leading-6 text-gray-900">Username</label>
+                  <input id="username" name="username" type="text" v-model="userData.username" required class="mt-2 mb-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6">
+                </fieldset>
               </div>
-              <div class="flex flex-col px-4 w-3/6">
-                <label for="username" class="text-sm font-medium leading-6 text-gray-900">Username</label>
-                <input id="username" name="username" type="text" v-model="userData.username" class="mt-2 mb-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6">
-              </div>
-            </div>
-
-
-            <div class="flex flex-row">
-              <div class="flex flex-col px-4 w-3/6">
-                <label for="type" class="text-sm font-medium leading-6 text-gray-900">Type</label>
-                <select name="type" id="type" v-model="userData.user_type" class="mt-2 mb-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6">
-                  <option :value="null" selected disabled>User Type</option>
-                  <option :value="date.value" v-for="date in typeUserEnums">{{ date.name }}</option>
-                </select>
-              </div>
-              <div class="flex flex-col px-4 w-3/6">
-                <label for="username" class="text-sm font-medium leading-6 text-gray-900">Status</label>
-                <select name="type" id="type" v-model="userData.status" class="mt-2 mb-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6">
-                  <option :value="null" selected disabled>User Status</option>
-                  <option :value="date.value" v-for="date in statusUserEnums">{{ date.name }}</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="flex flex-row">
-              <div class="flex flex-col px-4 w-full">
-                <label for="description" class="text-sm font-medium leading-6 text-gray-900">Description</label>
-                <textarea id="description" v-model="userData.profile.description" rows="4" class="block p-2.5 w-full text-sm text-gray-900 rounded-lg border border-gray-300 focus:ring-violet-600 focus:border-violet-600"></textarea>
-              </div>
-            </div>
 
 
-            <div class="flex flex-row m-5 justify-end">
-              <button @click="updateUser()" class="rounded-md bg-violet-600 px-3 py-2 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-violet-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-600">Update</button>
-            </div>
+              <div class="flex flex-row">
+                <fieldset class="flex flex-col px-4 w-3/6">
+                  <label for="type" class="text-sm font-medium leading-6 text-gray-900">Type</label>
+                  <select name="type" id="type" v-model="userData.user_type" required class="mt-2 mb-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6">
+                    <option :value="null" selected disabled>User Type</option>
+                    <option :value="date.value" v-for="date in typeUserEnums">{{ date.name }}</option>
+                  </select>
+                </fieldset>
+                <fieldset class="flex flex-col px-4 w-3/6">
+                  <label for="username" class="text-sm font-medium leading-6 text-gray-900">Status</label>
+                  <select name="type" id="type" v-model="userData.status" required class="mt-2 mb-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6">
+                    <option :value="null" selected disabled>User Status</option>
+                    <option :value="date.value" v-for="date in statusUserEnums">{{ date.name }}</option>
+                  </select>
+                </fieldset>
+              </div>
+
+              <div class="flex flex-row">
+                <fieldset class="flex flex-col px-4 w-full">
+                  <label for="description" class="text-sm font-medium leading-6 text-gray-900">Description</label>
+                  <textarea id="description" v-model="userData.profile.description" rows="4" class="block p-2.5 w-full text-sm text-gray-900 rounded-lg border border-gray-300 focus:ring-violet-600 focus:border-violet-600"></textarea>
+                </fieldset>
+              </div>
+
+              <div class="flex flex-row m-5 justify-end">
+                <button type="submit" class="rounded-md bg-violet-600 px-3 py-2 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-violet-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-600">Update</button>
+              </div>
+            </form>
           </div>
 
         </div>
