@@ -4,6 +4,11 @@ class Api::V1::BooksController < ApplicationController
   before_action :is_admin, only: [ :create, :update, :get_books ]
   
   def index
+    if !Book.exists?(id: params[:book_id])
+      render json: { error: "Book not found" }, status: :unprocessable_entity
+      return
+    end
+
     book = Book.find(params[:book_id])
 
     render json: {
@@ -30,7 +35,7 @@ class Api::V1::BooksController < ApplicationController
 
     book = Book.new(params_book)
     if book.save
-      BookImagesHelper.create_image(book, params[:images])
+      BookImagesHelper.create_image(book, params[:images]) if params[:images]
       render json: { message: "Book created successfully" }, status: :ok
       return
     end
@@ -86,7 +91,6 @@ class Api::V1::BooksController < ApplicationController
     }
   end
 
-
   def get_books
     page, data = pagy(BooksHelper.get_filtered_books(params_search).all, page: params[:page])
     pagination = pagy_metadata(page)
@@ -122,7 +126,7 @@ class Api::V1::BooksController < ApplicationController
 
   private
   def params_book
-    params.require(:book).permit(:name, :description, :price, :stock_quantity, :publisher_id, :author_id, :genre_id, :status)
+    params.require(:book).permit(:name, :description, :price, :stock_quantity, :publisher_id, :author_id, :genre_id)
   end
 
   def params_search
