@@ -10,8 +10,8 @@ module BooksHelper
       books = books.where("LOWER(genres.name) = ?", Book.sanitize_sql_like(filter[:genre].downcase))
     end
 
-    if(filter[:stock] != nil)
-      books = books.where(filter[:stock].to_i == 1 ? "books.stock_quantity >= 1" : "books.stock_quantity = 0")
+    if(filter[:has_stock] != nil)
+      books = books.where(filter[:has_stock].to_i == 1 ? "books.stock_quantity >= 1" : "books.stock_quantity = 0")
     end
 
     if(filter[:status] != nil)

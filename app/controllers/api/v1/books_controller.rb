@@ -56,8 +56,7 @@ class Api::V1::BooksController < ApplicationController
 
 
   def search
-    search_params = {search: params[:search], stock: 1}
-    page, data = pagy(BooksHelper.get_filtered_books(search_params).all, page: params[:page])
+    page, data = pagy(BooksHelper.get_filtered_books(params_search).all, page: params[:page])
     pagination = pagy_metadata(page)
 
     render json: {
@@ -89,7 +88,7 @@ class Api::V1::BooksController < ApplicationController
 
 
   def get_books
-    page, data = pagy(BooksHelper.get_filtered_books(params).all, page: params[:page])
+    page, data = pagy(BooksHelper.get_filtered_books(params_search).all, page: params[:page])
     pagination = pagy_metadata(page)
 
     render json: {
@@ -116,7 +115,6 @@ class Api::V1::BooksController < ApplicationController
             id: book.publisher.id,
             name: book.publisher.name
           },
-          status: book.status,
           stock_quantity: book.stock_quantity,
         }}
       }, status: :ok
@@ -125,5 +123,9 @@ class Api::V1::BooksController < ApplicationController
   private
   def params_book
     params.require(:book).permit(:name, :description, :price, :stock_quantity, :publisher_id, :author_id, :genre_id, :status)
+  end
+
+  def params_search
+    params.permit(:search, :genre, :has_stock, :status)
   end
 end

@@ -31,7 +31,7 @@ let paginationConfig = ref({
 });
 
 const getBooks = async (page = 1) => {
-  const response = await makeRequest(api_v1_books_search_path({search: router.currentRoute.value.query.search, page}), {
+  const response = await makeRequest(api_v1_books_search_path({has_stock: 1, search: router.currentRoute.value.query.search, page}), {
     method: "GET",
   })
 
