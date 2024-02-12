@@ -2,20 +2,24 @@ module BooksHelper
   def self.get_filtered_books(filter)
     books = Book.joins(:publisher, :author, :genre)
 
-    if(filter[:search] != nil)
-      books = books.where("LOWER(books.name) LIKE :search_term OR LOWER(publishers.name) LIKE :search_term OR LOWER(authors.full_name) LIKE :search_term OR LOWER(genres.name) LIKE :search_term", {search_term: "%" + Book.sanitize_sql_like(filter[:search].downcase) + "%"})
+    if(filter["search"] != nil)
+      books = books.where("LOWER(books.name) LIKE :search_term OR LOWER(publishers.name) LIKE :search_term OR LOWER(authors.full_name) LIKE :search_term OR LOWER(genres.name) LIKE :search_term", {search_term: "%" + Book.sanitize_sql_like(filter["search"].downcase) + "%"})
     end
 
-    if(filter[:genre] != nil)
-      books = books.where("LOWER(genres.name) = ?", Book.sanitize_sql_like(filter[:genre].downcase))
+    if(filter["genre"] != nil)
+      books = books.where("LOWER(genres.name) = ?", Book.sanitize_sql_like(filter["genre"].downcase))
     end
 
-    if(filter[:has_stock] != nil)
-      books = books.where(filter[:has_stock].to_i == 1 ? "books.stock_quantity >= 1" : "books.stock_quantity = 0")
+    if(filter["has_stock"] != nil)
+      books = books.where(filter["has_stock"].to_i == 1 ? "books.stock_quantity >= 1" : "books.stock_quantity = 0")
     end
 
-    if(filter[:status] != nil)
-      books = books.where("books.status = ?", Book.sanitize_sql_like(filter[:status].downcase))
+    if(filter["status"] != nil)
+      books = books.where("books.status = ?", Book.sanitize_sql_like(filter["status"].downcase))
+    end
+
+    if(filter["is_active"] != nil)
+      books = books.where(filter["is_active"].to_i == 1 ? "books.status = 1" : "books.stock_quantity = 0")
     end
 
     books

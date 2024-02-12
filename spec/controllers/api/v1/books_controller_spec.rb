@@ -33,7 +33,7 @@ RSpec.describe Api::V1::BooksController, type: :controller do
 
     it "Can anonymous user search a book without stock and status code 200" do 
       get "search", params: {
-        has_stock: false
+        has_stock: 0
       }
 
       expect(response).to have_http_status(200)
@@ -211,6 +211,7 @@ RSpec.describe Api::V1::BooksController, type: :controller do
           name: attributes_book[:name],
           description: attributes_book[:description],
           price: attributes_book[:price],
+          status: 1,
           stock_quantity: attributes_book[:stock_quantity],
           publisher_id: publisher[:id],
           author_id: author[:id],
@@ -221,7 +222,7 @@ RSpec.describe Api::V1::BooksController, type: :controller do
 
       expect(response).to have_http_status(200)
       expect(JSON.parse(response.body)).to eq({"message" => "Book created successfully"})
-      expect(Book.where(name: attributes_book[:name]).count).to eq(1)
+      expect(Book.where(name: attributes_book[:name], status: 1).count).to eq(1)
     end
   end
   

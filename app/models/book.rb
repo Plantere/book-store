@@ -1,6 +1,6 @@
 class Book < ApplicationRecord
   validates :name, :description, :stock_quantity, :price, presence: true
-  validates :stock_quantity, :price, numericality: true
+  validates :stock_quantity, :price, :status, numericality: true
   
   belongs_to :publisher
   belongs_to :author

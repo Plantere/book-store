@@ -7,6 +7,7 @@ class CreateBooks < ActiveRecord::Migration[7.1]
       t.string :name, null: false
       t.text :description
       t.integer :stock_quantity, null: false
+      t.integer :status, :default => 1
       t.decimal :price, precision: 16, scale: 2, null: false
       t.timestamps
     end

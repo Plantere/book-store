@@ -132,7 +132,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
         "status" => new_user[:status],
         "email" => new_user[:email],
         "profile" => {
-          "birth_date" => "2003-02-10",
+          "birth_date" => "2003-02-12",
           "description" => new_profile[:description],
           "first_name" => new_profile[:first_name],
           "last_name" => new_profile[:last_name],

@@ -41,6 +41,11 @@ RSpec.describe Book, type: :model do
       expect(book).to_not be_valid  
     end
 
+    it "should not be valid with status as string" do
+      book.status = "a"
+      expect(book).to_not be_valid  
+    end
+
     it "should be valid with all values correct" do
       expect(book).to be_valid
     end
