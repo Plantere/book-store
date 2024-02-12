@@ -133,7 +133,7 @@ const previousImage = () => {
       <div class="w-3/6 bg-white rounded-md">
         <div class="p-5 flex flex-row justify-between">
           <div class="flex flex-col">
-            <span class="text-2xl font-semibold leading-6">{{book.name}} ({{book.publisher.name}} Editora)</span>
+            <span class="text-2xl font-semibold leading-6">{{book.name}} ({{book.publisher.name}})</span>
             <span class="text-sm font-mono">By: {{book.author.name}}</span>
           </div>
         </div>

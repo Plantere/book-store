@@ -6,7 +6,7 @@ const search = ref("")
 const router = useRouter()
 
 const redirectSearch = () => {
-  return router.push({name: 'books', query: {search: search.value}})
+  return router.push({name: 'home', query: {search: search.value}})
 }
 </script>
 
