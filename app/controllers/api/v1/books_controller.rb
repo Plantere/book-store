@@ -78,14 +78,13 @@ class Api::V1::BooksController < ApplicationController
 
   def get_cart_items
     books = Book.where(id: params[:cart].map{|book| book[:book_id]}).all
-    
     render json: {
       data: books.map{ |book| {
         id: book.id,
         name: book.name,
         image: book.book_image.get_default_or_first(),
         price: book.price,
-        cart_quantity: params[:cart].find{|item| item[:book_id] == book[:id]}[:quantity],
+        cart_quantity: params[:cart].find{|item| item[:book_id].to_i == book[:id]}[:quantity],
         stock_quantity: book.stock_quantity,
       }}
     }
