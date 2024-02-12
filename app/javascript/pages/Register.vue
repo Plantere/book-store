@@ -12,8 +12,8 @@ const fieldsForm = reactive({
     password: "",
   },
   profile: {
-    firstName: "",
-    lastName: "",
+    first_name: "",
+    last_name: "",
   }
 })
 
@@ -56,11 +56,11 @@ const submit = async () => {
           <div class="flex items-center justify-between">
             <div>
               <label for="first_name" class="block text-sm font-medium leading-6 text-gray-900">First Name</label>
-              <input id="first_name" name="first_name" type="text" v-model="fieldsForm.profile.firstName" autocomplete="first_name" required class="mt-2 mb-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6" />
+              <input id="first_name" name="first_name" type="text" v-model="fieldsForm.profile.first_name" autocomplete="first_name" required class="mt-2 mb-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6" />
             </div>
             <div class="ml-3">
               <label for="last_name" class="block text-sm font-medium leading-6 text-gray-900">Last Name</label>
-              <input id="last_name" name="last_name" type="text" v-model="fieldsForm.profile.lastName" autocomplete="last_name" required class="mt-2 mb-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6" />
+              <input id="last_name" name="last_name" type="text" v-model="fieldsForm.profile.last_name" autocomplete="last_name" required class="mt-2 mb-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6" />
             </div>
           </div>
 
