@@ -137,7 +137,7 @@ const submit = async () => {
   }
 
   if(!response.ok) {
-    notification.createNotification(`Book cannot be ${bookData.value.id ? "updated" : "created"}`, 'success')
+    notification.createNotification(`Book cannot be ${bookData.value.id ? "updated" : "created"}`, 'error')
     return
   }
 

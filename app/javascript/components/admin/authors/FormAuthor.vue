@@ -42,7 +42,7 @@ const submit = async () => {
   }
 
   if(!response.ok) {
-    notification.createNotification(`Author cannot be ${authorData.value.id ? "updated" : "created"}`, 'success')
+    notification.createNotification(`Author cannot be ${authorData.value.id ? "updated" : "created"}`, 'error')
     return
   }
 

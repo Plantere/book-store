@@ -44,7 +44,6 @@ const getBooks = async (page = 1) => {
       currentPage: 1,
     }
   }
-  notifications.createNotification("Search conducted successfully", "success")
 
   const data = await response.json();
   booksList.value = data.data

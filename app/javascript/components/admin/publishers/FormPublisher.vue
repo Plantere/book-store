@@ -40,7 +40,7 @@ const submit = async () => {
   }
 
   if(!response.ok) {
-    notification.createNotification(`Publisher cannot be ${publisherData.value.id ? "updated" : "created"}`, 'success')
+    notification.createNotification(`Publisher cannot be ${publisherData.value.id ? "updated" : "created"}`, 'error')
     return
   }
 
