@@ -80,6 +80,6 @@ module OrdersHelper
     end
 
     def self.get_shipping_value(carrier)
-      carrier == 1 ? 5.00 : 0
+      carrier == 1 ? 10.00 : 0
     end
 end

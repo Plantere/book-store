@@ -46,7 +46,7 @@ const nextTab = () => {
     </div>
     <div class="flex justify-between">
       <span class="text-md font-normal leading-6 text-black">Delivery Charges</span>
-      <span class="text-md font-normal leading-6 text-black">{{formatMoney(5.00)}}</span>
+      <span class="text-md font-normal leading-6 text-black">{{formatMoney(10.00)}}</span>
     </div>
   </div>
 
@@ -54,7 +54,7 @@ const nextTab = () => {
 
   <div class="flex justify-between">
     <span class="text-md font-semibold leading-6 text-gray-600">Total</span>
-    <span class="text-md font-normal leading-6 text-black">{{formatMoney(getBagTotal() + 5.00)}}</span>
+    <span class="text-md font-normal leading-6 text-black">{{formatMoney(getBagTotal() + 10.00)}}</span>
   </div>
 
   <hr class="m-5 border-gray-300">

@@ -71,11 +71,11 @@ defineExpose({
                   </div>
                   <div class="flex flex-row justify-between">
                     <span>Shipping Total</span>
-                    <span>{{ formatMoney(5.00) }}</span>
+                    <span>{{ formatMoney(10.00) }}</span>
                   </div>
                   <div class="flex flex-row justify-between">
                     <span>Total</span>
-                    <span>{{ formatMoney(convertStringToNumber(orderData.price) + 5.00) }}</span>
+                    <span>{{ formatMoney(convertStringToNumber(orderData.price) + 10.00) }}</span>
                   </div>
                 </div>
                 <div class="my-5 p-3 border rounded-2xl">
