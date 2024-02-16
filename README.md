@@ -4,6 +4,17 @@
 
 This is a Ruby on Rails and VueJS-based web application for a Book Store. The project allows administrators to manage books, while users can browse and purchase books.
 
+## Users For Testing in [BookStore](https://book-store-e3z2.onrender.com/) 🧪
+- **Admin (John Doe):**
+  - **Email:** admin@example.com
+  - **Password:** 123456
+
+- **Client (Samantha Miller):**
+  - **Email:** client@example.com
+  - **Password:** 123456
+
+(For Stripe transactions, you can use test cards available [here](https://docs.stripe.com/testing#cards))
+
 ## Technology 🖥️
 - Ruby On Rails
 - VueJS
