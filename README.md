@@ -5,7 +5,7 @@
 This is a Ruby on Rails and VueJS-based web application for a Book Store. The project allows administrators to manage books, while users can browse and purchase books.
 
 ## Users For Testing in [BookStore](https://book-store-e3z2.onrender.com/) 🧪
-- **Admin (John Doe):**
+- **Admin (John Doe):** *(You can access admin page from [here](https://book-store-e3z2.onrender.com/admin))*
   - **Email:** admin@example.com
   - **Password:** 123456
 
@@ -86,10 +86,9 @@ There are two types of users:
 
 ## Deployment 🚢
 
-The project is deployed on both Vercel and Render.com. Follow these steps for deployment:
+The project is deployed on Render.com. Follow these steps for deployment:
 
-- **Frontend (Vercel):** Hosted on Vercel. Follow the [Vercel deployment process](https://vercel.com/docs/deployment).
-- **Backend (Render.com):** Hosted on Render.com. Follow the [Render.com deployment process](https://render.com/docs/deploy-rails).
+- **Render.com:** Hosted on Render.com. Follow the [Render.com deployment process](https://render.com/docs/deploy-rails).
 
 Ensure proper configuration for both frontend and backend for seamless integration.
 
