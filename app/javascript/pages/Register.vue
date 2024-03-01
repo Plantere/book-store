@@ -26,11 +26,13 @@ const submit = async () => {
   if(isSubmiting.value){
     return
   }
-  	
+  
   isSubmiting.value = true
+  
+  let registerForm = transformForm()
   const response = await makeRequest(api_v1_users_register_path(), {
     method: "POST",
-    data: fieldsForm
+    data: registerForm
   })
 
   if(!response.ok){
@@ -41,6 +43,15 @@ const submit = async () => {
 
   notifications.createNotification("User created successufly", "success")
   router.push({name: "login"})
+}
+
+const transformForm = () => {
+  let registerForm = Object.assign({}, fieldsForm)
+
+  registerForm.user.email = fieldsForm.user.email.toLowerCase()
+  registerForm.user.username = fieldsForm.user.username.toLowerCase()
+
+  return registerForm
 }
 </script>
 
