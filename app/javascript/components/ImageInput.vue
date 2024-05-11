@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import Icon from '@/components/shares/Icon.vue';
-import { watch, computed, ref } from 'vue';
+import { watch, computed, ref, onMounted } from 'vue';
 import { getImage, storeImage } from '@/services/supabase-service';
-
 interface Image {
   token_image: string | undefined,
   path: string | undefined,
@@ -45,6 +44,10 @@ const previousImage = () => {
   }
 
   currentImage.value = images.value[index-1]
+}
+
+const getDefaultImage = () => {
+  currentImage.value = images.value.find((image: Image) => image.is_default === true)
 }
 
 const nextImage = () => {
@@ -112,6 +115,13 @@ watch(images.value, () => {
     return { path: image.path, token_image: image.token_image, is_default: image.is_default }
   }))
 }, {deep: true})
+
+onMounted(() => {
+  images.value.push(...props.modelValue)
+  getDefaultImage()
+})
+
+
 
 
 </script>
