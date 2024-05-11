@@ -52,6 +52,7 @@ class Api::V1::BooksController < ApplicationController
 
     book = Book.find(params[:book_id])
     if book.update(params_book)
+      BookImagesHelper.create_image(book, params[:images]) if params[:images]
       render json: { message: "Book updated successfully" }, status: :ok
       return
     end
